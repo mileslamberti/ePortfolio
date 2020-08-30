@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import RegistrationComponent from "./components/registration.component";
+
 class App extends Component {
 
   constructor(props) {
@@ -22,8 +24,9 @@ class App extends Component {
       <div className="App">
       <div className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <h2>{this.state.apiResponse}</h2>
+        <h2>{this.state.apiResponse}aa</h2>
       </div>
+      <RegistrationComponent/>
     </div>
     );
   }
