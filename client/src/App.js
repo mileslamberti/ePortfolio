@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route } from "react-router-dom";
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import logo from './logo.svg';
 import './App.css';
 
@@ -23,13 +24,10 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>{this.state.apiResponse}</h2>
-        </div>
-        <Route path="/register" exact component={RegistrationComponent}/>
-      </div>
+          <div className="container">
+              <Route path="/register" exact component={RegistrationComponent}/>
+          </div>
+        
       </Router>
       
     );
