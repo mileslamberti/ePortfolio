@@ -1,9 +1,15 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route } from "react-router-dom";
-import logo from './logo.svg';
 import './App.css';
 
-import RegistrationComponent from "./components/registration.component";
+import RegistrationComponent from "./components/Register.component";
+import HomeComponent from "./components/Home.component";
+import HomeNavbar from "./components/HomeNavbar.component";
+import LoginComponent from "./components/Login.component";
+import MyProfile from "./components/MyProfile.component";
+
+import { Navbar } from 'react-bootstrap';
 
 class App extends Component {
 
@@ -13,7 +19,7 @@ class App extends Component {
   }
   callWelcome() {
     fetch("http://localhost:9000/welcome")
-      .then(res => res.text())
+      .then(res => console.log(res.text()))
       .then(res => this.setState({ apiResponse: res }));
   }
 
@@ -23,15 +29,14 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>{this.state.apiResponse}</h2>
+        <div className="container">
+          <HomeNavbar/>
+          <Route path="/" exact component={HomeComponent}/>
+          <Route path="/myprofile" component={MyProfile}/>
+          <Route path="/register" component={RegistrationComponent}/>
+          <Route path="/login" component={LoginComponent}/>
         </div>
-        <Route path="/register" exact component={RegistrationComponent}/>
-      </div>
       </Router>
-      
     );
   }
 }
