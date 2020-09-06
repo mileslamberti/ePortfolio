@@ -1,0 +1,17 @@
+{
+  "folders": [
+	{
+		"path": "../../react-test/react-app"
+	},
+	{
+		"path": ".."
+	},
+	{
+		"path": "../../okta-react"
+	},
+	{
+		"path": "../../okta-tech/samples-js-react"
+	}
+],
+  "settings": {}
+}
