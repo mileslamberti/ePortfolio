@@ -14,3 +14,15 @@ then run the following command which installs all package dependancies
 
 To launch both client and server-side concurrent run
 `npm start`
+
+
+.Env File Required
+
+please create .env file in the api directory with variabeles
+
+
+`USERNAME="somestring"`
+
+`PASSWORD="somestring"`
+
+`DATABASE_NAME="somestring"`
