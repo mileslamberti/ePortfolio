@@ -1,6 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route } from "react-router-dom";
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import logo from './logo.svg';
 import './App.css';
 
 import RegistrationComponent from "./components/Register.component";
@@ -29,13 +31,10 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="container">
-          <HomeNavbar/>
-          <Route path="/" exact component={HomeComponent}/>
-          <Route path="/myprofile" component={MyProfile}/>
-          <Route path="/register" component={RegistrationComponent}/>
-          <Route path="/login" component={LoginComponent}/>
-        </div>
+          <div className="container">
+              <Route path="/register" exact component={RegistrationComponent}/>
+          </div>
+        
       </Router>
     );
   }
