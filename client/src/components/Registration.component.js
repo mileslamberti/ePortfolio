@@ -53,7 +53,7 @@ export default class Registration extends Component{
                         <input type="text"
                             required
                             className="form-control"
-                            placeholder="(Enter your desired username between 6-15 characters)"
+                            placeholder="Enter your desired username between 6-15 characters"
                             value={this.state.username}                      
                             onChange={this.onChangeUsername}
                         ></input>
