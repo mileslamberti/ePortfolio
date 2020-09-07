@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
 
-export default class CreateRegistration extends Component{
+export default class Registration extends Component{
     
     constructor(props){
         super(props);
