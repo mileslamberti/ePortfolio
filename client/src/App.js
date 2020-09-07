@@ -5,11 +5,12 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import logo from './logo.svg';
 import './App.css';
 
-import RegistrationComponent from "./components/Register.component";
-import HomeComponent from "./components/Home.component";
-import HomeNavbar from "./components/HomeNavbar.component";
-import LoginComponent from "./components/Login.component";
-import MyProfile from "./components/MyProfile.component";
+import RegistrationComponent from "./components/registration.component";
+import HomeComponent from "./components/home.component";
+import HomeNavbar from "./components/homeNavbar.component";
+import LoginComponent from "./components/login.component";
+import MyProfile from "./components/myProfile.component";
+
 
 import { Navbar } from 'react-bootstrap';
 
@@ -21,8 +22,8 @@ class App extends Component {
   }
   callWelcome() {
     fetch("http://localhost:9000/welcome")
-      .then(res => console.log(res.text()))
-      .then(res => this.setState({ apiResponse: res }));
+    .then(res => res.text())
+    .then(res => this.setState({ apiResponse: res }));
   }
 
   componentWillMount() {
