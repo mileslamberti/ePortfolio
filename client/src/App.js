@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
@@ -6,13 +5,6 @@ import logo from './logo.svg';
 import './App.css';
 import { Navbar, Nav, NavDropdown, Form, Button, FormControl } from 'react-bootstrap';
 import RegistrationComponent from "./components/registration.component";
-import HomeComponent from "./components/home.component";
-import HomeNavbar from "./components/homeNavbar.component";
-import LoginComponent from "./components/login.component";
-import MyProfile from "./components/myProfile.component";
-
-
-import { Navbar } from 'react-bootstrap';
 
 class App extends Component {
 
@@ -22,8 +14,8 @@ class App extends Component {
   }
   callWelcome() {
     fetch("http://localhost:9000/welcome")
-    .then(res => res.text())
-    .then(res => this.setState({ apiResponse: res }));
+      .then(res => res.text())
+      .then(res => this.setState({ apiResponse: res }));
   }
 
   componentWillMount() {
