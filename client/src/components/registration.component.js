@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-
+import axios from 'axios';
 
 export default class CreateRegistration extends Component{
     
@@ -12,6 +12,7 @@ export default class CreateRegistration extends Component{
         this.onChangeUsername = this.onChangeUsername.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
         this.onChangeEmail = this.onChangeEmail.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
 
         this.state = {
             username: '',
@@ -43,11 +44,32 @@ export default class CreateRegistration extends Component{
             email: e.target.value
         })
     }
+
+    onSubmit(e){
+        e.preventDefault();
+        const user = {
+            username: this.state.username,
+            email: this.state.email,
+            password: this.state.password
+            
+        }
+        console.log(user)
+        axios.post('http://localhost:9000/user/signup', user)
+            .then(res => console.log(res.data));
+
+        this.setState({
+            username: '',
+            email: '',
+            password: ''
+        })
+
+        window.location = '/';
+    }
     render(){
         return(
             <div>
                 <h3>Registration page</h3>
-                <form>
+                <form onSubmit={this.onSubmit}>
                     <div className="form-group">
                         <label>Desired username</label>
                         <input type="text"
@@ -70,7 +92,7 @@ export default class CreateRegistration extends Component{
                     </div>
                     <div className="form-group">
                     <label>Email address</label>
-                        <input type="text"
+                        <input type="email"
                             required
                             className="form-control"
                             placeholder="example@yourmail.com"
