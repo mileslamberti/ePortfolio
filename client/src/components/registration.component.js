@@ -92,7 +92,7 @@ export default class CreateRegistration extends Component{
                     </div>
                     <div className="form-group">
                     <label>Email address</label>
-                        <input type="text"
+                        <input type="email"
                             required
                             className="form-control"
                             placeholder="example@yourmail.com"
