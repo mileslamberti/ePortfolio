@@ -9,7 +9,10 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var testAPIRouter = require('./routes/welcome');
 var user1 = require('./routes/user');
+var upload = require('./routes/upload')
 var InitiateMongoServer = require("./config/db");
+var { BlobServiceClient } = require("@azure/storage-blob");
+
 //  CosmosDB requirements keeping here just for now
 
 // var CosmosClient = require('@azure/cosmos').CosmosClient;
@@ -29,15 +32,13 @@ app.set('view engine', 'jade');
 app.use("/user", user1);
 app.use(logger('dev'))
 app.use("/welcome", testAPIRouter);
-
+app.use("/testing",upload)
 
 
 //  </DefineNewItem>
 
 async function main() {
   InitiateMongoServer();
-
-
 }
 
 
@@ -45,6 +46,19 @@ async function main() {
 
 main();
 module.exports = app
+
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+/* 
+ Setup: Enter your storage account name and shared key in main()
+*/
+
+
+// Load the .env file if it exists
+
+
   // </CreateClientObjectDatabaseContainer>
   
  // try {
