@@ -5,6 +5,8 @@ import logo from './logo.svg';
 import './App.css';
 import { Navbar, Nav, NavDropdown, Form, Button, FormControl } from 'react-bootstrap';
 import RegistrationComponent from "./components/registration.component";
+import UploadPortfolio from "./components/uploadPortfolio.component";
+import FileUpload from "./components/fileUpload.component";
 
 class App extends Component {
 
@@ -50,6 +52,7 @@ class App extends Component {
       <div className="container">
                     <Route path="/register" exact component={RegistrationComponent}/>
                 </div>
+          <Route path="/uploadPortfolio" exact component={UploadPortfolio}/>
       </Router>
       //      <Router>
       //          <div className="container">
