@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, Nav, NavDropdown, Form, Button, FormControl } from 'react-bootstrap';
 import RegistrationComponent from "./registration.component";
+import UploadPortfolio from './uploadPortfolio.component';
 
 
 export default class HomeNavbar extends Component {
@@ -34,6 +35,7 @@ export default class HomeNavbar extends Component {
                 <div className="container">
                     <Route path="/register" exact component={RegistrationComponent}/>
                 </div>
+                <Route path="/uploadPortfolio" exact component={UploadPortfolio}/>
             </Router>
         )
     }
