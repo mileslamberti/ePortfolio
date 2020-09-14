@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import logo from './logo.svg';
 import './App.css';
+<<<<<<< HEAD
 import { Navbar, Nav, NavDropdown, Form, Button, FormControl } from 'react-bootstrap';
 import RegistrationComponent from "./components/registration.component";
 import UploadPortfolio from "./components/uploadPortfolio.component";
 import FileUpload from "./components/fileUpload.component";
+=======
+import HomeNavbar from "./components/homeNavbar.component";
+>>>>>>> origin/master
 
 class App extends Component {
 
@@ -25,6 +28,7 @@ class App extends Component {
   }
   render() {
     return (
+<<<<<<< HEAD
       <Router>
       <Navbar bg="light" variant='light' as="Nav">
         <Navbar.Brand  c href="#home">Tech Pirates</Navbar.Brand>
@@ -54,6 +58,9 @@ class App extends Component {
                 </div>
           <Route path="/uploadPortfolio" exact component={UploadPortfolio}/>
       </Router>
+=======
+      <HomeNavbar/>
+>>>>>>> origin/master
       //      <Router>
       //          <div className="container">
       //              <Route path="/register" exact component={RegistrationComponent}/>
