@@ -17,6 +17,7 @@ export default class AboutMe extends Component {
     render() {
         return (
             <div>
+                <br/><br/><br/>
                 <ul>
                 {this.state.infomation.map(function(val){
                     return <li>{val.title}: {val.value}</li>;
