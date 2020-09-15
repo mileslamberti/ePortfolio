@@ -5,6 +5,8 @@ import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import RegistrationComponent from "./registration.component";
 import MyProfile from "./myProfile.component";
 import EditAboutMe from './profileComponents/editAboutMe.component';
+import UploadPortfolio from './uploadPortfolio.component';
+
 
 export default class HomeNavbar extends Component {
     render() {
@@ -38,6 +40,7 @@ export default class HomeNavbar extends Component {
                     <Route path="/myprofile" exact component={MyProfile}/>
                     <Route path="/edit" exact component={EditAboutMe}/>
                 </div>
+                <Route path="/uploadPortfolio" exact component={UploadPortfolio}/>
             </Router>
         )
     }
