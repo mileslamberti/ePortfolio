@@ -4,6 +4,7 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import RegistrationComponent from "./registration.component";
 import MyProfile from "./myProfile.component";
+import EditAboutMe from './profileComponents/editAboutMe.component';
 
 export default class HomeNavbar extends Component {
     render() {
@@ -24,6 +25,7 @@ export default class HomeNavbar extends Component {
                     <NavDropdown title="Account" id="basic-nav-dropdown">
                     <h6>Welcome 'User'</h6>
                         <NavDropdown.Item href="/myprofile">My profile</NavDropdown.Item>
+                        <NavDropdown.Item href="/edit">Edit profile</NavDropdown.Item>
                         <NavDropdown.Item href="/">Account Information</NavDropdown.Item>
                         <NavDropdown.Item href="/">Account Settings</NavDropdown.Item>
                         <br></br>
@@ -34,6 +36,7 @@ export default class HomeNavbar extends Component {
                 <div className="container">
                     <Route path="/register" exact component={RegistrationComponent}/>
                     <Route path="/myprofile" exact component={MyProfile}/>
+                    <Route path="/edit" exact component={EditAboutMe}/>
                 </div>
             </Router>
         )
