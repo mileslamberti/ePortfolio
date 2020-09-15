@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import Axios from 'axios'
+import FileUpload from "../fileUpload.component"
 
 import { Form, Button, ButtonGroup, ToggleButton} from 'react-bootstrap'
 
@@ -62,7 +63,7 @@ function UploadPortfolio (){
                         )
                         }
                         else if(fileUploadStrategy === 2){
-                            return "You selected uploading images"
+                            return (<FileUpload />)
                         }
                         else if(fileUploadStrategy === 3){
                             return "You selected uploading documents"
