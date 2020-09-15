@@ -4,7 +4,6 @@ import React from 'react';
 
 import DP from "./profileComponents/dp.component";
 import AboutMe from "./profileComponents/aboutMe.component";
-import UploadProject from "./profileComponents/uploadProject.component";
 import Projects from "./profileComponents/projects.component";
 
 const axios=require("axios");
@@ -21,9 +20,6 @@ export default class MyProfile extends React.Component {
                     <div class="col-xl-">
                         <AboutMe/>
                     </div>
-                </div>
-                <div class="row">
-                    <UploadProject/>
                 </div>
                 <div class="row">
                     <Projects/>
