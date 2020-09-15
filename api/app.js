@@ -9,6 +9,9 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var testAPIRouter = require('./routes/welcome');
 var user1 = require('./routes/user');
+var aboutMe = require("./routes/aboutMe");
+var projects = require("./routes/projects")
+
 var InitiateMongoServer = require("./config/db");
 //  CosmosDB requirements keeping here just for now
 
@@ -27,6 +30,8 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use("/user", user1);
+app.use("/aboutme", aboutMe);
+app.use("/projects", projects);
 app.use(logger('dev'))
 app.use("/welcome", testAPIRouter);
 
