@@ -2,8 +2,6 @@ import React, {useState, useCallback} from 'react'
 import Dropzone, {useDropzone} from 'react-dropzone';
 import Axios from 'axios'
 import Icon from '@ant-design/icons';
-import styled from 'styled-components';
-
 
 function FileUpload(props){
 
@@ -46,40 +44,12 @@ function FileUpload(props){
         </li>
       ));
 
-      const getColor = (props) => {
-  if (props.isDragAccept) {
-      return '#00e676';
-  }
-  if (props.isDragReject) {
-      return '#ff1744';
-  }
-  if (props.isDragActive) {
-      return '#2196f3';
-  }
-  return '#eeeeee';
-}
-    
-      const Container = styled.div`
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-      border-width: 2px;
-      border-radius: 2px;
-      border-color: ${props => getColor(props)};
-      border-style: dashed;
-      background-color: #fafafa;
-      color: #bdbdbd;
-      outline: none;
-      transition: border .24s ease-in-out;
-    `;
-
     return (
         
       <>
         <br/>
-        <div className="dropbox" style={{width: '700px',
+        <div className="dropbox"
+             style={{width: '700px',
                      height: '100px',
                      flex: 1,
                      flexDirection: 'column',
@@ -89,6 +59,7 @@ function FileUpload(props){
                      borderStyle: 'dashed',
                      backgroundcolor: '#fafafa',
                      color: '#bdbdbd',
+                     outline: 'none'
                      }} {...getRootProps({className: 'dropzone'})}>
           <input {...getInputProps()} />
           <p>Drag and drop the files relevant to your portfolio here.</p>
