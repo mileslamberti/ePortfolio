@@ -1,31 +1,25 @@
 import React, {useState, useCallback} from 'react'
-import Dropzone, {useDropzone} from 'react-dropzone';
+import {useDropzone} from 'react-dropzone';
 import Axios from 'axios'
-import Icon from '@ant-design/icons';
 
 function FileUpload(props){
 
-
+    const [Files, setFiles] = useState([]);
     const onDrop = useCallback((acceptedFiles) => {
-        acceptedFiles.forEach((file) => {
-          const reader = new FileReader()
-    
-          reader.onabort = () => console.log('file reading was aborted')
-          reader.onerror = () => console.log('file reading has failed')
-          reader.onload = () => {
-          // Do whatever you want with the file contents
-            const binaryStr = reader.result
-            console.log(binaryStr)
-          }
-          reader.readAsArrayBuffer(file)
-        })
+        
+        console.log(acceptedFiles.length)
+        props.refreshFunction(acceptedFiles)
+
+
     })
+    const onDropAccepted= () => console.log(Files.length)
 
     const acceptableFiles = ['.pdf', '.png', '.jpg'];
 
     const {acceptedFiles, fileRejections,  getRootProps, getInputProps} = useDropzone({  onDrop,
                                                                         maxSize: 1600000000,
-                                                                        accept: acceptableFiles});
+                                                                        accept: acceptableFiles,
+                                                                        onDropAccepted});
   
     const acceptedFileItems = acceptedFiles.map(file => (
         <li key={file.path}>
@@ -74,39 +68,6 @@ function FileUpload(props){
         </aside>
       </>
     );
-  
-            {/*
-            <Dropzone
-                onDrop={onDrop}
-                multiple={false}
-                maxSize={800000000}
-            >
-                {({ getRootProps, getInputProps }) => (
-                    <div style={{
-                        width: '300px', height: '240px', border: '1px solid lightgray',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center'
-                    }}
-                        {...getRootProps()}
-                    >
-                        {console.log('getRootProps', { ...getRootProps() })}
-                        {console.log('getInputProps', { ...getInputProps() })}
-                        <input {...getInputProps()} />
-                        <Icon type="plus" style={{ fontSize: '3rem' }} />
-                    </div>
-                )}
-            </Dropzone>
-
-            <div style={{ display: 'flex', width: '350px', height: '240px', overflowX: 'scroll' }}>
-
-                {Images.map((image, index) => (
-                    <div onClick={() => onDelete(image)}>
-                        <img style={{ minWidth: '300px', width: '300px', height: '240px' }} src={`http://localhost:5000/${image}`} alt={`productImg-${index}`} />
-                    </div>
-                ))}
-
-
-                </div>*/}
-
 }
 
 
