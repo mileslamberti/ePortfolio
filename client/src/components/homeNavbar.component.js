@@ -13,7 +13,7 @@ export default class HomeNavbar extends Component {
         return (
             <Router>
                 <Navbar bg="light" variant='light' as="Nav">
-                    <Navbar.Brand  c href="#home">Tech Pirates</Navbar.Brand>
+                    <Navbar.Brand href="#home">Tech Pirates</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
