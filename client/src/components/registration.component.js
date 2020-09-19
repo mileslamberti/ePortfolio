@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import axios from 'axios';
+
+import AuthService from "../services/auth.service";
 
 export default class CreateRegistration extends Component{
     
@@ -54,7 +55,7 @@ export default class CreateRegistration extends Component{
             
         }
         console.log(user)
-        axios.post('http://localhost:9000/user/signup', user)
+        AuthService.register(this.state.username, this.state.email, this.state.password)
             .then(res => console.log(res.data));
 
         this.setState({
