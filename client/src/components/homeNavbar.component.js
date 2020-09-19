@@ -1,47 +1,79 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
-import RegistrationComponent from "./registration.component";
+import { NavDropdown } from 'react-bootstrap';
+
+import AuthService from "../services/auth.service";
+
+import Login from "./login.component";
+import Register from "./registration.component";
 import MyProfile from "./myProfile.component";
 import EditAboutMe from './profileComponents/editAboutMe.component';
 import UploadPortfolio from './profileComponents/uploadPortfolio.component';
 
+const  HomeNavbar = () => {
 
-export default class HomeNavbar extends Component {
-    render() {
-        return (
-            <Router>
-                <Navbar bg="light" variant='light' as="Nav">
-                    <Navbar.Brand href="#home">Tech Pirates</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="mr-auto">
-                            <Nav.Link href="/">Home</Nav.Link>
-                            <Nav.Link href="/">About</Nav.Link>
-                        </Nav>
-                    </Navbar.Collapse>
-                    <Nav.Link href="/register">
-                    Register
-                    </Nav.Link>
-                    <NavDropdown title="Account" id="basic-nav-dropdown">
-                    <h6>Welcome 'User'</h6>
-                        <NavDropdown.Item href="/myprofile">My profile</NavDropdown.Item>
-                        <NavDropdown.Item href="/edit">Edit profile</NavDropdown.Item>
-                        <NavDropdown.Item href="/">Account Information</NavDropdown.Item>
-                        <NavDropdown.Item href="/">Account Settings</NavDropdown.Item>
-                        <br></br>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item href="/">Login in/Logout</NavDropdown.Item>
-                    </NavDropdown>
-                </Navbar>
-                <div className="container">
-                    <Route path="/register" exact component={RegistrationComponent}/>
-                    <Route path="/myprofile" exact component={MyProfile}/>
-                    <Route path="/edit" exact component={EditAboutMe}/>
-                    <Route path="/uploadPortfolio" exact component={UploadPortfolio}/>
-                </div>
-            </Router>
-        )
-    }
+    const [currentUser, setCurrentUser] = useState(undefined);
+
+    useEffect(() => {
+      const user = AuthService.getCurrentUser();
+  
+      if (user) {
+        setCurrentUser(user);
+      }
+    }, []);
+  
+    const logOut = () => {
+      AuthService.logout();
+    };
+    
+    return (
+    <Router>
+      <nav className="navbar navbar-expand navbar-dark bg-dark">
+        <Link to={"/"} className="navbar-brand">
+          Tech Pirates
+        </Link>
+
+        {currentUser ? ( // if logged in...
+          <div className="navbar-nav ml-auto">
+            <NavDropdown title="Account" id="basic-nav-dropdown">
+            <h6>Welcome 'User'</h6>
+                <NavDropdown.Item href="/profile">My profile</NavDropdown.Item>
+                <NavDropdown.Item href="/edit">Edit profile</NavDropdown.Item>
+                <NavDropdown.Item href="/">Account Information</NavDropdown.Item>
+                <NavDropdown.Item href="/">Account Settings</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="/login" onClick={logOut}>Log Out</NavDropdown.Item>
+              </NavDropdown>
+          </div>
+        ) : ( // if not logged in...
+          <div className="navbar-nav ml-auto">
+            <li className="nav-item">
+              <Link to={"/login"} className="nav-link">
+                Login
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link to={"/register"} className="nav-link">
+                Sign Up
+              </Link>
+            </li>
+          </div>
+        )}
+      </nav>
+
+      <div className="container mt-3">
+        <Switch>
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/profile" component={MyProfile} />
+          <Route path="/edit" exact component={EditAboutMe}/>
+          <Route path="/uploadPortfolio" exact component={UploadPortfolio}/>
+        </Switch>
+      </div>
+    </Router>
+    )
 }
+
+export default HomeNavbar;
