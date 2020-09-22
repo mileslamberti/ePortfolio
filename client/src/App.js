@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import {BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route} from "react-router-dom";
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import logo from './logo.svg';
 import './App.css';
-
+import HomeNavbar from "./components/homeNavbar.component";
+import HomeComponent from "./components/Home/home.component";
 import RegistrationComponent from "./components/registration.component";
 
 class App extends Component {
@@ -24,12 +25,13 @@ class App extends Component {
   render() {
     return (
       <Router>
-          <div className="container">
-              <Route path="/register" exact component={RegistrationComponent}/>
-          </div>
-        
+        <HomeNavbar/>
+        <Route path="/" exact component = {HomeComponent}/>
+        <div className="container">
+          <Route path="/register" exact component={RegistrationComponent}/>
+        </div>
       </Router>
-      
+
     );
   }
 }

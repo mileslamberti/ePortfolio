@@ -12,8 +12,17 @@ move into the project directory `cd your-local-repositary-name`
 then run the following command which installs all package dependancies
 `cd client && npm install && cd .. && cd api && npm install cd && npm install`
 
-To launch server side (it should run on a different terminal tab)
-`node server/server.js`
-
 To launch both client and server-side concurrent run
 `npm start`
+
+
+.Env File Required
+
+please create .env file in the api directory with variabeles
+
+
+`USERNAME="somestring"`
+
+`PASSWORD="somestring"`
+
+`DATABASE_NAME="somestring"`

@@ -1,38 +1,38 @@
 // @ts-check
 //  <ImportConfiguration>
-var CosmosClient = require('@azure/cosmos').CosmosClient;
-var config = require('./config');
 var express = require('express');
-var testAPIRouter = require('./routes/welcome');
 var path = require('path');
 var logger = require('morgan');
 var cors = require("cors");
-var dbContext = require("./data/databaseContext");
-
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-//  </ImportConfiguration>
+var passport = require('passport');
+var testAPIRouter = require('./routes/welcome');
+var user1 = require('./routes/user');
+var aboutMe = require("./routes/aboutMe");
+var projects = require("./routes/projects")
 
-//  <DefineNewItem>
-const newItem = {
-  id: "12123",
-  category: "Science",
-  name: "foc",
-  description: "python",
-  isComplete: false
-};
+var InitiateMongoServer = require("./config/db");
+//  CosmosDB requirements keeping here just for now
+
+// var CosmosClient = require('@azure/cosmos').CosmosClient;
+// var config = require('./config');
+// var dbContext = require("./data/databaseContext");
+
 
 var app = express();
-
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(cors());
+app.use(express.static(path.join(__dirname, 'build')));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-app.use(cors());
+app.use("/user", user1);
+app.use("/aboutme", aboutMe);
+app.use("/projects", projects);
 app.use(logger('dev'))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser())
-app.use(express.static(path.join(__dirname, 'build')));;
 app.use("/welcome", testAPIRouter);
 
 
@@ -40,21 +40,13 @@ app.use("/welcome", testAPIRouter);
 //  </DefineNewItem>
 
 async function main() {
-  
-  const client = new CosmosClient({
-    endpoint: config.host,
-    key: config.authKey
-  })
+  InitiateMongoServer();
 
-  
-
-  const database = client.database(config.databaseId);
-  const container = database.container(config.containerId);
-
-  // Make sure Tasks database is already setup. If not, create it.
-  await dbContext.create(client, config.databaseId, config.containerId);
 
 }
+
+
+
 
 main();
 module.exports = app
