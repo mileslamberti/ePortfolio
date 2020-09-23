@@ -1,32 +1,40 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Carousel from "./carousal.component";
-import styled from 'styled-components';
+import { Button } from 'react-bootstrap'
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
-const Button = {
-    newcolor: {
-        backgroundColor: 'blue',
-        color: 'white'
-    }
+
+import Carousel from "./carousal.component";
+import Titles from "./titles.component";
+//import styled from 'styled-components';
+
+const overlay = {
+  style: {
+    background: 'rgba(600, 600, 600, 0.25)',
+    borderRadius: '50px',
+    padding: '40px 40px 40px 40px',
+    position: 'absolute', 
+    marginTop: '-40%', marginLeft: '35%', 
+    alignItems: "center",
+    textAlign: "center"
+  }
 }
 
 
 function Home(){
     return (
-        <div>
+        <Router>
             <Carousel/> 
+            <div style = {overlay.style}>
+              <h2>Take Your Portfolio to the next level</h2><br/>
+              <h4> Why us? </h4>
+              <h4> Because we are the best</h4>
 
-            <div style = {{color: '#00FFFF',position: 'absolute', marginTop: '-500px', marginLeft: '700px', alignItems: "center"}}>
-            <h2>Take Your Portfolio to the next level</h2>
-            <h3> Why us? </h3>
-            <h3> Because we are the best</h3>
-
-            <button style = {Button.newcolor}>
-                Get your profile started now
-            </button>
+              <Button variant ="primary" size="lg" href="/register">
+                  Get your profile started now
+              </Button>
             </div>
-            {/* <Titles/> */}
-        </div>
+        </Router>
     );
 }
 export default Home;
