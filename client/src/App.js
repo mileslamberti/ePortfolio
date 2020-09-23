@@ -4,8 +4,6 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import logo from './logo.svg';
 import './App.css';
 import HomeNavbar from "./components/homeNavbar.component";
-import Home from "./components/Home/home.component";
-import RegistrationComponent from "./components/registration.component";
 
 class App extends Component {
 
@@ -24,13 +22,12 @@ class App extends Component {
   }
   render() {
     return (
-      <Router>
-        <HomeNavbar/>
-        <Route path="/" exact component = {Home}/>
-        <div className="container">
-          <Route path="/register" exact component={RegistrationComponent}/>
-        </div>
-      </Router>
+      <HomeNavbar/>
+      //      <Router>
+      //          <div className="container">
+      //              <Route path="/register" exact component={RegistrationComponent}/>
+      //          </div>
+      //      </Router>
 
     );
   }
