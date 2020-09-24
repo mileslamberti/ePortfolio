@@ -44,7 +44,7 @@ const  HomeNavbar = () => {
                 <NavDropdown.Item href="/">Account Information</NavDropdown.Item>
                 <NavDropdown.Item href="/">Account Settings</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="/login" onClick={logOut}>Log Out</NavDropdown.Item>
+                <NavDropdown.Item href="/" onClick={logOut}>Log Out</NavDropdown.Item>
               </NavDropdown>
           </div>
         ) : ( // if not logged in...
