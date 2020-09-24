@@ -5,6 +5,7 @@ import { NavDropdown } from 'react-bootstrap';
 
 import AuthService from "../services/auth.service";
 
+import Home from "./home.component";
 import Login from "./login.component";
 import Register from "./registration.component";
 import MyProfile from "./myProfile.component";
@@ -43,7 +44,7 @@ const  HomeNavbar = () => {
                 <NavDropdown.Item href="/">Account Information</NavDropdown.Item>
                 <NavDropdown.Item href="/">Account Settings</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="/login" onClick={logOut}>Log Out</NavDropdown.Item>
+                <NavDropdown.Item href="/" onClick={logOut}>Log Out</NavDropdown.Item>
               </NavDropdown>
           </div>
         ) : ( // if not logged in...
@@ -65,11 +66,12 @@ const  HomeNavbar = () => {
 
       <div className="container mt-3">
         <Switch>
+          <Route exact path="/" component={Home} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/profile" component={MyProfile} />
-          <Route path="/edit" exact component={EditAboutMe}/>
-          <Route path="/uploadPortfolio" exact component={UploadPortfolio}/>
+          <Route exact path="/edit" exact component={EditAboutMe}/>
+          <Route exact path="/uploadPortfolio" exact component={UploadPortfolio}/>
         </Switch>
       </div>
     </Router>
