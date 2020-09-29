@@ -8,6 +8,7 @@ const router = express.Router();
 const AboutMe = require("../models/AboutMe");
 
 router.post("/add", async (req, res) => {
+  // convert using firebase sdk
     const displayName = req.body.displayName;
     const inspirations = req.body.inspirations;
     const jobs = req.body.jobs;
@@ -25,12 +26,14 @@ router.post("/add", async (req, res) => {
 })
 
 router.get("/:id", async (req, res) => {
+    // convert using firebase sdk
     AboutMe.findById(req.params.id)
         .then(aboutMe => res.json(aboutMe))
         .catch(err => res.status(400).json(`Error: ${err}`));
 })
 
 router.route('/edit/:id').post((req, res) => {
+    // convert using firebase sdk
     AboutMe.findById(req.params.id)
         .then(aboutMe => {
             aboutMe.displayName = req.body.displayName;
