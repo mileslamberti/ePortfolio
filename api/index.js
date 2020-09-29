@@ -5,6 +5,8 @@ const {signup, login, uploadImage,addUserDetails,getAuthorisedUser} = require('.
 const userAuth = require('./utility/userAuthMiddleware.js')
 
 
+
+
 //Post Routes
 app.get('/getPosts',getAllPosts)
 app.post('/createPost',userAuth,createPost);
