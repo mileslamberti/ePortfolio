@@ -11,6 +11,7 @@ import Register from "./registration.component";
 import MyProfile from "./myProfile.component";
 import EditAboutMe from './profileComponents/editAboutMe.component';
 import UploadPortfolio from './profileComponents/uploadPortfolio.component';
+import EditPortfolio from "./profileComponents/editPortfolio.component";
 
 const  HomeNavbar = () => {
 
@@ -72,6 +73,7 @@ const  HomeNavbar = () => {
           <Route exact path="/profile" component={MyProfile} />
           <Route exact path="/edit" exact component={EditAboutMe}/>
           <Route exact path="/uploadPortfolio" exact component={UploadPortfolio}/>
+          <Route exact path="/editPortfolio" exact component={EditPortfolio}/>
         </Switch>
       </div>
     </Router>
