@@ -33,6 +33,13 @@ const  HomeNavbar = () => {
         <Link to={"/"} className="navbar-brand">
           Tech Pirates
         </Link>
+        <div className="navbar-nav">
+            <li className="nav-item">
+              <Link to={"/profiles"} className="nav-link">
+                Profiles
+              </Link>
+            </li>
+          </div>
 
         {currentUser ? ( // if logged in...
           <div className="navbar-nav ml-auto">
@@ -63,6 +70,7 @@ const  HomeNavbar = () => {
         )}
       </nav>
 
+      <Route exact path="/" component={Home} />
       <div className="container mt-3">
         <Switch>
           <Route exact path="/login" component={Login} />
