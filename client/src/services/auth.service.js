@@ -7,14 +7,20 @@ const register = (email, password, confirmPassword, handle) => {
     email,
     password,
     confirmPassword,
-    handle
+    handle,
+  })
+  .then((response) => {
+    if (response.data) {
+      localStorage.setItem("user", JSON.stringify(response.data));
+      console.log(localStorage.getItem("user"));
+    }
+    return response;
   });
 };
 
 const login = (email, password) => {
   
-  return axios
-    .post(API_URL + "/login", {
+  return axios.post(API_URL + "/login", {
       email,
       password,
     })
