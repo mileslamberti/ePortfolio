@@ -10,6 +10,8 @@ import Register from "./registration.component";
 import MyProfile from "./myProfile.component";
 import EditAboutMe from './profileComponents/editAboutMe.component';
 import UploadPortfolio from './profileComponents/uploadPortfolio.component';
+import ProfilePage from "./profilespage.component";
+import Home from "./Home/home.component";
 
 const  HomeNavbar = () => {
 
@@ -35,7 +37,7 @@ const  HomeNavbar = () => {
         </Link>
         <div className="navbar-nav">
             <li className="nav-item">
-              <Link to={"/profiles"} className="nav-link">
+              <Link to={"/profilepage"} className="nav-link">
                 Profiles
               </Link>
             </li>
@@ -71,6 +73,7 @@ const  HomeNavbar = () => {
       </nav>
 
       <Route exact path="/" component={Home} />
+      <Route exact path="/profilepage" component={ProfilePage} />
       <div className="container mt-3">
         <Switch>
           <Route exact path="/login" component={Login} />

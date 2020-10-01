@@ -14,7 +14,7 @@ const overlay = {
     borderRadius: '50px',
     padding: '40px 40px 40px 40px',
     position: 'absolute', 
-    marginTop: '-40%', marginLeft: '35%', 
+    marginTop: '-38%', marginLeft: '30%', 
     alignItems: "center",
     textAlign: "center"
   }

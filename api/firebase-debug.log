@@ -1,0 +1,39 @@
+[debug] [2020-09-30T16:33:36.695Z] ----------------------------------------------------------------------
+[debug] [2020-09-30T16:33:36.697Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\giris\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2020-09-30T16:33:36.697Z] CLI Version:   8.11.2
+[debug] [2020-09-30T16:33:36.697Z] Platform:      win32
+[debug] [2020-09-30T16:33:36.697Z] Node Version:  v12.18.4
+[debug] [2020-09-30T16:33:36.698Z] Time:          Wed Sep 30 2020 20:33:36 GMT+0400 (Gulf Standard Time)
+[debug] [2020-09-30T16:33:36.698Z] ----------------------------------------------------------------------
+[debug] [2020-09-30T16:33:36.698Z] 
+[debug] [2020-09-30T16:33:36.705Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-09-30T16:33:36.706Z] > authorizing via signed-in user
+[debug] [2020-09-30T16:33:36.706Z] [iam] checking project eportfolio-4760f for permissions ["firebase.projects.get"]
+[debug] [2020-09-30T16:33:36.709Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2020-09-30T16:33:36.709Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2020-09-30T16:33:37.191Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Wed, 30 Sep 2020 16:33:37 GMT","server":"scaffolding on HTTPServer2","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-Q050=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-09-30T16:33:37.197Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/eportfolio-4760f:testIamPermissions  
+ {"permissions":["firebase.projects.get"]}
+[debug] [2020-09-30T16:33:37.832Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Wed, 30 Sep 2020 16:33:38 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=228","alt-svc":"h3-Q050=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-09-30T16:33:37.833Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/eportfolio-4760f  
+ 
+[debug] [2020-09-30T16:33:38.210Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Wed, 30 Sep 2020 16:33:38 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-Q050=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] 
+[info] === Serving from 'D:\Github\ePortfolio\api'...
+[info] 
+[warn] !  Your requested "node" version "10" doesn't match your global version "12" {"metadata":{"emulator":{"name":"functions"},"message":"Your requested \"node\" version \"10\" doesn't match your global version \"12\""}}
+[debug] [2020-09-30T16:33:40.237Z] defaultcredentials: writing to file C:\Users\giris\AppData\Roaming\firebase\gmadnani_student_unimelb.edu.au_application_default_credentials.json
+[debug] [2020-09-30T16:33:40.239Z] Setting GAC to C:\Users\giris\AppData\Roaming\firebase\gmadnani_student_unimelb.edu.au_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\giris\\AppData\\Roaming\\firebase\\gmadnani_student_unimelb.edu.au_application_default_credentials.json"}}
+[info] i  functions: Watching "D:\Github\ePortfolio\api" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"D:\\Github\\ePortfolio\\api\" for Cloud Functions..."}}
+[debug] [2020-09-30T16:33:40.262Z] [worker-pool] addWorker(~diagnostic~) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(~diagnostic~)"}}
+[debug] [2020-09-30T16:33:40.262Z] [worker-pool] Adding worker with key ~diagnostic~, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key ~diagnostic~, total=1"}}
+[debug] [2020-09-30T16:33:40.262Z] [worker-pool] submitWork(triggerId=) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=)"}}
+[debug] [2020-09-30T16:33:40.262Z] [worker-~diagnostic~-f3972ec9-a7af-481b-90e1-d4ee84b2c9b5]: Assigning socketPath: \\?\pipe\D:\Github\ePortfolio\api\14008 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-~diagnostic~-f3972ec9-a7af-481b-90e1-d4ee84b2c9b5]: Assigning socketPath: \\\\?\\pipe\\D:\\Github\\ePortfolio\\api\\14008"}}
+[debug] [2020-09-30T16:33:40.262Z] [worker-~diagnostic~-f3972ec9-a7af-481b-90e1-d4ee84b2c9b5]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-~diagnostic~-f3972ec9-a7af-481b-90e1-d4ee84b2c9b5]: BUSY"}}
+[debug] [2020-09-30T16:33:40.745Z] [runtime-status] [14008] Functions runtime initialized. {"cwd":"D:\\Github\\ePortfolio\\api","node_version":"12.18.4"} {"metadata":{"emulator":{"name":"functions"},"message":"[runtime-status] [14008] Functions runtime initialized. {\"cwd\":\"D:\\\\Github\\\\ePortfolio\\\\api\",\"node_version\":\"12.18.4\"}"}}
+[debug] [2020-09-30T16:33:40.746Z] [runtime-status] [14008] Disabled runtime features: undefined {"metadata":{"emulator":{"name":"functions"},"message":"[runtime-status] [14008] Disabled runtime features: undefined"}}
+[warn] !  The Cloud Functions emulator requires the module "firebase-admin" to be installed. This package is in your package.json, but it's not available. You probably need to run "npm install" in your functions directory. {"metadata":{"emulator":{"name":"functions"},"message":"The Cloud Functions emulator requires the module \"firebase-admin\" to be installed. This package is in your package.json, but it's not available. You probably need to run \"npm install\" in your functions directory."}}
+[info] i  functions: Your functions could not be parsed due to an issue with your node_modules (see above) {"metadata":{"emulator":{"name":"functions"},"message":"Your functions could not be parsed due to an issue with your node_modules (see above)"}}
+[debug] [2020-09-30T16:33:40.777Z] [worker-~diagnostic~-f3972ec9-a7af-481b-90e1-d4ee84b2c9b5]: exited {"metadata":{"emulator":{"name":"functions"},"message":"[worker-~diagnostic~-f3972ec9-a7af-481b-90e1-d4ee84b2c9b5]: exited"}}
+[debug] [2020-09-30T16:33:40.777Z] [worker-~diagnostic~-f3972ec9-a7af-481b-90e1-d4ee84b2c9b5]: FINISHED {"metadata":{"emulator":{"name":"functions"},"message":"[worker-~diagnostic~-f3972ec9-a7af-481b-90e1-d4ee84b2c9b5]: FINISHED"}}

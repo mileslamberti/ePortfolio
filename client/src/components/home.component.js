@@ -10,7 +10,7 @@ function Home(){
   return (
       <div>
           <Carousel/> 
-          <div className="container mt-3">
+          <div className="container">
             <AdvertButton/>
           </div>
       </div>
