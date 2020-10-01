@@ -1,18 +1,20 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:9000/user/";
+const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
-const register = (username, email, password) => {
-  return axios.post(API_URL + "signup", {
-    username,
+const register = (email, password, confirmPassword, handle) => {
+  return axios.post(API_URL + "/signup", {
     email,
     password,
+    confirmPassword,
+    handle
   });
 };
 
 const login = (email, password) => {
+  
   return axios
-    .post(API_URL + "login", {
+    .post(API_URL + "/login", {
       email,
       password,
     })

@@ -3,7 +3,8 @@ const app = require('express')();
 const { createPost, getAllPosts } = require('./routes/Posts');
 const {signup, login, uploadImage,addUserDetails,getAuthorisedUser} = require('./routes/user')
 const userAuth = require('./utility/userAuthMiddleware.js')
-
+var cors = require('cors');
+app.use(cors());
 
 
 
