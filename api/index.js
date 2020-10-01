@@ -15,8 +15,7 @@ app.post('/createPost',userAuth,createPost);
 // User Routes 
 app.post('/signup',signup);
 app.post('/login', login)
-app.post('/user/image',userAuth,uploadImage)
-//app.post('/user/getImage',userAuth,getImage);
+app.post('/user/image',uploadImage)
 app.post('/user',userAuth, addUserDetails)
 app.get('/user/',userAuth,getAuthorisedUser)
 
