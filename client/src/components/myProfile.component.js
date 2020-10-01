@@ -13,10 +13,9 @@ export default class MyProfile extends React.Component {
     render() {
         return (
             <div class="container">
+                <DP/>
                 <div class="row">
-                    <div class="col-xs">
-                        <DP/>
-                    </div>
+                    
                     <div class="col-xl-">
                         <AboutMe/>
                     </div>
