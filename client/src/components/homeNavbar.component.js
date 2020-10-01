@@ -11,6 +11,7 @@ import Register from "./registration.component";
 import MyProfile from "./myProfile.component";
 import EditAboutMe from './profileComponents/editAboutMe.component';
 import UploadPortfolio from './profileComponents/uploadPortfolio.component';
+import ProfilePage from "./profilepage.component";
 
 const  HomeNavbar = () => {
 
@@ -34,7 +35,13 @@ const  HomeNavbar = () => {
         <Link to={"/"} className="navbar-brand">
           Tech Pirates
         </Link>
-
+        <div className="navbar-nav">
+            <li className="nav-item">
+              <Link to={"/profilepage"} className="nav-link">
+                Profiles
+              </Link>
+            </li>
+          </div>
         {currentUser ? ( // if logged in...
           <div className="navbar-nav ml-auto">
             <NavDropdown title="Account" id="basic-nav-dropdown">
@@ -64,9 +71,10 @@ const  HomeNavbar = () => {
         )}
       </nav>
 
+      <Route exact path="/" component={Home} />
+      <Route exact path="/profilepage" component={ProfilePage} />
       <div className="container mt-3">
         <Switch>
-          <Route exact path="/" component={Home} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/profile" component={MyProfile} />
