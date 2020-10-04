@@ -17,7 +17,7 @@ import ProfilePage from "./profilepage.component";
 const HomeNavbar = () => {
 
     const [currentUser, setCurrentUser] = useState("");
-    const [handle, setHandle] = useState("");
+    const [me, setMe] = useState("");
 
     useEffect(() => {
       const user = AuthService.getCurrentUser();
@@ -26,7 +26,7 @@ const HomeNavbar = () => {
         setCurrentUser(user);
         UserService.getMe().then(
           (me) => {
-            setHandle(me.handle);
+            setMe(me);
           }
         )
       }
@@ -53,7 +53,7 @@ const HomeNavbar = () => {
         {currentUser ? ( // if logged in...
           <div className="navbar-nav ml-auto">
             <NavDropdown title="Account" id="basic-nav-dropdown">
-            <h6>Welcome {handle}</h6>
+            <h6>Welcome {me.handle}</h6>
                 <NavDropdown.Item href="/profile">My profile</NavDropdown.Item>
                 <NavDropdown.Item href="/edit">Edit profile</NavDropdown.Item>
                 <NavDropdown.Item href="/">Account Information</NavDropdown.Item>
