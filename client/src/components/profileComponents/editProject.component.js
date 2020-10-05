@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import Card from '@material-ui/core/Card';
+import {Button} from '@material-ui/core/';
+import { spacing } from '@material-ui/system';
 import PortfolioCard from "./portfolioCard.component";
 import PortfolioTitleCard from "./portfolioTitleCard.component"
+import Box from '@material-ui/core/Box';
 
 
 // fake data generator
@@ -47,29 +49,25 @@ function EditProject() {
     const [Picture2, setPicture2] = useState("./images/programming.png")
     const [state, setState] = useState([
         {
-            id: "item-1",
-            content: 1,
+            id: `item-1-${new Date().getTime()}`,
             title: "Assignment 1",
             description: "A very hard assignmnet",
             picture: Picture1
         },
         {
-            id: "item-2",
-            content: 2,
+            id: `item-2-${new Date().getTime()}`,
             title: "Assignment 2",
             description: "An easy assignment",
             picture: Picture2
         },
         {
-            id: "item-3",
-            content: 3,
+            id: `item-3-${new Date().getTime()}`,
             title: "Assignment 3",
             description: "A joke of an assignment",
             picture: Picture1
         },
         {
-            id: "item-4",
-            content: 4,
+            id: `item-4-${new Date().getTime()}`,
             title: "Assignment 4",
             description: "A difficult assignment",
             picture: Picture1
@@ -92,9 +90,7 @@ function EditProject() {
         setState(items);
     }
 
-    function deleteCard(){
 
-    }
 
   // Normally you would want to split things out into separate components.
   // But in this example everything is just done in one place for simplicity
@@ -104,6 +100,19 @@ function EditProject() {
             title={"Title of Portfolio"}
             description={"Description of Portfolio"}
         />
+        <Box mx="auto" m={1}>
+            <Button 
+                variant="contained"
+                color="primary"
+                onClick={() => setState([...state, {id: `item-${new Date().getTime()}`,
+                title: "Insert Title Here",
+                description: "Insert Description Here"}])}
+            >
+                Add Card
+            </Button>
+        </Box>
+        
+
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (
