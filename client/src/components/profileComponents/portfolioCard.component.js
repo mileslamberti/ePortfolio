@@ -18,6 +18,21 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
 import RemoveIcon from '@material-ui/icons/Remove';
 import ZoomOutMapIcon from '@material-ui/icons/ZoomOutMap';
+import DialogPortfolioCard from "./DialogPortfolioCard.component";
+
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Grid from '@material-ui/core/Grid';
+import FolderIcon from '@material-ui/icons/Folder';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,11 +57,38 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function generate(element) {
+  return [0, 1, 2].map((value) =>
+    React.cloneElement(element, {
+      key: value,
+    }),
+  );
+  }
+
 function PortfolioCard(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   const [Picture, setPicture] = useState(require("./images/programming.png"))
   const [showMedia, setMedia] = useState(true);
+
+  // Title of Card
+  const [title, setTitle] = useState(props.title);
+
+  // Brief description of card
+  const [description, setDescription] = useState(props.description);
+
+  // Extended description of card viewable when pressing drop down button
+  const [extendedDescription, setExtendedDescription] = useState(props.extendedDescription);
+
+  // Files associated with card
+  const [files, setFiles] = useState(props.associatedFiles);
+
+  // Whether edit dialog is open
+  const [open, setOpen] = React.useState(false);
+
+  const [dense, setDense] = React.useState(false);
+  const [secondary, setSecondary] = React.useState(false);
+
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -54,6 +96,22 @@ function PortfolioCard(props) {
 
   const handleMinimizeClick = () =>{
     setMedia(showMedia === false)
+  }
+
+  const handleClickOpen = () =>{
+    setOpen(true);
+  };
+
+  const handleDialogConfirm = (t, d, e) =>{
+    setTitle(t);
+    setDescription(d);
+    setExtendedDescription(e);
+
+    setOpen(false);
+  }
+
+  const handleDialogCancel = () =>{
+    setOpen(false);
   }
 
   return (
@@ -64,20 +122,20 @@ function PortfolioCard(props) {
             {showMedia ? <RemoveIcon /> : <ZoomOutMapIcon />}
           </IconButton>
         }
-        title={props.title}
+        title={title}
       />
 
       
       {showMedia && <CardMedia
         className={classes.media}
         image={Picture}
-        title={props.title}
+        title={title}
         onClick={() => console.log("Clicked Picture")}
       />}
       
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-          {props.description}
+          {description}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -89,7 +147,7 @@ function PortfolioCard(props) {
         </IconButton>
 
         <IconButton>
-            <EditIcon />
+            <EditIcon onClick={handleClickOpen}/>
         </IconButton>
         <IconButton>
             <DeleteIcon onClick={props.onDeleteClick}/>
@@ -105,13 +163,40 @@ function PortfolioCard(props) {
           <ExpandMoreIcon />
         </IconButton>
       </CardActions>
+      <DialogPortfolioCard 
+            handleDialogConfirm={handleDialogConfirm}
+            handleDialogCancel={handleDialogCancel}
+            open={open}
+            title={title}
+            description={description}
+            extendedDescription={extendedDescription}
+        />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Method:</Typography>
           <Typography paragraph>
-            Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10
-            minutes.
+            {extendedDescription}
+            <List>
+            {files.map(file => 
+              <ListItem>
+                <ListItemAvatar>
+                  <Avatar>
+                    <FolderIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={file}
+                />
+                <ListItemSecondaryAction>
+                  <IconButton edge="end" aria-label="delete">
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>,
+            )}
+            </List>
+            
           </Typography>
+
         </CardContent>
       </Collapse>
     </Card>

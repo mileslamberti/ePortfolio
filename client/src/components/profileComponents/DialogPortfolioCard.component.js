@@ -7,10 +7,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-function DiaglogTitleCard(props){
-    const {handleClickOpen, handleDialogConfirm, handleDialogCancel, open, title, description} = props
+function DialogPortfolioCard(props){
+
+    const {handleClickOpen, handleDialogConfirm, handleDialogCancel, open, title, description, extendedDescription} = props
     const [formTitle, setFormTitle] = useState(title);
     const [formDescription, setFormDescription] = useState(description);
+    const [formExtendedDescription, setFormExtendedDescription] = useState(extendedDescription);
+
 
     const onChangeTitle = (e) => {
         setFormTitle(e.target.value);
@@ -20,25 +23,28 @@ function DiaglogTitleCard(props){
         setFormDescription(e.target.value);
     }
 
-
+    const onChangeExtendedDescription = (e) => {
+        setFormExtendedDescription(e.target.value);
+    }
 
     const handleCancelClick = () =>{
         setFormTitle(title);
         setFormDescription(description);
+        setFormExtendedDescription(extendedDescription);
         handleDialogCancel();
     }
 
     return(
         <Dialog open={open} onClose={handleCancelClick} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Edit Title and Description</DialogTitle>
+        <DialogTitle id="form-dialog-title">Edit Card Contents</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To change the title and description of your project, enter the new title and description below and press confirm.
+            To edit the contents of this cards, change the values in the respective fields and press confirm.
           </DialogContentText>
           <TextField
             margin="dense"
             id="title"
-            label="Title of Project"
+            label="Title of Card"
             fullWidth
             defaultValue={title}
             value={formTitle}
@@ -47,18 +53,27 @@ function DiaglogTitleCard(props){
           <TextField
             margin="dense"
             id="description"
-            label="Description of Project"
+            label="Description of Card"
             fullWidth
             defaultValue={description}
             value={formDescription}
             onChange={onChangeDescription}
+          />
+        <TextField
+            margin="dense"
+            id="extendedDescription"
+            label="Extended Description (visible in when pressing dropdown button)"
+            fullWidth
+            defaultValue={extendedDescription}
+            value={formExtendedDescription}
+            onChange={onChangeExtendedDescription}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCancelClick} color="primary">
             Cancel
           </Button>
-          <Button onClick={() => handleDialogConfirm(formTitle, formDescription)} color="primary">
+          <Button onClick={() => handleDialogConfirm(formTitle, formDescription, formExtendedDescription)} color="primary">
             Confirm
           </Button>
           
@@ -67,4 +82,4 @@ function DiaglogTitleCard(props){
     )
 }
 
-export default DiaglogTitleCard;
+export default DialogPortfolioCard;

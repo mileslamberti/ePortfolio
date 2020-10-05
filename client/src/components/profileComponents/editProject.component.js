@@ -47,17 +47,21 @@ const getListStyle = isDraggingOver => ({
 function EditProject() {
     const [Picture1, setPicture1] = useState("./images/test.jpg")
     const [Picture2, setPicture2] = useState("./images/programming.png")
+    // These are the cards associated with the project
+    // Card IDs MUST be unique.
     const [state, setState] = useState([
         {
             id: `item-1-${new Date().getTime()}`,
             title: "Assignment 1",
             description: "A very hard assignmnet",
+            extendedDescription: "Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10 minutes",
             picture: Picture1
         },
         {
             id: `item-2-${new Date().getTime()}`,
             title: "Assignment 2",
             description: "An easy assignment",
+            extendedDescription: "Below are the files that relate to Assignment 2",
             picture: Picture2
         },
         {
@@ -73,8 +77,34 @@ function EditProject() {
             picture: Picture1
         }]
         );
+    const [files, setFiles] = useState([
+        {
+            fname: "Assignment1.pdf",
+            associatedWithCard: state[0].id
+        },
+        {
+            fname: "Assignment2.pdf",
+            associatedWithCard: state[1].id
+        },
+        {
+            fname: "Assignment3.pdf",
+            associatedWithCard: ""
+        },
+        {
+            fname: "main.c",
+            associatedWithCard: state[0].id
+        },
+        {
+            fname: "file.py",
+            associatedWithCard: ""
+        }
+    ])
         console.log(state)
 
+    // Returns an array of filenames that are associated with a particular cardID
+    function getFilesAssociatedWithCard(cardID){
+        return files.filter(file => file.associatedWithCard === cardID).map(file => file.fname)
+    }
     // Reorders array on drag end if necessary
     function onDragEnd(result) {
         // dropped outside the list
@@ -136,6 +166,8 @@ function EditProject() {
                         <PortfolioCard
                             title={item.title}
                             description={item.description}
+                            extendedDescription={item.extendedDescription}
+                            associatedFiles={getFilesAssociatedWithCard(item.id)}
                             picture={item.picture}
                             onDeleteClick={() => {
                                 console.log("Clicked", index)
