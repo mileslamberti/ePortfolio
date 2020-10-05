@@ -1,15 +1,35 @@
-import React, {useState} from 'react'
-import PortfolioCard from "../portfolioCard.component";
-import PortfolioTitleCard from "../portfolioTitleCard.component";
+import React, {useState, useCallback} from 'react'
+import PortfolioCard from "./portfolioCard.component";
+import PortfolioTitleCard from "./portfolioTitleCard.component";
 import { Grid, Container } from "@material-ui/core";
-
 
 function EditPortfolio(){
 
     const [PortfolioName, setPortfolioName] = useState('');
     const [Description, setDescription] = useState('');
-    const [Picture, setPicture] = useState(require("./images/test.jpg"))
-    
+    const [cards, setCards] = useState([
+        {
+            id: 1,
+            title: "Title of Portfolio 1",
+            description: "Description of Portfolio"
+        },
+        {
+            id: 2,
+            title: "Title of Portfolio 2",
+            description: "Description of Portfolio"
+        },
+        {
+            id: 3,
+            title: "Title of Portfolio 3",
+            description: "Description of Portfolio"
+        },
+        {
+            id: 4,
+            title: "Title of Portfolio 4",
+            description: "Description of Portfolio"
+        }
+    ])
+
 
 
     return (
@@ -39,6 +59,7 @@ function EditPortfolio(){
                 <PortfolioCard />
             </Grid>
         </Grid>
+
     </Container>
     </div>
     )
