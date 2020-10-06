@@ -180,6 +180,7 @@ function PortfolioCard(props) {
         <CardContent>
           <Typography paragraph>
             {extendedDescription}
+          </Typography>
             <List>
             {props.getFilesAssociatedWithCard(props.id).map(file => 
               <ListItem>
@@ -200,7 +201,7 @@ function PortfolioCard(props) {
             )}
             </List>
             
-          </Typography>
+          
 
         </CardContent>
       </Collapse>
