@@ -1,9 +1,30 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route} from "react-router-dom";
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './App.css';
 import HomeNavbar from "./components/homeNavbar.component";
+
+import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
+//import landing from './views/landing'
+//import login from './views/login'
+//import signup from './views/signup'
+//import NavBar from './components/NavBar'
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#e53935',
+    },
+    secondary: {
+      main: '#b39ddb',
+    },
+  },
+  typography : {
+    useNextVariants: true
+  }
+})
+
+
+
 
 class App extends Component {
 

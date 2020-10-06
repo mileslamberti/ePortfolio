@@ -4,25 +4,33 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import { NavDropdown } from 'react-bootstrap';
 
 import AuthService from "../services/auth.service";
+import UserService from "../services/user.service";
 
+import Home from "./home.component";
 import Login from "./login.component";
 import Register from "./registration.component";
 import MyProfile from "./myProfile.component";
 import EditAboutMe from './profileComponents/editAboutMe.component';
 import UploadPortfolio from './profileComponents/uploadPortfolio.component';
 import ProfilePage from "./profilespage.component";
-import Home from "./Home/home.component";
 
-const  HomeNavbar = () => {
+const HomeNavbar = () => {
 
-    const [currentUser, setCurrentUser] = useState(undefined);
+    const [currentUser, setCurrentUser] = useState("");
+    const [me, setMe] = useState("");
 
     useEffect(() => {
       const user = AuthService.getCurrentUser();
-  
+      
       if (user) {
         setCurrentUser(user);
+        UserService.getMe().then(
+          (me) => {
+            setMe(me);
+          }
+        )
       }
+
     }, []);
   
     const logOut = () => {
@@ -42,17 +50,16 @@ const  HomeNavbar = () => {
               </Link>
             </li>
           </div>
-
         {currentUser ? ( // if logged in...
           <div className="navbar-nav ml-auto">
             <NavDropdown title="Account" id="basic-nav-dropdown">
-            <h6>Welcome 'User'</h6>
+            <h6>Welcome {me.handle}</h6>
                 <NavDropdown.Item href="/profile">My profile</NavDropdown.Item>
                 <NavDropdown.Item href="/edit">Edit profile</NavDropdown.Item>
                 <NavDropdown.Item href="/">Account Information</NavDropdown.Item>
                 <NavDropdown.Item href="/">Account Settings</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="/login" onClick={logOut}>Log Out</NavDropdown.Item>
+                <NavDropdown.Item href="/" onClick={logOut}>Log Out</NavDropdown.Item>
               </NavDropdown>
           </div>
         ) : ( // if not logged in...
@@ -79,8 +86,8 @@ const  HomeNavbar = () => {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/profile" component={MyProfile} />
-          <Route path="/edit" exact component={EditAboutMe}/>
-          <Route path="/uploadPortfolio" exact component={UploadPortfolio}/>
+          <Route exact path="/edit" exact component={EditAboutMe}/>
+          <Route exact path="/uploadPortfolio" exact component={UploadPortfolio}/>
         </Switch>
       </div>
     </Router>
