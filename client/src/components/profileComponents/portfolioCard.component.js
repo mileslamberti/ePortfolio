@@ -106,6 +106,7 @@ function PortfolioCard(props) {
     setTitle(t);
     setDescription(d);
     setExtendedDescription(e);
+    setFiles([...files, ...fs])
     if(fs.length > 0){
         props.associateFilesWithCard(props.id, fs);
     }
