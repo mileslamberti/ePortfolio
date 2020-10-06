@@ -104,7 +104,6 @@ function EditProject() {
     
     // Returns an array of filenames that are associated with a particular cardID
     function getFilesAssociatedWithCard(cardID){
-        console.log("Running files assoicated with any card function", cardID, files.filter(file => file.associatedWithCard === cardID))
         return files.filter(file => file.associatedWithCard === cardID)
     }
 
@@ -112,6 +111,7 @@ function EditProject() {
         return files.filter(file => file.associatedWithCard === "")
     }
 
+    // Associates the filesToAdd files with a particular card
     function associateFilesWithCard(cardID, filesToAdd){
         filesToAdd = filesToAdd.map(file => file.fname);
         let newFiles = files;
@@ -124,8 +124,22 @@ function EditProject() {
             }
         }
         setFiles(newFiles);
-        console.log("New files", files);
     }
+    function unassociateFileWithCard(cardID, file){
+        let newFiles = files;
+        for(let i=0; i<files.length; i++){
+            console.log(files[i].fname, file);
+            if(files[i].fname === file){
+                console.assert(files[i].associatedWithCard === cardID, "Different card IDs")
+                newFiles[i].associatedWithCard = ""
+                break;
+            }
+            
+        }
+        setFiles(newFiles);
+    }
+
+
 
 
     // Reorders array on drag end if necessary
@@ -193,6 +207,7 @@ function EditProject() {
                             getFilesAssociatedWithCard={getFilesAssociatedWithCard}
                             getFilesUnassociatedWithAnyCard={getFilesUnassociatedWithAnyCard}
                             associateFilesWithCard={associateFilesWithCard}
+                            unassociateFileWithCard={unassociateFileWithCard}
                             picture={item.picture}
                             onDeleteClick={() => {
                                 console.log("Clicked", index)
@@ -200,6 +215,16 @@ function EditProject() {
                                 const newState = [...state];
                                 newState.splice(index, 1);
                                 setState(newState);
+
+                                let associatedFiles = getFilesAssociatedWithCard(item.id);
+                                let newFiles = files;
+                                for(let i=0; i<files.length; i++){
+                                    if(associatedFiles.map(file => file.fname).indexOf(files[i].fname) != -1){
+                                        newFiles[i].associatedWithCard = "";
+                                    }
+                                }
+                                setFiles(newFiles);
+                                
                                 
                             }}
                         />

@@ -36,7 +36,6 @@ function DialogPortfolioCard(props){
     const [filesToAssociate, setFilesToAssociate] = useState([])
 
     const updateFilesToAssociate = (fs) =>{
-        console.log("Updating files to associate in Dialog Portfolio Card", fs)
         setFilesToAssociate(fs);
     }
 
@@ -95,7 +94,6 @@ function DialogPortfolioCard(props){
             onChange={onChangeExtendedDescription}
           />
           <br/>
-          {console.log("Files in diaglog card", props.files)}
           <MultiselectCheckbox 
             files={props.files}
             updateFilesToAssociate={updateFilesToAssociate}

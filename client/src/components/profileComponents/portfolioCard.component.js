@@ -106,9 +106,7 @@ function PortfolioCard(props) {
     setTitle(t);
     setDescription(d);
     setExtendedDescription(e);
-    console.log("In handle dialog confirm, files:", fs);
     if(fs.length > 0){
-        console.log("Calling associateFilesWithCard function");
         props.associateFilesWithCard(props.id, fs);
     }
     
@@ -195,7 +193,7 @@ function PortfolioCard(props) {
                 />
                 <ListItemSecondaryAction>
                   <IconButton edge="end" aria-label="delete">
-                    <DeleteIcon />
+                    <DeleteIcon onClick={() => props.unassociateFileWithCard(props.id, file.fname)}/>
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListItem>,
