@@ -140,9 +140,10 @@ exports.addUserDetails  = (req,res) => {
 exports.getAuthorisedUser = (req,res) => {
     let userData = {};
 
-    db.doc(`/user/${req.user.handle}`).get().then(doc => {
+    db.doc(`/users/${req.user.handle}`).get().then(doc => {
         if(doc.exists){
             userData.credentials = doc.data();
+            return res.status(200).json({userData});
         }
     }).catch(err => {
         console.error(err);

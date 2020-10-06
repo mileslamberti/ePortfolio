@@ -1,4 +1,5 @@
 import axios from "axios";
+import userService from "./user.service";
 
 const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
@@ -18,21 +19,21 @@ const register = (email, password, confirmPassword, handle) => {
   });
 };
 
-const login = (email, password) => {
+async function login(email, password) {
   
-  return axios.post(API_URL + "/login", {
+  let response = await axios.post(API_URL + "/login", {
       email,
       password,
     })
-    .then((response) => {
-      if (response.data) {
-        //user token is stored in local storage
-        localStorage.setItem("user", JSON.stringify(response.data));
-        console.log(localStorage.getItem("user"));
-      }
 
-      return response.data;
-    });
+  if (response.data) {
+    //user token is stored in local storage
+    localStorage.setItem("user", JSON.stringify(response.data));
+    
+  }
+      
+  return response.data;
+    
 };
 
 const logout = () => {
