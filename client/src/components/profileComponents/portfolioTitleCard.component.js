@@ -60,7 +60,6 @@ function PortfolioTitleCard(props){
             />
             
         </Card>
-        {console.log(title)}
         <DialogTitleCard 
             handleDialogConfirm={handleDialogConfirm}
             handleDialogCancel={handleDialogCancel}
