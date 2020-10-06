@@ -80,14 +80,14 @@ function PortfolioCard(props) {
   // Extended description of card viewable when pressing drop down button
   const [extendedDescription, setExtendedDescription] = useState(props.extendedDescription);
 
-  // Files associated with card
-  const [files, setFiles] = useState(props.files);
 
   // Whether edit dialog is open
   const [open, setOpen] = React.useState(false);
 
   const [dense, setDense] = React.useState(false);
   const [secondary, setSecondary] = React.useState(false);
+
+  const [files, setFiles] = useState(props.getFilesAssociatedWithCard(props.id))
 
 
   const handleExpandClick = () => {
@@ -182,7 +182,7 @@ function PortfolioCard(props) {
             {extendedDescription}
           </Typography>
             <List>
-            {props.getFilesAssociatedWithCard(props.id).map(file => 
+            {files.map((file, index) => 
               <ListItem>
                 <ListItemAvatar>
                   <Avatar>
@@ -194,7 +194,12 @@ function PortfolioCard(props) {
                 />
                 <ListItemSecondaryAction>
                   <IconButton edge="end" aria-label="delete">
-                    <DeleteIcon onClick={() => props.unassociateFileWithCard(props.id, file.fname)}/>
+                    <DeleteIcon onClick={() => {
+                      props.unassociateFileWithCard(props.id, file.fname);
+                      const newFiles = [...files]
+                      newFiles.splice(index, 1);
+                      setFiles(newFiles)
+                    }}/>
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListItem>,
