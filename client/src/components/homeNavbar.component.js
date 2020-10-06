@@ -11,6 +11,7 @@ import Register from "./registration.component";
 import MyProfile from "./myProfile.component";
 import EditAboutMe from './profileComponents/editAboutMe.component';
 import UploadPortfolio from './profileComponents/uploadPortfolio.component';
+import EditProject from './profileComponents/editProject.component';
 import ProfilePage from "./profilepage.component";
 
 const  HomeNavbar = () => {
