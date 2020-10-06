@@ -7,13 +7,38 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
+
+
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Grid from '@material-ui/core/Grid';
+import FolderIcon from '@material-ui/icons/Folder';
+
+import MultiselectCheckbox from "./MultiselectCheckbox.component";
+
+
 function DialogPortfolioCard(props){
 
     const {handleClickOpen, handleDialogConfirm, handleDialogCancel, open, title, description, extendedDescription} = props
     const [formTitle, setFormTitle] = useState(title);
     const [formDescription, setFormDescription] = useState(description);
     const [formExtendedDescription, setFormExtendedDescription] = useState(extendedDescription);
+    const [filesToAssociate, setFilesToAssociate] = useState([])
 
+    const updateFilesToAssociate = (fs) =>{
+        console.log("Updating files to associate in Dialog Portfolio Card", fs)
+        setFilesToAssociate(fs);
+    }
 
     const onChangeTitle = (e) => {
         setFormTitle(e.target.value);
@@ -31,6 +56,7 @@ function DialogPortfolioCard(props){
         setFormTitle(title);
         setFormDescription(description);
         setFormExtendedDescription(extendedDescription);
+        setFilesToAssociate([]);
         handleDialogCancel();
     }
 
@@ -68,12 +94,19 @@ function DialogPortfolioCard(props){
             value={formExtendedDescription}
             onChange={onChangeExtendedDescription}
           />
+          <br/>
+          {console.log("Files in diaglog card", props.files)}
+          <MultiselectCheckbox 
+            files={props.files}
+            updateFilesToAssociate={updateFilesToAssociate}
+          />
+          
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCancelClick} color="primary">
             Cancel
           </Button>
-          <Button onClick={() => handleDialogConfirm(formTitle, formDescription, formExtendedDescription)} color="primary">
+          <Button onClick={() => handleDialogConfirm(formTitle, formDescription, formExtendedDescription, filesToAssociate)} color="primary">
             Confirm
           </Button>
           

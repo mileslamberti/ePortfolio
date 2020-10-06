@@ -81,7 +81,7 @@ function PortfolioCard(props) {
   const [extendedDescription, setExtendedDescription] = useState(props.extendedDescription);
 
   // Files associated with card
-  const [files, setFiles] = useState(props.associatedFiles);
+  const [files, setFiles] = useState(props.files);
 
   // Whether edit dialog is open
   const [open, setOpen] = React.useState(false);
@@ -102,10 +102,16 @@ function PortfolioCard(props) {
     setOpen(true);
   };
 
-  const handleDialogConfirm = (t, d, e) =>{
+  const handleDialogConfirm = (t, d, e, fs) =>{
     setTitle(t);
     setDescription(d);
     setExtendedDescription(e);
+    console.log("In handle dialog confirm, files:", fs);
+    if(fs.length > 0){
+        console.log("Calling associateFilesWithCard function");
+        props.associateFilesWithCard(props.id, fs);
+    }
+    
 
     setOpen(false);
   }
@@ -170,13 +176,14 @@ function PortfolioCard(props) {
             title={title}
             description={description}
             extendedDescription={extendedDescription}
+            files={props.getFilesUnassociatedWithAnyCard()}
         />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography paragraph>
             {extendedDescription}
             <List>
-            {files.map(file => 
+            {props.getFilesAssociatedWithCard(props.id).map(file => 
               <ListItem>
                 <ListItemAvatar>
                   <Avatar>
@@ -184,7 +191,7 @@ function PortfolioCard(props) {
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={file}
+                  primary={file.fname}
                 />
                 <ListItemSecondaryAction>
                   <IconButton edge="end" aria-label="delete">

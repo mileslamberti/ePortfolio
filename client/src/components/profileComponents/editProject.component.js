@@ -99,12 +99,35 @@ function EditProject() {
             associatedWithCard: ""
         }
     ])
-        console.log(state)
 
+    
+    
     // Returns an array of filenames that are associated with a particular cardID
     function getFilesAssociatedWithCard(cardID){
-        return files.filter(file => file.associatedWithCard === cardID).map(file => file.fname)
+        console.log("Running files assoicated with any card function", cardID, files.filter(file => file.associatedWithCard === cardID))
+        return files.filter(file => file.associatedWithCard === cardID)
     }
+
+    function getFilesUnassociatedWithAnyCard(){
+        return files.filter(file => file.associatedWithCard === "")
+    }
+
+    function associateFilesWithCard(cardID, filesToAdd){
+        filesToAdd = filesToAdd.map(file => file.fname);
+        let newFiles = files;
+        for(let i=0; i<files.length; i++){
+            // Unassociated card that whose name is in filesToAdd
+            if(files[i].associatedWithCard === "" && filesToAdd.indexOf(files[i].fname) != -1){
+                //files[i].associatedWithCard = cardID;
+                newFiles[i].associatedWithCard = cardID;
+                
+            }
+        }
+        setFiles(newFiles);
+        console.log("New files", files);
+    }
+
+
     // Reorders array on drag end if necessary
     function onDragEnd(result) {
         // dropped outside the list
@@ -142,7 +165,6 @@ function EditProject() {
             </Button>
         </Box>
         
-
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (
@@ -164,10 +186,13 @@ function EditProject() {
                       )}
                     >
                         <PortfolioCard
+                            id={item.id}
                             title={item.title}
                             description={item.description}
                             extendedDescription={item.extendedDescription}
-                            associatedFiles={getFilesAssociatedWithCard(item.id)}
+                            getFilesAssociatedWithCard={getFilesAssociatedWithCard}
+                            getFilesUnassociatedWithAnyCard={getFilesUnassociatedWithAnyCard}
+                            associateFilesWithCard={associateFilesWithCard}
                             picture={item.picture}
                             onDeleteClick={() => {
                                 console.log("Clicked", index)
