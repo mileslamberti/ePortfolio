@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import authHeader from "../../services/auth-header";
+
+
+const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
 export default class EditAboutMe extends Component {
     constructor(props){
@@ -18,15 +22,15 @@ export default class EditAboutMe extends Component {
             experiences: [],
         }
     }
-    componentWillMount(){
-        // TODO hard code remove
-        axios.get("http://localhost:9000/aboutme/5f5f245a79559420689a8de9")
+    componentDidMount(){
+        axios.get(API_URL + "/aboutme", { headers: authHeader() })
             .then( res => {
+                console.log(res);
                 this.setState({ 
-                    displayName: res.data.displayName,
-                    inspirations: res.data.inspirations,
-                    jobs: res.data.jobs,
-                    experiences: res.data.experiences })
+                    displayName: res.data.aboutMe.displayName,
+                    inspirations: res.data.aboutMe.inspirations,
+                    jobs: res.data.aboutMe.jobs,
+                    experiences: res.data.aboutMe.experiences })
             })
             .catch( err => {
                 console.log(err);
@@ -62,14 +66,10 @@ export default class EditAboutMe extends Component {
             jobs: this.state.jobs,
             experiences: this.state.experiences,
         }
-        // TODO remove
-        console.log("check this!!!!!")
-        console.log(aboutMe);
 
-        // TODO remove hard code!!
-        axios.post('http://localhost:9000/aboutme/edit/5f5f245a79559420689a8de9', aboutMe)
+        axios.post(API_URL+'/aboutme', aboutMe, { headers: authHeader() })
             .then( res => console.log(res.data));
-        window.location = '/myprofile';
+        window.location = '/profile';
     }
     render() {
         return (

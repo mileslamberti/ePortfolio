@@ -54,12 +54,12 @@ export default class DP extends Component {
         return (
             <div>
                 <Image src={this.state.image} fluid/>
-                {!this.state.choosenDP && <div class="input-group mb-3">
-                    <div class="custom-file">
+                {!this.state.choosenDP && <div className="input-group mb-3">
+                    <div className="custom-file">
                     <input type="file" id="Image" name="file" hidden="hidden" onChange={this.onChange}/>
-                        <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Choose file...</label>
+                        <label className="custom-file-label" htmlFor="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Choose file...</label>
                     </div>
-                    <div class="input-group-append">
+                    <div className="input-group-append">
                         <button onClick={this.handleChange}></button>
                     </div>
                 </div>}

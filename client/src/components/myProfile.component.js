@@ -12,15 +12,15 @@ export default class MyProfile extends React.Component {
 
     render() {
         return (
-            <div class="container">
+            <div className="container">
                 <DP/>
-                <div class="row">
+                <div className="row">
                     
-                    <div class="col-xl-">
+                    <div className="col-xl-">
                         <AboutMe/>
                     </div>
                 </div>
-                <div class="row">
+                <div className="row">
                     <Projects/>
                 </div>
             </div>

@@ -4,6 +4,11 @@ import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import EditAboutMe from "./editAboutMe.component"
 
+import authHeader from "../../services/auth-header";
+
+
+const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
+
 export default class AboutMe extends Component {
     constructor(props){
         super(props);
@@ -14,15 +19,15 @@ export default class AboutMe extends Component {
             experiences:""
         };
     }
-    componentWillMount(){
-        // TODO hard code remove
-        axios.get("http://localhost:9000/aboutme/5f5f245a79559420689a8de9")
+    componentDidMount(){
+        axios.get(API_URL + "/aboutme", { headers: authHeader() })
             .then( res => {
+                console.log(res);
                 this.setState({ 
-                    displayName: res.data.displayName,
-                    inspirations: res.data.inspirations,
-                    jobs: res.data.jobs,
-                    experiences: res.data.experiences })
+                    displayName: res.data.aboutMe.displayName,
+                    inspirations: res.data.aboutMe.inspirations,
+                    jobs: res.data.aboutMe.jobs,
+                    experiences: res.data.aboutMe.experiences })
             })
             .catch( err => {
                 console.log(err);
