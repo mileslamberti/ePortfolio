@@ -11,7 +11,8 @@ exports.createAboutMe = (req, res) => {
         jobs : req.body.jobs,
         experiences : req.body.experiences
     };
-    db.collection(`/users/${req.user.handle}/data/`).doc("aboutme").set({aboutMe}).then(doc => {
+    //db.collection(`/users/${req.user.handle}/data/`).doc("aboutme").set({aboutMe}).then(doc => {
+    db.doc(`/users/${req.user.handle}/data/aboutme`).set({aboutMe}).then(doc => {
             return res.json({ message: `document ${doc.id} created` })
         }).catch(err => {
             console.error(err);
