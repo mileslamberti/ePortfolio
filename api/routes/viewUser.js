@@ -1,4 +1,10 @@
+const {db} = require('../utility/admin')
 
 exports.viewUser = (req, res) => {
-    return res.status(200).json({body: `user ${req.params.handle}'s ROUTE`});
+    db.doc(`/users/${req.params.handle}/data/aboutme`).get().then(doc => {
+        return res.json(doc)
+    }).catch(err => {
+        console.error(err);
+        return res.status(500).json({ error: `something went wrong` });
+    });
 }

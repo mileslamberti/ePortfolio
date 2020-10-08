@@ -24,7 +24,6 @@ app.get('/user',userAuth,getAuthorisedUser)
 
 app.post("/aboutme", userAuth, createAboutMe);
 app.get("/aboutme", userAuth, getAboutMe);
-
 // TODO, NEED TO ENSURE NO USERS ARE NAMED THE OTHER API ROUTES
 app.get("/:handle", viewUser);
 
