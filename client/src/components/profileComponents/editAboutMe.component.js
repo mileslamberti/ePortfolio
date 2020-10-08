@@ -5,7 +5,7 @@ import authHeader from "../../services/auth-header";
 
 const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
-const EditAboutMe = () => {
+export default function EditAboutMe() {
 
     const [displayName, setDisplayName] = useState("");
     const [inspirations, setInspirations] = useState("");
@@ -50,8 +50,10 @@ const EditAboutMe = () => {
         }
 
         axios.post(API_URL+'/aboutme', aboutMe, { headers: authHeader() })
-            .then( res => console.log(res.data));
-        window.location = '/profile';
+            .then( res => {
+                console.log(res.data);
+                window.location = '/profile';
+            });
     }
     return (
         <div>
@@ -106,4 +108,3 @@ const EditAboutMe = () => {
 
 }
 
-export default EditAboutMe;
