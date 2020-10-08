@@ -1,29 +1,28 @@
 import React from 'react';
-//import { Grid, Nav, NavDropdown } from 'react-bootstrap';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import DP from "./profileComponents/dp.component";
 import AboutMe from "./profileComponents/aboutMe.component";
 import Projects from "./profileComponents/projects.component";
 
-const axios=require("axios");
+function MyProfile (){
 
-export default class MyProfile extends React.Component {
-
-    render() {
-        return (
-            <div className="container">
-                <DP/>
-                <div className="row">
-                    
-                    <div className="col-xl-">
-                        <AboutMe/>
-                    </div>
-                </div>
-                <div className="row">
-                    <Projects/>
+    
+    return (
+        <div className="container">
+            <DP/>
+            <div className="row">
+                
+                <div className="col-xl-">
+                    <AboutMe/>
                 </div>
             </div>
-        )
-    }
+            <div className="row">
+                <Projects/>
+            </div>
+        </div>
+    )
+    
   }
+
+export default MyProfile;
