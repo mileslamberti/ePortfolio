@@ -5,7 +5,7 @@ import DP from "./profileComponents/dp.component";
 import AboutMe from "./profileComponents/aboutMe.component";
 import Projects from "./profileComponents/projects.component";
 
-function MyProfile (){
+const MyProfile = () => {
 
     
     return (
