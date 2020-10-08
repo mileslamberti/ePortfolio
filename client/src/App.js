@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+//import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './App.css';
 import HomeNavbar from "./components/homeNavbar.component";
 
-import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
+//import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
 //import landing from './views/landing'
 //import login from './views/login'
@@ -38,7 +38,7 @@ class App extends Component {
       .then(res => this.setState({ apiResponse: res }));
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.callWelcome();
   }
   render() {
@@ -49,7 +49,6 @@ class App extends Component {
       //              <Route path="/register" exact component={RegistrationComponent}/>
       //          </div>
       //      </Router>
-
     );
   }
 }

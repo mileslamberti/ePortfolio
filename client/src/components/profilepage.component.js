@@ -1,6 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useEffect, useState } from "react";
+//import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Card, Button } from "react-bootstrap" ;
 
