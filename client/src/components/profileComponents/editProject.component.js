@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import {Button} from '@material-ui/core/';
-import { spacing } from '@material-ui/system';
+import {Button, Box} from '@material-ui/core/';
 import PortfolioCard from "./portfolioCard.component";
 import PortfolioTitleCard from "./portfolioTitleCard.component"
-import Box from '@material-ui/core/Box';
+import DialogPortfolioCard from "./DialogPortfolioCard.component"
 
 
 // fake data generator
@@ -49,7 +48,7 @@ function EditProject() {
     const [Picture2, setPicture2] = useState("./images/programming.png")
     // These are the cards associated with the project
     // Card IDs MUST be unique.
-    const [state, setState] = useState([
+    const [cards, setCards] = useState([
         {
             id: `item-1-${new Date().getTime()}`,
             title: "Assignment 1",
@@ -80,11 +79,11 @@ function EditProject() {
     const [files, setFiles] = useState([
         {
             fname: "Assignment1.pdf",
-            associatedWithCard: state[0].id
+            associatedWithCard: cards[0].id
         },
         {
             fname: "Assignment2.pdf",
-            associatedWithCard: state[1].id
+            associatedWithCard: cards[1].id
         },
         {
             fname: "Assignment3.pdf",
@@ -92,7 +91,7 @@ function EditProject() {
         },
         {
             fname: "main.c",
-            associatedWithCard: state[0].id
+            associatedWithCard: cards[0].id
         },
         {
             fname: "file.py",
@@ -100,7 +99,36 @@ function EditProject() {
         }
     ])
 
-    
+    // Whether add card dialog is open
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickAddCard = () =>{
+      setOpen(true);
+    };
+  
+    const handleDialogConfirm = (t, d, e, _) =>{
+      setCards([...cards, {id: `item-${new Date().getTime()}`,
+                title: t,
+                description: d,
+                extendedDescription: e}
+              ])
+      setOpen(false);
+    }
+  
+    const handleDialogCancel = () =>{
+      setOpen(false);
+    }
+
+     // Returns Object of values to populate Dialog with
+  const getDialogDescription = () =>{
+    return(
+      {
+        title: "Add Content to Card",
+        description: "To edit the contents of this card, change the values in the respective fields and press confirm. Upon confirming this card will be added to your project.",
+        edit: false // We are adding a card as opposed to editing a pre-existing card.
+      }
+    )
+  }
     
     // Returns an array of filenames that are associated with a particular cardID
     function getFilesAssociatedWithCard(cardID){
@@ -150,11 +178,11 @@ function EditProject() {
         }
 
         const items = reorder(
-            state,
+            cards,
             result.source.index,
             result.destination.index
         );
-        setState(items);
+        setCards(items);
     }
 
 
@@ -167,17 +195,29 @@ function EditProject() {
             title={"Title of Portfolio"}
             description={"Description of Portfolio"}
         />
-        <Box mx="auto" m={1}>
+        <Box mx="auto" m={1} mr={10}>
             <Button 
                 variant="contained"
                 color="primary"
-                onClick={() => setState([...state, {id: `item-${new Date().getTime()}`,
-                title: "Insert Title Here",
-                description: "Insert Description Here"}])}
+                onClick={handleClickAddCard}
             >
-                Add Card
+                Add Card to Project
+            </Button>
+        
+            <Button
+              variant="contained"
+              color="primary"
+            >
+                Add Files to Project
             </Button>
         </Box>
+
+        <DialogPortfolioCard 
+            handleDialogConfirm={handleDialogConfirm}
+            handleDialogCancel={handleDialogCancel}
+            open={open}
+            dialogInformation={getDialogDescription()}
+        />
         
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable">
@@ -187,7 +227,7 @@ function EditProject() {
               ref={provided.innerRef}
               style={getListStyle(snapshot.isDraggingOver)}
             >
-              {state.map((item, index) => (
+              {cards.map((item, index) => (
                 <Draggable key={item.id} draggableId={item.id} index={index}>
                   {(provided, snapshot) => (
                     <div
@@ -211,10 +251,10 @@ function EditProject() {
                             picture={item.picture}
                             onDeleteClick={() => {
                                 console.log("Clicked", index)
-                                console.log(state)
-                                const newState = [...state];
+                                console.log(cards)
+                                const newState = [...cards];
                                 newState.splice(index, 1);
-                                setState(newState);
+                                setCards(newState);
 
                                 let associatedFiles = getFilesAssociatedWithCard(item.id);
                                 let newFiles = files;
@@ -237,6 +277,7 @@ function EditProject() {
           )}
         </Droppable>
       </DragDropContext>
+      {console.log(files)}
       </>
     );
   }

@@ -34,10 +34,8 @@ function PortfolioTitleCard(props){
     };
 
     const handleDialogConfirm = (t, d) =>{
-      console.log(t, d)
       setTitle(t);
       setDescription(d);
-      console.log(title, description);
       setOpen(false);
     }
 
@@ -45,7 +43,6 @@ function PortfolioTitleCard(props){
       setOpen(false);
     }
 
-      
     return (
       <>
         <Card className={classes.root}>
