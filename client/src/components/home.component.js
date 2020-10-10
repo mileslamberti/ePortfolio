@@ -6,7 +6,7 @@ import Carousel from "./homeComponents/carousal.component";
 import AdvertButton from './homeComponents/advertButton.component';
 
 
-function Home(){
+const Home = () => {
   return (
       <div>
           <Carousel/> 

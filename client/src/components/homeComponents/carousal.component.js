@@ -8,21 +8,21 @@ import Slide5 from "./images/slide5.jpg";
 import "./carousal.component.css";
 
 
-const header = {
-  heading: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: '-1000px', 
-    marginLeft: '100px', 
-    color: '#00FFFF',
-    position: 'absolute',
-    width: '100%',
-    top: '22rem',
-    zIndex: '1',
-    textAlign: 'center',
-  }
-}
+// const header = {
+//   heading: {
+//     display: "flex",
+//     justifyContent: "center",
+//     alignItems: "center",
+//     marginTop: '-1000px', 
+//     marginLeft: '100px', 
+//     color: '#00FFFF',
+//     position: 'absolute',
+//     width: '100%',
+//     top: '22rem',
+//     zIndex: '1',
+//     textAlign: 'center',
+//   }
+// }
 function MyCarousal(){
   return (
     <div id="home" style = {{height:"100vh"}}>

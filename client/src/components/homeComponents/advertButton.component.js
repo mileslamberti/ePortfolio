@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button } from 'react-bootstrap'
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import AuthService from "../../services/auth.service";
 
 
