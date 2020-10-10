@@ -12,6 +12,7 @@ import Register from "./registration.component";
 import MyProfile from "./myProfile.component";
 import EditAboutMe from './profileComponents/editAboutMe.component';
 import UploadPortfolio from './profileComponents/uploadPortfolio.component';
+import EditProject from './profileComponents/editProject.component';
 import ProfilePage from "./profilepage.component";
 import AboutThem from "./profileComponents/AboutThem.component";
 
@@ -89,12 +90,14 @@ const HomeNavbar = () => {
           <Route exact path="/profile" component={MyProfile} />
           <Route exact path="/edit" exact component={EditAboutMe}/>
           <Route exact path="/uploadPortfolio" exact component={UploadPortfolio}/>
+          <Route exact path="/editPortfolio" exact component={EditProject}/>
           <Route 
             path = "/" 
             render = {(props) => (
               <AboutThem {...props}/>
             )}
           />
+          
         </Switch>
       </div>
     </Router>
