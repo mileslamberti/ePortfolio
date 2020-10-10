@@ -1,37 +1,13 @@
 import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import EditIcon from '@material-ui/icons/Edit';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import DeleteIcon from '@material-ui/icons/Delete';
-import RemoveIcon from '@material-ui/icons/Remove';
-import ZoomOutMapIcon from '@material-ui/icons/ZoomOutMap';
-import DialogPortfolioCard from "./DialogPortfolioCard.component";
 
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Grid from '@material-ui/core/Grid';
-import FolderIcon from '@material-ui/icons/Folder';
+import {Card, CardHeader, CardMedia, CardContent, CardActions, Collapse, IconButton, Typography} from '@material-ui/core';
+import {Favorite, Share, ExpandMore, Edit, Delete, Remove, ZoomOutMap, Folder} from '@material-ui/icons';
+import {List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar} from '@material-ui/core';
+
+import DialogPortfolioCard from "./DialogPortfolioCard.component";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -57,14 +33,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function generate(element) {
-  return [0, 1, 2].map((value) =>
-    React.cloneElement(element, {
-      key: value,
-    }),
-  );
-  }
-
 function PortfolioCard(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
@@ -84,9 +52,7 @@ function PortfolioCard(props) {
   // Whether edit dialog is open
   const [open, setOpen] = React.useState(false);
 
-  const [dense, setDense] = React.useState(false);
-  const [secondary, setSecondary] = React.useState(false);
-
+  // Files associated with this particular card
   const [files, setFiles] = useState(props.getFilesAssociatedWithCard(props.id))
 
 
@@ -110,8 +76,6 @@ function PortfolioCard(props) {
     if(fs.length > 0){
         props.associateFilesWithCard(props.id, fs);
     }
-    
-
     setOpen(false);
   }
 
@@ -124,7 +88,7 @@ function PortfolioCard(props) {
     return(
       {
         title: "Edit Card Contents",
-        description: "To edit the contents of this cards, change the values in the respective fields and press confirm.",
+        description: "To edit the contents of this card, change the values in the respective fields and press confirm.",
         edit: true
       }
     )
@@ -135,13 +99,13 @@ function PortfolioCard(props) {
       <CardHeader
         action={
           <IconButton aria-label="settings" onClick={handleMinimizeClick}>
-            {showMedia ? <RemoveIcon /> : <ZoomOutMapIcon />}
+            {showMedia ? <Remove /> : <ZoomOutMap />}
           </IconButton>
         }
         title={title}
       />
 
-      
+      {/* The media (example an image) of the card can be minimised*/}
       {showMedia && <CardMedia
         className={classes.media}
         image={Picture}
@@ -154,20 +118,12 @@ function PortfolioCard(props) {
           {description}
         </Typography>
       </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
 
-        <IconButton>
-            <EditIcon onClick={handleClickOpen}/>
-        </IconButton>
-        <IconButton>
-            <DeleteIcon onClick={props.onDeleteClick}/>
-        </IconButton>
+      <CardActions disableSpacing>
+        <IconButton aria-label="add to favorites"> <Favorite /> </IconButton>
+        <IconButton aria-label="share"> <Share /> </IconButton>
+        <IconButton> <Edit onClick={handleClickOpen}/> </IconButton>
+        <IconButton> <Delete onClick={props.onDeleteClick}/> </IconButton>
         <IconButton
           className={clsx(classes.expand, {
             [classes.expandOpen]: expanded,
@@ -176,9 +132,10 @@ function PortfolioCard(props) {
           aria-expanded={expanded}
           aria-label="show more"
         >
-          <ExpandMoreIcon />
+          <ExpandMore />
         </IconButton>
       </CardActions>
+
       <DialogPortfolioCard 
             handleDialogConfirm={handleDialogConfirm}
             handleDialogCancel={handleDialogCancel}
@@ -199,7 +156,7 @@ function PortfolioCard(props) {
               <ListItem>
                 <ListItemAvatar>
                   <Avatar>
-                    <FolderIcon />
+                    <Folder />
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
@@ -207,7 +164,7 @@ function PortfolioCard(props) {
                 />
                 <ListItemSecondaryAction>
                   <IconButton edge="end" aria-label="delete">
-                    <DeleteIcon onClick={() => {
+                    <Delete onClick={() => {
                       props.unassociateFileWithCard(props.id, file.fname);
                       const newFiles = [...files]
                       newFiles.splice(index, 1);
@@ -218,9 +175,6 @@ function PortfolioCard(props) {
               </ListItem>,
             )}
             </List>
-            
-          
-
         </CardContent>
       </Collapse>
     </Card>

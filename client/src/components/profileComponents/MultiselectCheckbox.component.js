@@ -31,7 +31,7 @@ function MultiselectCheckbox(props) {
             </React.Fragment>
         )}
         style={{ width: 500 }}
-        onChange={(event, value) => props.updateFilesToAssociate(value)} // prints the selected value
+        onChange={(event, value) => props.updateFilesToAssociate(value)}
         renderInput={(params) => (
             <TextField {...params} variant="outlined" label="Files to associate with card" placeholder="Files" />
         )}

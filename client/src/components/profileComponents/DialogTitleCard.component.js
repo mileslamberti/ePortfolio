@@ -20,8 +20,6 @@ function DiaglogTitleCard(props){
         setFormDescription(e.target.value);
     }
 
-
-
     const handleCancelClick = () =>{
         setFormTitle(title);
         setFormDescription(description);
