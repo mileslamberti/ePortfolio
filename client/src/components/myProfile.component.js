@@ -1,41 +1,33 @@
-import React, {useState, useCallback} from 'react';
-//import { Grid, Nav, NavDropdown } from 'react-bootstrap';
-
-import update from 'immutability-helper'
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import DP from "./profileComponents/dp.component";
 import AboutMe from "./profileComponents/aboutMe.component";
 import Projects from "./profileComponents/projects.component";
+import FindUser from "./profileComponents/findUser.component";
 
-import EditPortfolio from "./profileComponents/editPortfolio.component";
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import EditProject from "./profileComponents/editProject.component";
-
-const axios=require("axios");
-
-
-export default class MyProfile extends React.Component {
+const MyProfile = () => {
 
     
-
-    render() {
-        return (
-            <div class="container">
-                <DP/>
-                <div class="row">
-                    
-                    <div class="col-xl-">
-                        <AboutMe/>
-                    </div>
-                </div>
-                <div class="row">
-                    <Projects/>
+    return (
+        <div className="container">
+            <FindUser/>
+            <DP/>
+            <div className="row">
+                
+                <div className="col-xl-">
+                    <AboutMe/>
                 </div>
                 <EditProject />
                 
                 
             </div>
-        )
-    }
+            <div className="row">
+                <Projects/>
+            </div>
+        </div>
+    )
+    
   }
+
+export default MyProfile;

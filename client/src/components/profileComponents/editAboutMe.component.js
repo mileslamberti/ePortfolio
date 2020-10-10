@@ -1,126 +1,110 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect }from 'react';
 import axios from 'axios';
+import authHeader from "../../services/auth-header";
 
-export default class EditAboutMe extends Component {
-    constructor(props){
-        super(props);
-        this.onChangeDisplayName = this.onChangeDisplayName.bind(this);
-        this.onChangeInspirations = this.onChangeInspirations.bind(this);
-        this.onChangeJobs = this.onChangeJobs.bind(this);
-        this.onChangeExperiences = this.onChangeExperiences.bind(this);
 
-        this.onSubmit = this.onSubmit.bind(this);
+const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
-        this.state = {
-            displayName: '',
-            inspirations: '',
-            jobs: [],
-            experiences: [],
-        }
-    }
-    componentWillMount(){
-        // TODO hard code remove
-        axios.get("http://localhost:9000/aboutme/5f5f245a79559420689a8de9")
+export default function EditAboutMe() {
+
+    const [displayName, setDisplayName] = useState("");
+    const [inspirations, setInspirations] = useState("");
+    const [jobs, setJobs] = useState("");
+    const [experiences, setExperiences] = useState("");
+
+    useEffect( () => {
+        axios.get(API_URL + "/aboutme", { headers: authHeader() })
             .then( res => {
-                this.setState({ 
-                    displayName: res.data.displayName,
-                    inspirations: res.data.inspirations,
-                    jobs: res.data.jobs,
-                    experiences: res.data.experiences })
+                console.log(res);
+                setDisplayName(res.data.aboutMe.displayName);
+                setInspirations(res.data.aboutMe.inspirations);
+                setJobs(res.data.aboutMe.jobs);
+                setExperiences(res.data.aboutMe.experiences);
             })
             .catch( err => {
                 console.log(err);
             })
+    }, []);
+
+    const onChangeDisplayName = (e) => {
+        setDisplayName(e.target.value);
     }
-    onChangeDisplayName(e){
-        this.setState({
-            displayName: e.target.value
-        })
+    const onChangeInspirations = (e) => {
+        setInspirations(e.target.value);
     }
-    onChangeInspirations(e){
-        this.setState({
-            inspirations: e.target.value
-        })
+    const onChangeJobs = (e) => {
+        setJobs(e.target.value);
     }
-    onChangeJobs(e){
-        this.setState({
-            jobs: e.target.value
-        })
-    }
-    onChangeExperiences(e){
-        this.setState({
-            experiences: e.target.value
-        })
+    const onChangeExperiences= (e) =>{
+        setExperiences(e.target.value);
     }
 
-    onSubmit(e){
+    const onSubmit = (e) => {
         e.preventDefault(); // allows us override the default html stuff
 
         const aboutMe = {
-            displayName: this.state.displayName,
-            inspirations: this.state.inspirations,
-            jobs: this.state.jobs,
-            experiences: this.state.experiences,
+            displayName: displayName,
+            inspirations: inspirations,
+            jobs: jobs,
+            experiences: experiences,
         }
-        // TODO remove
-        console.log("check this!!!!!")
-        console.log(aboutMe);
 
-        // TODO remove hard code!!
-        axios.post('http://localhost:9000/aboutme/edit/5f5f245a79559420689a8de9', aboutMe)
-            .then( res => console.log(res.data));
-        window.location = '/myprofile';
+        axios.post(API_URL+'/aboutme', aboutMe, { headers: authHeader() })
+            .then( res => {
+                console.log(res.data);
+                window.location = '/profile';
+            });
     }
-    render() {
-        return (
-            <div>
-                <h3>Edit profile</h3>
-                <form onSubmit={ this.onSubmit }>
-                    <div className="form-group">
-                        <label>Display name: eg "Shakira Brimstone"</label>
-                        <input type="text"
-                            required
-                            className ="form-control"
-                            value={ this.state.displayName}
-                            onChange={this.onChangeDisplayName}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Inspirations: eg "to be a viking, to dance on mars"</label>
-                        <input type="text"
-                            required
-                            className ="form-control"
-                            value={ this.state.inspirations}
-                            onChange={this.onChangeInspirations}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Jobs: eg "chef, car salesman"</label>
-                        <input type="text"
-                            required
-                            className ="form-control"
-                            value={ this.state.jobs}
-                            onChange={this.onChangeJobs}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Experiences: eg "diving with dolfins, flying with bees"</label>
-                        <input type="text"
-                            required
-                            className ="form-control"
-                            value={ this.state.experiences}
-                            onChange={this.onChangeExperiences}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <input 
-                            type="submit"
-                            value="Update profile"
-                            className="btn btn-primary"
-                        />
-                    </div>
-                </form>
-            </div>
-        )
-    }
+    return (
+        <div>
+            <h3>Edit profile</h3>
+            <form onSubmit={ onSubmit }>
+                <div className="form-group">
+                    <label>Display name: eg "Shakira Brimstone"</label>
+                    <input type="text"
+                        required
+                        className ="form-control"
+                        value={displayName}
+                        onChange={onChangeDisplayName}
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Inspirations: eg "to be a viking, to dance on mars"</label>
+                    <input type="text"
+                        required
+                        className ="form-control"
+                        value= {inspirations }
+                        onChange={ onChangeInspirations }
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Jobs: eg "chef, car salesman"</label>
+                    <input type="text"
+                        required
+                        className ="form-control"
+                        value={ jobs }
+                        onChange={ onChangeJobs }
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Experiences: eg "diving with dolfins, flying with bees"</label>
+                    <input type="text"
+                        required
+                        className ="form-control"
+                        value={ experiences }
+                        onChange={ onChangeExperiences }
+                    />
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="submit"
+                        value="Update profile"
+                        className="btn btn-primary"
+                    />
+                </div>
+            </form>
+        </div>
+    )
+
 }
+

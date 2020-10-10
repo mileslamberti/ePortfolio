@@ -1,51 +1,33 @@
-const express = require("express");
-const { body, validationResult } = require("express-validator");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const auth = require("../middleware/auth")
-const router = express.Router();
+const {db} = require('../utility/admin')
 
-const AboutMe = require("../models/AboutMe");
+exports.createAboutMe = (req, res) => {
 
-router.post("/add", async (req, res) => {
-  // convert using firebase sdk
-    const displayName = req.body.displayName;
-    const inspirations = req.body.inspirations;
-    const jobs = req.body.jobs;
-    const experiences = req.body.experiences;
-
-    const newAboutMe = new AboutMe({
-        displayName,
-        inspirations,
-        jobs,
-        experiences
+    if(req.body.body ===''){
+        return res.status(400).json({body: "Body must not be empty!"})
+    }
+    const aboutMe = {
+        displayName : req.body.displayName,
+        inspirations : req.body.inspirations,
+        jobs : req.body.jobs,
+        experiences : req.body.experiences
+    };
+    //db.collection(`/users/${req.user.handle}/data/`).doc("aboutme").set({aboutMe}).then(doc => {
+    db.doc(`/users/${req.user.handle}/data/aboutme`).set({aboutMe}).then(doc => {
+            return res.json({ message: `document ${doc.id} created` })
+        }).catch(err => {
+            console.error(err);
+            return res.status(500).json({ error: `something went wrong` });
+        });
+}
+exports.getAboutMe = (req,res) => {
+    let aboutMe = {};
+    db.doc(`/users/${req.user.handle}/data/aboutme`).get().then(doc => {
+        if(doc.exists){
+            aboutMe = doc.data().aboutMe;
+            return res.status(200).json({aboutMe});
+        }
+    }).catch(err => {
+        console.error(err);
+        return res.status(500).json({error:err.code})
     })
-    newAboutMe.save()
-        .then(() => res.json('About me added!'))
-        .catch (err => res.status(400).json(`Error: ${err}`));
-})
-
-router.get("/:id", async (req, res) => {
-    // convert using firebase sdk
-    AboutMe.findById(req.params.id)
-        .then(aboutMe => res.json(aboutMe))
-        .catch(err => res.status(400).json(`Error: ${err}`));
-})
-
-router.route('/edit/:id').post((req, res) => {
-    // convert using firebase sdk
-    AboutMe.findById(req.params.id)
-        .then(aboutMe => {
-            aboutMe.displayName = req.body.displayName;
-            aboutMe.inspirations = req.body.inspirations;
-            aboutMe.jobs = req.body.jobs;
-            aboutMe.experiences = req.body.experiences;
-
-            aboutMe.save()
-                .then(() => res.json('About me updated.'))
-                .catch(err => res.status(400).json(`Erros: ${err}`));
-        })
-        .catch(err => res.status(400).json(`Erros: ${err}`));
-});
-
-module.exports = router;
+}
