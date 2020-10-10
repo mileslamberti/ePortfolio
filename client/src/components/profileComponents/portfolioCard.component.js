@@ -119,6 +119,17 @@ function PortfolioCard(props) {
     setOpen(false);
   }
 
+  // Returns Object of values to populate Dialog with
+  const getDialogDescription = () =>{
+    return(
+      {
+        title: "Edit Card Contents",
+        description: "To edit the contents of this cards, change the values in the respective fields and press confirm.",
+        edit: true
+      }
+    )
+  }
+
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -175,6 +186,7 @@ function PortfolioCard(props) {
             title={title}
             description={description}
             extendedDescription={extendedDescription}
+            dialogInformation={getDialogDescription()}
             files={props.getFilesUnassociatedWithAnyCard()}
         />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
