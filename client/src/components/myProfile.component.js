@@ -18,7 +18,6 @@ const MyProfile = () => {
                 <div className="col-xl-">
                     <AboutMe/>
                 </div>
-                <EditProject />
                 
                 
             </div>

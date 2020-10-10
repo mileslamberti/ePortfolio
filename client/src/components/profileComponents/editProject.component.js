@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {Button, Box} from '@material-ui/core/';
-import PortfolioCard from "./portfolioCard.component";
-import PortfolioTitleCard from "./portfolioTitleCard.component"
-import DialogPortfolioCard from "./DialogPortfolioCard.component"
+import PortfolioCard from "../../cardComponents/portfolioCard.component";
+import PortfolioTitleCard from "../../cardComponents/portfolioTitleCard.component"
+import DialogPortfolioCard from "../../cardComponents/DialogPortfolioCard.component"
 
 
 // fake data generator
