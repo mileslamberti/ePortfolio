@@ -37,3 +37,130 @@
 [info] i  functions: Your functions could not be parsed due to an issue with your node_modules (see above) {"metadata":{"emulator":{"name":"functions"},"message":"Your functions could not be parsed due to an issue with your node_modules (see above)"}}
 [debug] [2020-09-30T16:33:40.777Z] [worker-~diagnostic~-f3972ec9-a7af-481b-90e1-d4ee84b2c9b5]: exited {"metadata":{"emulator":{"name":"functions"},"message":"[worker-~diagnostic~-f3972ec9-a7af-481b-90e1-d4ee84b2c9b5]: exited"}}
 [debug] [2020-09-30T16:33:40.777Z] [worker-~diagnostic~-f3972ec9-a7af-481b-90e1-d4ee84b2c9b5]: FINISHED {"metadata":{"emulator":{"name":"functions"},"message":"[worker-~diagnostic~-f3972ec9-a7af-481b-90e1-d4ee84b2c9b5]: FINISHED"}}
+[debug] [2020-10-06T21:02:26.418Z] ----------------------------------------------------------------------
+[debug] [2020-10-06T21:02:26.420Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\giris\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js functions:shell
+[debug] [2020-10-06T21:02:26.420Z] CLI Version:   8.11.2
+[debug] [2020-10-06T21:02:26.420Z] Platform:      win32
+[debug] [2020-10-06T21:02:26.420Z] Node Version:  v12.18.4
+[debug] [2020-10-06T21:02:26.421Z] Time:          Wed Oct 07 2020 01:02:26 GMT+0400 (Gulf Standard Time)
+[debug] [2020-10-06T21:02:26.421Z] ----------------------------------------------------------------------
+[debug] [2020-10-06T21:02:26.421Z] 
+[debug] [2020-10-06T21:02:26.432Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-10-06T21:02:26.433Z] > authorizing via signed-in user
+[debug] [2020-10-06T21:02:26.433Z] [iam] checking project eportfolio-4760f for permissions ["firebase.projects.get"]
+[debug] [2020-10-06T21:02:26.435Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2020-10-06T21:02:26.435Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2020-10-06T21:02:26.805Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Tue, 06 Oct 2020 21:02:27 GMT","server":"scaffolding on HTTPServer2","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-Q050=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-10-06T21:02:26.813Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/eportfolio-4760f:testIamPermissions  
+ {"permissions":["firebase.projects.get"]}
+[debug] [2020-10-06T21:02:28.266Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Tue, 06 Oct 2020 21:02:29 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=1186","alt-svc":"h3-Q050=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[warn] !  Your requested "node" version "10" doesn't match your global version "12" {"metadata":{"emulator":{"name":"functions"},"message":"Your requested \"node\" version \"10\" doesn't match your global version \"12\""}}
+[debug] [2020-10-06T21:02:30.303Z] defaultcredentials: writing to file C:\Users\giris\AppData\Roaming\firebase\gmadnani_student_unimelb.edu.au_application_default_credentials.json
+[debug] [2020-10-06T21:02:30.305Z] DEBUG: Setting GAC to C:\Users\giris\AppData\Roaming\firebase\gmadnani_student_unimelb.edu.au_application_default_credentials.json
+[debug] [2020-10-06T21:02:30.315Z] [functions] Watching "D:\Github\ePortfolio\api" for Cloud Functions...
+[debug] [2020-10-06T21:02:30.329Z] DEBUG: [worker-pool] addWorker(~diagnostic~)
+[debug] [2020-10-06T21:02:30.329Z] DEBUG: [worker-pool] Adding worker with key ~diagnostic~, total=1
+[debug] [2020-10-06T21:02:30.329Z] DEBUG: [worker-pool] submitWork(triggerId=)
+[debug] [2020-10-06T21:02:30.329Z] DEBUG: [worker-~diagnostic~-ac1dd7e4-0239-4cde-adf0-be51e4a4b113]: Assigning socketPath: \\?\pipe\D:\Github\ePortfolio\api\7124
+[debug] [2020-10-06T21:02:30.330Z] DEBUG: [worker-~diagnostic~-ac1dd7e4-0239-4cde-adf0-be51e4a4b113]: BUSY
+[debug] [2020-10-06T21:02:30.792Z] DEBUG: [runtime-status] [7124] Functions runtime initialized. {"cwd":"D:\\Github\\ePortfolio\\api","node_version":"12.18.4"}
+[debug] [2020-10-06T21:02:30.794Z] DEBUG: [runtime-status] [7124] Disabled runtime features: undefined
+[warn] !  The Cloud Functions emulator requires the module "firebase-admin" to be installed. This package is in your package.json, but it's not available. You probably need to run "npm install" in your functions directory. {"metadata":{"emulator":{"name":"functions"},"message":"The Cloud Functions emulator requires the module \"firebase-admin\" to be installed. This package is in your package.json, but it's not available. You probably need to run \"npm install\" in your functions directory."}}
+[debug] [2020-10-06T21:02:30.797Z] [functions] Your functions could not be parsed due to an issue with your node_modules (see above)
+[debug] [2020-10-06T21:02:30.815Z] DEBUG: [worker-~diagnostic~-ac1dd7e4-0239-4cde-adf0-be51e4a4b113]: exited
+[debug] [2020-10-06T21:02:30.816Z] DEBUG: [worker-~diagnostic~-ac1dd7e4-0239-4cde-adf0-be51e4a4b113]: FINISHED
+[debug] [2020-10-06T21:03:36.368Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2020-10-06T21:03:36.368Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2020-10-06T21:03:36.369Z] DEBUG: FirebaseError: No trigger with name api
+[debug] [2020-10-06T21:03:36.369Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2020-10-06T21:05:27.899Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2020-10-06T21:05:27.899Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2020-10-06T21:05:27.899Z] DEBUG: FirebaseError: No trigger with name api
+[debug] [2020-10-06T21:05:27.899Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2020-10-06T21:05:44.668Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2020-10-06T21:05:44.669Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2020-10-06T21:05:44.670Z] DEBUG: FirebaseError: No trigger with name api
+[debug] [2020-10-06T21:05:44.670Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2020-10-06T21:07:47.560Z] ----------------------------------------------------------------------
+[debug] [2020-10-06T21:07:47.564Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\giris\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js functions:shell
+[debug] [2020-10-06T21:07:47.564Z] CLI Version:   8.11.2
+[debug] [2020-10-06T21:07:47.564Z] Platform:      win32
+[debug] [2020-10-06T21:07:47.564Z] Node Version:  v12.18.4
+[debug] [2020-10-06T21:07:47.565Z] Time:          Wed Oct 07 2020 01:07:47 GMT+0400 (Gulf Standard Time)
+[debug] [2020-10-06T21:07:47.565Z] ----------------------------------------------------------------------
+[debug] [2020-10-06T21:07:47.566Z] 
+[debug] [2020-10-06T21:07:47.575Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-10-06T21:07:47.576Z] > authorizing via signed-in user
+[debug] [2020-10-06T21:07:47.576Z] [iam] checking project eportfolio-4760f for permissions ["firebase.projects.get"]
+[debug] [2020-10-06T21:07:47.579Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/eportfolio-4760f:testIamPermissions  
+ {"permissions":["firebase.projects.get"]}
+[debug] [2020-10-06T21:07:49.211Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Tue, 06 Oct 2020 21:07:50 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=1169","alt-svc":"h3-Q050=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[warn] !  Your requested "node" version "10" doesn't match your global version "12" {"metadata":{"emulator":{"name":"functions"},"message":"Your requested \"node\" version \"10\" doesn't match your global version \"12\""}}
+[debug] [2020-10-06T21:07:51.227Z] defaultcredentials: writing to file C:\Users\giris\AppData\Roaming\firebase\gmadnani_student_unimelb.edu.au_application_default_credentials.json
+[debug] [2020-10-06T21:07:51.228Z] DEBUG: Setting GAC to C:\Users\giris\AppData\Roaming\firebase\gmadnani_student_unimelb.edu.au_application_default_credentials.json
+[debug] [2020-10-06T21:07:51.237Z] [functions] Watching "D:\Github\ePortfolio\api" for Cloud Functions...
+[debug] [2020-10-06T21:07:51.253Z] DEBUG: [worker-pool] addWorker(~diagnostic~)
+[debug] [2020-10-06T21:07:51.253Z] DEBUG: [worker-pool] Adding worker with key ~diagnostic~, total=1
+[debug] [2020-10-06T21:07:51.254Z] DEBUG: [worker-pool] submitWork(triggerId=)
+[debug] [2020-10-06T21:07:51.254Z] DEBUG: [worker-~diagnostic~-a6ee2361-8943-4d82-8205-56b2fb0a4b8a]: Assigning socketPath: \\?\pipe\D:\Github\ePortfolio\api\21148
+[debug] [2020-10-06T21:07:51.255Z] DEBUG: [worker-~diagnostic~-a6ee2361-8943-4d82-8205-56b2fb0a4b8a]: BUSY
+[debug] [2020-10-06T21:07:51.799Z] DEBUG: [runtime-status] [21148] Functions runtime initialized. {"cwd":"D:\\Github\\ePortfolio\\api","node_version":"12.18.4"}
+[debug] [2020-10-06T21:07:51.800Z] DEBUG: [runtime-status] [21148] Disabled runtime features: undefined
+[warn] !  The Cloud Functions emulator requires the module "firebase-admin" to be installed. This package is in your package.json, but it's not available. You probably need to run "npm install" in your functions directory. {"metadata":{"emulator":{"name":"functions"},"message":"The Cloud Functions emulator requires the module \"firebase-admin\" to be installed. This package is in your package.json, but it's not available. You probably need to run \"npm install\" in your functions directory."}}
+[debug] [2020-10-06T21:07:51.803Z] [functions] Your functions could not be parsed due to an issue with your node_modules (see above)
+[debug] [2020-10-06T21:07:51.825Z] DEBUG: [worker-~diagnostic~-a6ee2361-8943-4d82-8205-56b2fb0a4b8a]: exited
+[debug] [2020-10-06T21:07:51.825Z] DEBUG: [worker-~diagnostic~-a6ee2361-8943-4d82-8205-56b2fb0a4b8a]: FINISHED
+[debug] [2020-10-11T08:27:21.928Z] ----------------------------------------------------------------------
+[debug] [2020-10-11T08:27:21.930Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\giris\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js functions:shell
+[debug] [2020-10-11T08:27:21.930Z] CLI Version:   8.11.2
+[debug] [2020-10-11T08:27:21.930Z] Platform:      win32
+[debug] [2020-10-11T08:27:21.930Z] Node Version:  v12.18.4
+[debug] [2020-10-11T08:27:21.931Z] Time:          Sun Oct 11 2020 12:27:21 GMT+0400 (Gulf Standard Time)
+[debug] [2020-10-11T08:27:21.931Z] ----------------------------------------------------------------------
+[debug] [2020-10-11T08:27:21.931Z] 
+[debug] [2020-10-11T08:27:21.944Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-10-11T08:27:21.944Z] > authorizing via signed-in user
+[debug] [2020-10-11T08:27:21.945Z] [iam] checking project eportfolio-4760f for permissions ["firebase.projects.get"]
+[debug] [2020-10-11T08:27:21.947Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2020-10-11T08:27:21.947Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2020-10-11T08:27:22.496Z] <<< HTTP RESPONSE 200 {"pragma":"no-cache","expires":"Mon, 01 Jan 1990 00:00:00 GMT","date":"Sun, 11 Oct 2020 08:27:22 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-Q050=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-10-11T08:27:22.503Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/eportfolio-4760f:testIamPermissions  
+ {"permissions":["firebase.projects.get"]}
+[debug] [2020-10-11T08:27:23.971Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sun, 11 Oct 2020 08:27:23 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=1189","alt-svc":"h3-Q050=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[warn] !  Your requested "node" version "10" doesn't match your global version "12" {"metadata":{"emulator":{"name":"functions"},"message":"Your requested \"node\" version \"10\" doesn't match your global version \"12\""}}
+[debug] [2020-10-11T08:27:25.987Z] defaultcredentials: writing to file C:\Users\giris\AppData\Roaming\firebase\gmadnani_student_unimelb.edu.au_application_default_credentials.json
+[debug] [2020-10-11T08:27:25.989Z] DEBUG: Setting GAC to C:\Users\giris\AppData\Roaming\firebase\gmadnani_student_unimelb.edu.au_application_default_credentials.json
+[debug] [2020-10-11T08:27:26.000Z] [functions] Watching "D:\Github\ePortfolio\api" for Cloud Functions...
+[debug] [2020-10-11T08:27:26.017Z] DEBUG: [worker-pool] addWorker(~diagnostic~)
+[debug] [2020-10-11T08:27:26.017Z] DEBUG: [worker-pool] Adding worker with key ~diagnostic~, total=1
+[debug] [2020-10-11T08:27:26.017Z] DEBUG: [worker-pool] submitWork(triggerId=)
+[debug] [2020-10-11T08:27:26.018Z] DEBUG: [worker-~diagnostic~-1804e3e9-f49c-4d34-8a69-1394ec8f0233]: Assigning socketPath: \\?\pipe\D:\Github\ePortfolio\api\26408
+[debug] [2020-10-11T08:27:26.018Z] DEBUG: [worker-~diagnostic~-1804e3e9-f49c-4d34-8a69-1394ec8f0233]: BUSY
+[debug] [2020-10-11T08:27:26.500Z] DEBUG: [runtime-status] [26408] Functions runtime initialized. {"cwd":"D:\\Github\\ePortfolio\\api","node_version":"12.18.4"}
+[debug] [2020-10-11T08:27:26.502Z] DEBUG: [runtime-status] [26408] Disabled runtime features: undefined
+[warn] !  The Cloud Functions emulator requires the module "firebase-admin" to be installed. This package is in your package.json, but it's not available. You probably need to run "npm install" in your functions directory. {"metadata":{"emulator":{"name":"functions"},"message":"The Cloud Functions emulator requires the module \"firebase-admin\" to be installed. This package is in your package.json, but it's not available. You probably need to run \"npm install\" in your functions directory."}}
+[debug] [2020-10-11T08:27:26.505Z] [functions] Your functions could not be parsed due to an issue with your node_modules (see above)
+[debug] [2020-10-11T08:27:26.526Z] DEBUG: [worker-~diagnostic~-1804e3e9-f49c-4d34-8a69-1394ec8f0233]: exited
+[debug] [2020-10-11T08:27:26.526Z] DEBUG: [worker-~diagnostic~-1804e3e9-f49c-4d34-8a69-1394ec8f0233]: FINISHED
+[debug] [2020-10-11T08:33:57.619Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2020-10-11T08:33:57.619Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2020-10-11T08:33:57.620Z] DEBUG: FirebaseError: No trigger with name api
+[debug] [2020-10-11T08:33:57.620Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2020-10-11T08:34:13.707Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2020-10-11T08:34:13.708Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2020-10-11T08:34:13.708Z] DEBUG: FirebaseError: No trigger with name api
+[debug] [2020-10-11T08:34:13.708Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2020-10-11T08:36:14.014Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2020-10-11T08:36:14.014Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2020-10-11T08:36:14.014Z] DEBUG: FirebaseError: No trigger with name api
+[debug] [2020-10-11T08:36:14.014Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2020-10-11T10:11:13.193Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2020-10-11T10:11:13.194Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2020-10-11T10:11:13.195Z] DEBUG: FirebaseError: No trigger with name api
+[debug] [2020-10-11T10:11:13.196Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2020-10-11T20:01:00.077Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2020-10-11T20:01:00.079Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2020-10-11T20:01:00.080Z] DEBUG: FirebaseError: No trigger with name api
+[debug] [2020-10-11T20:01:00.080Z] [work-queue] {"queueLength":0,"workRunningCount":0}
