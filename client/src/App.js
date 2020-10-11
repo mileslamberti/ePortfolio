@@ -1,7 +1,18 @@
 import React, { Component } from 'react';
-//import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './App.css';
 import HomeNavbar from "./components/homeNavbar.component";
+
+import Home from "./components/home.component";
+import Login from "./components/login.component";
+import Register from "./components/registration.component";
+import MyProfile from "./components/myProfile.component";
+import EditAboutMe from './components/profileComponents/editAboutMe.component';
+import UploadPortfolio from './components/profileComponents/uploadPortfolio.component';
+import EditProject from './components/profileComponents/editProject.component';
+import ProfilePage from "./components/profilepage.component";
+import AboutThem from "./components/profileComponents/AboutThem.component";
+
 
 //import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
@@ -43,12 +54,27 @@ class App extends Component {
   }
   render() {
     return (
-      <HomeNavbar/>
-      //      <Router>
-      //          <div className="container">
-      //              <Route path="/register" exact component={RegistrationComponent}/>
-      //          </div>
-      //      </Router>
+      <Router>
+        <HomeNavbar/>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/profilepage" component={ProfilePage} />
+          <div className="container mt-3">
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/profile" component={MyProfile} />
+              <Route exact path="/edit" exact component={EditAboutMe}/>
+              <Route exact path="/uploadPortfolio" exact component={UploadPortfolio}/>
+              <Route exact path="/editPortfolio" exact component={EditProject}/>
+              <Route 
+                path = "/:handle" 
+                render = {(props) => (
+                  <AboutThem {...props}/>
+                )}
+              />  
+          </div>
+        </Switch>
+      </Router>
     );
   }
 }
