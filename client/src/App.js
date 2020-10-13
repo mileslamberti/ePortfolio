@@ -7,7 +7,6 @@ import Home from "./components/home.component";
 import Login from "./components/login.component";
 import Register from "./components/registration.component";
 import MyProfile from "./components/myProfile.component";
-import EditAboutMe from './components/profileComponents/editAboutMe.component';
 import UploadPortfolio from './components/profileComponents/uploadPortfolio.component';
 import EditProject from './components/profileComponents/editProject.component';
 import ProfilePage from "./components/profilepage.component";
@@ -63,7 +62,6 @@ class App extends Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/profile" component={MyProfile} />
-              <Route exact path="/edit" exact component={EditAboutMe}/>
               <Route exact path="/uploadPortfolio" exact component={UploadPortfolio}/>
               <Route exact path="/editPortfolio" exact component={EditProject}/>
               <Route 

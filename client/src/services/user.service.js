@@ -16,7 +16,17 @@ async function getMe() {
   
 };
 
+async function updateProfilePic(req) {
+  let response = await axios.post(API_URL + "/user/updatepp", req, { headers: authHeader() })
+    
+  if (response.data.userData) {
+    console.log(response.data.userData.credentials);
+  }
+  
+};
+
 
 export default {
   getMe,
+  updateProfilePic,
 };

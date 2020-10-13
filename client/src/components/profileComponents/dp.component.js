@@ -1,69 +1,79 @@
-import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Image from 'react-bootstrap/Image';
+import React, { useState, useEffect } from 'react';
 import Axios from "axios";
 
-export default class DP extends Component {
+import UserService from "../../services/user.service";
 
+import {makeStyles, ButtonBase } from '@material-ui/core';
 
-    constructor(props) {
-        super(props);
-        this.onSubmit = this.onSubmit.bind(this);
-        this.onChange = this.onChange.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.state = {
-            imageSRC: require("./images/defaultDP.png"),
-            choosenDP: false,
-            image: ""
-        };
+const useStyles = makeStyles({
+    input: {
+        display: 'none',
+    },
+    image: {
+        width: 128,
+        height: 128,
+    },
+    img: {
+        margin: 'auto',
+        display: 'block',
+        maxWidth: '100%',
+        maxHeight: '100%',
+    },
+});
 
-    }
+const DP = () => {
 
-    onChange(event) {
-        event.preventDefault();
-        console.log(event.target.files);
-        const image = event.target.files[0];
+    const [loading, setLoading] = useState(false);
+    const [DP, setDP] = useState("");
+    const classes = useStyles();
+    
+    useEffect(() => {
+        setLoading(true)
+        UserService.getMe().then(
+            (me) => {
+                setDP(me.imageUrl);
+                setLoading(false);
+            }
+        )
+    }, []);
+
+    const onChange = (e) => {
+        e.preventDefault();
+        console.log(e.target.files);
+        const image = e.target.files[0];
         const formData = new FormData();
         formData.append("file", image, image.name);
-    
+        
+        setLoading(true);
         Axios.post(
           "http://localhost:5000/eportfolio-4760f/us-central1/api/user/image",
           formData
         )
           .then((res) => {
-            this.setState({ image: res.data.image });
+            UserService.updateProfilePic(res.data.image);
+            setDP(res.data.image);
+            setLoading(false);
           })
           .catch((err) => {
             console.error(err);
           });
+          
       }
 
-      handleChange() {
-        const fileInput = document.getElementById("Image");
-        fileInput.click();
-      }
-
-    onSubmit(event){
-        console.log(event.target.file)
-        Axios.post("http://localhost:5000/eportfolio-4760f/us-central1/api/uploadImage",
-        {image: event.target.file[0]}).then(res => { console.log(res.data)}).catch(err=> {console.error(err)})
-    }
-
-
-    render() {
-        return (
-            <div>
-                <Image src={this.state.image} fluid/>
-                {!this.state.choosenDP && <div className="input-group mb-3">
-                    <div className="custom-file">
-                    <input type="file" id="Image" name="file" hidden="hidden" onChange={this.onChange}/>
-                        <label className="custom-file-label" htmlFor="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Choose file...</label>
-                    </div>
-                    <div className="input-group-append">
-                        <button onClick={this.handleChange}></button>
-                    </div>
-                </div>}
-            </div>
-        )
-    }
-}
+    return (
+        <div>
+            {loading ? <span className="spinner-border spinner-border-sm"></span> :
+            <>
+                <input className={classes.input} ccept="image/*" id="icon-button-file" type="file" onChange={onChange}/>
+                <label htmlFor="icon-button-file">
+                    <ButtonBase className={classes.image} color="primary" aria-label="upload picture" component="span">
+                        <img className={classes.img} src={DP} />
+                    </ButtonBase> 
+                </label>
+            </>
+            }
+        </div>
+    );
+    
+};
+export default DP;

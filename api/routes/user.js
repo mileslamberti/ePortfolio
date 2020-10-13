@@ -137,6 +137,18 @@ exports.addUserDetails  = (req,res) => {
         })
 }
 
+exports.updateProfilePic  = (req,res) => {
+    let url = Object.keys(req.body)[0] + '=media';
+    console.log(url);
+    db.doc(`/users/${req.user.handle}`).update({"imageUrl": url}).then(() => {
+        return res.status(201).json({message: 'Success'})
+    }).catch( err => {
+        console.error(err)
+        return res.status(400).json({error:err.code})
+    })
+
+}
+
 exports.getAuthorisedUser = (req,res) => {
     let userData = {};
 
