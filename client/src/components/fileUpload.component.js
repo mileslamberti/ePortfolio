@@ -41,7 +41,6 @@ function FileUpload(props){
     return (
         
       <>
-        <br/>
         <div className="dropbox"
              style={{width: '700px',
                      height: '100px',

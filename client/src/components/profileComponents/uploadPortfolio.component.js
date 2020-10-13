@@ -6,7 +6,6 @@ import { Form, Button } from 'react-bootstrap'
 
 
 function UploadPortfolio (){
-    const [fileUploadStrategy, setFileUploadStrategy] = useState(2);
     const [PortfolioName, setPortfolioName] = useState('');
     const [Description, setDescription] = useState('');
     const [Files, setFiles] = useState([])
@@ -14,16 +13,6 @@ function UploadPortfolio (){
     const updateFiles = (newFiles) =>{
         setFiles(newFiles);
         
-    }
-
-
-    const uploadStrategy = (fileUploadStrategy) =>{
-        if(fileUploadStrategy === 1){
-            return "You selected uploading images"
-        }
-        else if(fileUploadStrategy === 2){
-            return "You selected uploading images"
-        }
     }
 
     const onSubmit = (event) => {
@@ -88,49 +77,9 @@ function UploadPortfolio (){
                                   placeholder="Give a brief description of your portfolio"
                                   name={Description}/>
                 </Form.Group>
-                <>
-                    <Button
-                        variant="secondary"
-                        onClick={() => setFileUploadStrategy(1)}
-                        size="lg"
-                        >Upload a Folder</Button>{' '}
-                    <Button 
-                        variant ="secondary"
-                        onClick={() => setFileUploadStrategy(2)}
-                        size="lg"
-                        >Upload Images</Button>{' '}
-                    <Button 
-                        variant ="secondary"
-                        onClick = {() => setFileUploadStrategy(3)}
-                        size="lg"
-                        >Upload Documents</Button>{' '}
-                </>
-                <br/>
+                
                 <div className="file-upload-container">
-                    {(() => {
-
-                        if(fileUploadStrategy === 2){
-                            return (<FileUpload refreshFunction={updateFiles}/>)
-                        }
-                        else if (fileUploadStrategy === 1) {
-                            return(
-                                <Form.Group>
-                                    <Form.File
-                                    className="position-relative"
-                                    required
-                                    name="file"
-                                    label="Please upload the folder containing your project here"
-                                    id="validationFormik107"
-                                    feedbackTooltip
-                                    />
-                                </Form.Group>
-                            )
-                            }
-                        else if(fileUploadStrategy === 3){
-                            return "You selected uploading documents"
-                        }
-                    })()}
-                    {}
+                    <FileUpload refreshFunction={updateFiles}/>
                 </div>
                 <br/>
                 <Button
