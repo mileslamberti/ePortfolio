@@ -6,15 +6,6 @@ import { NavDropdown } from 'react-bootstrap';
 import AuthService from "../services/auth.service";
 import UserService from "../services/user.service";
 
-import Home from "./home.component";
-import Login from "./login.component";
-import Register from "./registration.component";
-import MyProfile from "./myProfile.component";
-import EditAboutMe from './profileComponents/editAboutMe.component';
-import UploadPortfolio from './profileComponents/uploadPortfolio.component';
-import EditProject from './profileComponents/editProject.component';
-import ProfilePage from "./profilepage.component";
-import AboutThem from "./profileComponents/AboutThem.component";
 
 const HomeNavbar = () => {
 
@@ -40,7 +31,7 @@ const HomeNavbar = () => {
     };
     
     return (
-    <Router>
+
       <nav className="navbar navbar-expand navbar-dark bg-dark">
         <Link to={"/"} className="navbar-brand">
           Tech Pirates
@@ -80,27 +71,6 @@ const HomeNavbar = () => {
           </div>
         )}
       </nav>
-
-      <Route exact path="/" component={Home} />
-      <Route exact path="/profilepage" component={ProfilePage} />
-      <div className="container mt-3">
-        <Switch>
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
-          <Route exact path="/profile" component={MyProfile} />
-          <Route exact path="/edit" exact component={EditAboutMe}/>
-          <Route exact path="/uploadPortfolio" exact component={UploadPortfolio}/>
-          <Route exact path="/editPortfolio" exact component={EditProject}/>
-          <Route 
-            path = "/" 
-            render = {(props) => (
-              <AboutThem {...props}/>
-            )}
-          />
-          
-        </Switch>
-      </div>
-    </Router>
     )
 }
 
