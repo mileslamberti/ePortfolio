@@ -17,11 +17,13 @@ const HomeNavbar = () => {
       
       if (user) {
         setCurrentUser(user);
-        UserService.getMe().then(
-          (me) => {
-            setMe(me);
-          }
-        )
+        if (!me){
+          UserService.getMe().then(
+            (me) => {
+              setMe(me);
+            }
+          )
+        }
       }
 
     }, []);
