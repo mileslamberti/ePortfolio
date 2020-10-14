@@ -12,9 +12,9 @@ import EditProject from './components/profileComponents/editProject.component';
 import ProfilePage from "./components/profilepage.component";
 import AboutThem from "./components/profileComponents/AboutThem.component";
 
-import FirebaseUploader from './components/profileComponents/firebaseUploader.component';
 import UploadPortfolio from "./components/profileComponents/uploadProject.component";
 
+import InitFirebase from  "./services/initFirebase";
 //import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
 //import landing from './views/landing'
@@ -46,9 +46,7 @@ class App extends Component {
     this.state = { apiResponse: "" };
   }
   callWelcome() {
-    fetch("http://localhost:9000/welcome")
-      .then(res => res.text())
-      .then(res => this.setState({ apiResponse: res }));
+
       InitFirebase();
   }
 
@@ -61,13 +59,13 @@ class App extends Component {
         <HomeNavbar/>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/profilepage" exact component={ProfilePage} />
-          <Route exact path="/login" exact component={Login} />
-          <Route exact path="/register" exact component={Register} />
-          <Route exact path="/profile" exact component={MyProfile} />
-          <Route exact path="/edit" exact component={EditAboutMe}/>
-          <Route exact path="/uploadportfolio" exact component={UploadPortfolio}/>
-          <Route exact path="/editportfolio" exact component={EditProject}/>
+          <Route exact path="/profilepage" component={ProfilePage} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/profile" component={MyProfile} />
+          <Route exact path="/edit" component={EditAboutMe}/>
+          <Route exact path="/uploadportfolio" component={UploadPortfolio}/>
+          <Route exact path="/editportfolio" component={EditProject}/>
           <Route 
             path = "/:handle" 
             render = {(props) => (
