@@ -19,7 +19,7 @@ const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 function UploadPortfolio (){
     const [ProjectTitle, setProjectTitle] = useState('');
     const [Description, setDescription] = useState('');
-
+    const [userHandle, setUserHandle] = useState('');
     // Files that have been accepted by the DND interface
     const [AccceptedDNDFiles, setAccceptedDNDFiles] = useState([]);
     const [RejectedDNDFiles, setRejectedDNDFiles] = useState([]);
@@ -71,7 +71,7 @@ function UploadPortfolio (){
     const onSubmit = (event) => {
         const projectID = `project${Math.round(Math.random()*100000000)}`
         event.preventDefault();
-        const submitToDatabase = (path, newLink, links, numFiles, authenticationHeader) => {
+        const submitToDatabase = (path, newLink, links, numFiles) => {
             links.push(newLink);
             if (links.length === numFiles){
                 const project = {
@@ -80,14 +80,14 @@ function UploadPortfolio (){
                     description: Description,
                     files: links
                 }
-                axios.post(path, project, authenticationHeader)
+                console.log(project);
+                axios.post(path, project, { headers: authHeader() })
                 .then( res => {
                     console.log(res.data);
                     // TODO HANDLE RESETTING BETTER
                     setProjectTitle('');
                     setDescription('');
-                    setFiles([]);
-                    window.location="/uploadPortfolio";
+                    window.location="/uploadProject";
                 });
             }
         }
@@ -99,7 +99,7 @@ function UploadPortfolio (){
                     console.log("Succefully uploaded file");
                     //console.log(snapshot.ref.getDownloadURL());
                     snapshot.ref.getDownloadURL().then( res => {
-                        submitToDatabase(`${API_URL}/projects`, res, links, AcceptedFiles.length, { headers: authHeader() });
+                        submitToDatabase(`${API_URL}/projects`, res, links, AcceptedFiles.length);
                     })
                 })
                 .catch(err => {

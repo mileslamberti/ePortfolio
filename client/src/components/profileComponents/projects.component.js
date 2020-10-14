@@ -7,7 +7,7 @@ export default class Projects extends Component {
         return (
             <div>
                 <h1>PROJECTS WILL GO HERE</h1>
-                <Button href="/uploadPortfolio" variant="secondary">Upload Portfolio</Button>
+                <Button href="/uploadProject" variant="secondary">Upload Project</Button>
             </div>
         )
     }
