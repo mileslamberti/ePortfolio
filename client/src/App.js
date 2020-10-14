@@ -7,7 +7,6 @@ import Home from "./components/home.component";
 import Login from "./components/login.component";
 import Register from "./components/registration.component";
 import MyProfile from "./components/myProfile.component";
-import EditAboutMe from './components/profileComponents/editAboutMe.component';
 import UploadPortfolio from './components/profileComponents/uploadPortfolio.component';
 import EditProject from './components/profileComponents/editProject.component';
 import ProfilePage from "./components/profilepage.component";
@@ -57,9 +56,14 @@ class App extends Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/profile" component={MyProfile} />
+<<<<<<< HEAD
               <Route exact path="/edit" component={EditAboutMe}/>
               <Route exact path="/uploadPortfolio" component={UploadPortfolio}/>
               <Route exact path="/editPortfolio" render={() => <PortfolioCardProvider> <EditProject/> </PortfolioCardProvider>}/>
+=======
+              <Route exact path="/uploadPortfolio" exact component={UploadPortfolio}/>
+              <Route exact path="/editPortfolio" exact component={EditProject}/>
+>>>>>>> 2e2c750a5c8f568d3f1af1349313bb8a279982e3
               <Route 
                 path = "/:handle" 
                 render = {(props) => (

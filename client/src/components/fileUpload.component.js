@@ -3,6 +3,7 @@ import {useDropzone} from 'react-dropzone';
 
 function FileUpload(props){
 
+<<<<<<< HEAD
     const onDrop = useCallback((acceptedFiles) => {
         
         console.log(acceptedFiles.length)
@@ -10,20 +11,27 @@ function FileUpload(props){
 
 
     })
+=======
+    const [Files, setFiles] = useState([]);
+
+    const onDropAccepted= useCallback((acceptedFiles) => props.updateAccepted(acceptedFiles));
+    const onDropRejected= useCallback((rejectedFiles) => props.updateRejected(rejectedFiles));
+>>>>>>> 2e2c750a5c8f568d3f1af1349313bb8a279982e3
 
     const acceptableFiles = ['.pdf', '.png', '.jpg'];
 
-    const {acceptedFiles, fileRejections,  getRootProps, getInputProps} = useDropzone({  onDrop,
+    const {acceptedFiles, fileRejections,  getRootProps, getInputProps} = useDropzone({ 
                                                                         maxSize: 1600000000,
+<<<<<<< HEAD
                                                                         accept: acceptableFiles
                                                                         });
+=======
+                                                                        accept: acceptableFiles,
+                                                                        onDropAccepted,
+                                                                        onDropRejected});
+>>>>>>> 2e2c750a5c8f568d3f1af1349313bb8a279982e3
   
-    const acceptedFileItems = acceptedFiles.map(file => (
-        <li key={file.path}>
-        {file.path} - {file.size} bytes
-        </li>
-    ));
-        
+
     const fileRejectionItems = fileRejections.map(({ file, errors }) => (
         <li key={file.path}>
           {file.path} - {file.size} bytes
@@ -38,7 +46,6 @@ function FileUpload(props){
     return (
         
       <>
-        <br/>
         <div className="dropbox"
              style={{width: '700px',
                      height: '100px',
@@ -58,8 +65,6 @@ function FileUpload(props){
         </div>
         <br/>
         <aside>
-          <h4>Files</h4>
-          <ul>{acceptedFileItems}</ul>
           <h4>Rejected files</h4>
           <ul>{fileRejectionItems}</ul>
         </aside>
