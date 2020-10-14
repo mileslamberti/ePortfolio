@@ -66,31 +66,31 @@ function UploadPortfolio (){
         {file.path} - {file.size} bytes
         </li>
     ));
-
+    const submitToDatabase = (path, newLink, links, numFiles, projectID) => {
+        links.push(newLink);
+        if (links.length === numFiles){
+            const project = {
+                projectID: projectID,
+                title: ProjectTitle,
+                description: Description,
+                files: links
+            }
+            console.log(project);
+            axios.post(path, project, { headers: authHeader() })
+            .then( res => {
+                console.log(res.data);
+                // TODO HANDLE RESETTING BETTER
+                setProjectTitle('');
+                setDescription('');
+                window.location="/uploadProject";
+            });
+        }
+    }
 
     const onSubmit = (event) => {
         const projectID = `project${Math.round(Math.random()*100000000)}`
         event.preventDefault();
-        const submitToDatabase = (path, newLink, links, numFiles) => {
-            links.push(newLink);
-            if (links.length === numFiles){
-                const project = {
-                    projectID: projectID,
-                    title: ProjectTitle,
-                    description: Description,
-                    files: links
-                }
-                console.log(project);
-                axios.post(path, project, { headers: authHeader() })
-                .then( res => {
-                    console.log(res.data);
-                    // TODO HANDLE RESETTING BETTER
-                    setProjectTitle('');
-                    setDescription('');
-                    window.location="/uploadProject";
-                });
-            }
-        }
+        
         console.log("Number of Files on submission: ", AcceptedFiles.length)
         var links = [];
         AcceptedFiles.forEach((file) => {
@@ -98,8 +98,8 @@ function UploadPortfolio (){
                 .then( snapshot => {
                     console.log("Succefully uploaded file");
                     //console.log(snapshot.ref.getDownloadURL());
-                    snapshot.ref.getDownloadURL().then( res => {
-                        submitToDatabase(`${API_URL}/projects`, res, links, AcceptedFiles.length);
+                    snapshot.ref.getDownloadURL().then( downloadLink => {
+                        submitToDatabase(`${API_URL}/projects`, downloadLink, links, AcceptedFiles.length, projectID);
                     })
                 })
                 .catch(err => {
