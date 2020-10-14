@@ -1,16 +1,25 @@
-import React, {useState} from 'react'
-import Axios from 'axios'
+import React, { useState, useEffect }from 'react';
 import FileUpload from "../fileUpload.component"
 
 import { Form, Button } from 'react-bootstrap'
+
+import firebase from "firebase";
+import InitFirebase from "../../services/initFirebase";
+
+import authHeader from "../../services/auth-header";
+import userService from "../../services/user.service";
+import axios from 'axios'
+
 import {Card, CardHeader, CardMedia, CardContent, CardActions, Collapse, IconButton, Typography} from '@material-ui/core';
 import {Favorite, Share, ExpandMore, Edit, Delete, Remove, ZoomOutMap, Folder, PictureAsPdfOutlined, Image} from '@material-ui/icons';
 import {List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar} from '@material-ui/core';
 
-function UploadPortfolio (){
-    const [PortfolioName, setPortfolioName] = useState('');
-    const [Description, setDescription] = useState('');
+const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
+function UploadPortfolio (){
+    const [ProjectTitle, setProjectTitle] = useState('');
+    const [Description, setDescription] = useState('');
+    const [userHandle, setUserHandle] = useState('');
     // Files that have been accepted by the DND interface
     const [AccceptedDNDFiles, setAccceptedDNDFiles] = useState([]);
     const [RejectedDNDFiles, setRejectedDNDFiles] = useState([]);
@@ -18,6 +27,23 @@ function UploadPortfolio (){
     // Files that will be uploaded to the database on submit
     const [AcceptedFiles, setAcceptedFiles] = useState([]);
 
+    useEffect(() => {
+        function getHandle(){
+            if (userHandle === ''){
+                userService.getMe().then(user =>{
+                    setUserHandle(user.handle);
+                });
+            }
+        }
+        getHandle()
+        InitFirebase();
+    },[]);
+    const onChangeProjectTitle = (e) => {
+        setProjectTitle(e.target.value);
+    }
+    const onChangeDescription = (e) => {
+        setDescription(e.target.value);
+    }
     const updateAccepted = (acceptedFiles) => {
         setAccceptedDNDFiles(acceptedFiles);
         // Filter removes duplicate files by .name property; sorts by .name
@@ -41,51 +67,48 @@ function UploadPortfolio (){
         </li>
     ));
 
+    // sumbits to the given path once it has recieved the number of files specified by numFiles
+    const submitToDatabase = (path, newLink, links, numFiles, projectID) => {
+        links.push(newLink);
+        if (links.length === numFiles){
+            const project = {
+                projectID: projectID,
+                title: ProjectTitle,
+                description: Description,
+                files: links
+            }
+            console.log(project);
+            axios.post(path, project, { headers: authHeader() })
+            .then( res => {
+                console.log(res.data);
+                // TODO HANDLE RESETTING BETTER
+                setProjectTitle('');
+                setDescription('');
+                window.location="/uploadProject";
+            });
+        }
+    }
 
     const onSubmit = (event) => {
+        const projectID = `project${Math.round(Math.random()*100000000)}`
         event.preventDefault();
-        const variables = {
-            name: PortfolioName,
-            description: Description,
-            files: AcceptedFiles
-        }
-        console.log("Number of Files on submission", variables.files.length)
-
-        AcceptedFiles.forEach((file) => {
-            const reader = new FileReader()
-            reader.onabort = () => console.log('file reading was aborted')
-            reader.onerror = () => console.log('file reading has failed')
-            reader.onload = () => {
-            // Do whatever you want with the file contents
-              const formData = new FormData();
-              const config = {
-                  header: {'content-type': 'multipart/form-data'}
-              }
-              formData.append("file", file, file.path)
-  
-              Axios.post('http://localhost:9000/projects/uploadFile', formData, config)
-                  .then(response =>{
-                      if(response.data.success){
-                          console.log("Success files");
-                      } 
-                      else{
-                          alert("Failed to save the Image in Server")
-                      }
-                  })
-                  .catch((error) => console.log(error))
-              const binaryStr = reader.result
-              
-             
-              console.log(binaryStr)
-            }
-            reader.readAsArrayBuffer(file)
-          })
         
-        Axios.post('http://localhost:9000/projects/uploadPortfolio', variables)
-            .then(response => {
-                console.log(response)
-            })
-            .catch( (error) => console.log(error))
+        console.log("Number of Files on submission: ", AcceptedFiles.length)
+        var links = [];
+        AcceptedFiles.forEach((file) => {
+            firebase.storage().ref(`/${userHandle}/projects/${projectID}/file${Math.round(Math.random()*100000000)}.jpg`).put(file, {contentType:`image/${file.path.split(".")[1]}`})
+                .then( snapshot => {
+                    console.log("Succefully uploaded file");
+                    //console.log(snapshot.ref.getDownloadURL());
+                    snapshot.ref.getDownloadURL().then( downloadLink => {
+                        submitToDatabase(`${API_URL}/projects`, downloadLink, links, AcceptedFiles.length, projectID);
+                    })
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        });   
+        
     }
 
     function getListItemIcon(fileType){
@@ -101,19 +124,22 @@ function UploadPortfolio (){
     return(
         <div style={{ maxWidth: '700px', margin: '2rem auto' }}>
             <Form id="uploadForm" onSubmit={onSubmit}>
-                <Form.Group controlId="PortfolioName">
-                    <Form.Label>Portfolio Name</Form.Label>
+                <Form.Group controlId="ProjectTitle">
+                    <Form.Label>Project Title</Form.Label>
                     <Form.Control type="text"
-                                  name={PortfolioName}
+                                  name={ProjectTitle}
+                                  onChange={onChangeProjectTitle}
                                   placeholder="Enter the name of your portfolio"/>
                 </Form.Group>
 
-                <Form.Group controlId="PortfolioDescription">
-                    <Form.Label>Portfolio Description</Form.Label>
+                <Form.Group controlId="Description">
+                    <Form.Label>Description</Form.Label>
                     <Form.Control as="textarea"
                                   rows="6"
                                   placeholder="Give a brief description of your portfolio"
-                                  name={Description}/>
+                                  name={Description}
+                                  onChange={onChangeDescription}
+                    />
                 </Form.Group>
                 
                 <div className="file-upload-container">
@@ -156,7 +182,6 @@ function UploadPortfolio (){
                 
 
             </Form>
-
         </div>
 
     )

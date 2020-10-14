@@ -99,7 +99,7 @@ exports.uploadImage = (req,res) => {
         const extension = filename.split('.').slice(-1)[0]
         imageFileName = `${Math.round(Math.random()*100000000000)}.${extension}`
         const filepath = path.join(os.tmpdir(),imageFileName);
-        image = {filepath, mimetype}
+        image = {filepath, mimetype};
 
 
         file.pipe(fs.createWriteStream(filepath))
