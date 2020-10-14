@@ -3,39 +3,55 @@ import Axios from 'axios'
 import FileUpload from "../fileUpload.component"
 
 import { Form, Button } from 'react-bootstrap'
-
+import {Card, CardHeader, CardMedia, CardContent, CardActions, Collapse, IconButton, Typography} from '@material-ui/core';
+import {Favorite, Share, ExpandMore, Edit, Delete, Remove, ZoomOutMap, Folder, PictureAsPdfOutlined, Image} from '@material-ui/icons';
+import {List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar} from '@material-ui/core';
 
 function UploadPortfolio (){
-    const [fileUploadStrategy, setFileUploadStrategy] = useState(2);
     const [PortfolioName, setPortfolioName] = useState('');
     const [Description, setDescription] = useState('');
-    const [Files, setFiles] = useState([])
 
-    const updateFiles = (newFiles) =>{
-        setFiles(newFiles);
-        
+    // Files that have been accepted by the DND interface
+    const [AccceptedDNDFiles, setAccceptedDNDFiles] = useState([]);
+    const [RejectedDNDFiles, setRejectedDNDFiles] = useState([]);
+
+    // Files that will be uploaded to the database on submit
+    const [AcceptedFiles, setAcceptedFiles] = useState([]);
+
+    const updateAccepted = (acceptedFiles) => {
+        setAccceptedDNDFiles(acceptedFiles);
+        // Filter removes duplicate files by .name property; sorts by .name
+        let combineFiles = AcceptedFiles.concat(acceptedFiles).filter((file, index, self) =>
+            self.findIndex(f => f.name === file.name) === index
+        ).sort(
+            (f1, f2) => {
+                return f1.name < f2.name;
+            }
+        )
+        setAcceptedFiles(combineFiles);
     }
 
-
-    const uploadStrategy = (fileUploadStrategy) =>{
-        if(fileUploadStrategy === 1){
-            return "You selected uploading images"
-        }
-        else if(fileUploadStrategy === 2){
-            return "You selected uploading images"
-        }
+    const updateRejected = (rejectedFiles) => {
+        setRejectedDNDFiles(rejectedFiles);
     }
+
+    const displayAcceptedFiles = AcceptedFiles.map(file => (
+        <li key={file.path}>
+        {file.path} - {file.size} bytes
+        </li>
+    ));
+
 
     const onSubmit = (event) => {
         event.preventDefault();
         const variables = {
             name: PortfolioName,
             description: Description,
-            files: Files
+            files: AcceptedFiles
         }
         console.log("Number of Files on submission", variables.files.length)
 
-        Files.forEach((file) => {
+        AcceptedFiles.forEach((file) => {
             const reader = new FileReader()
             reader.onabort = () => console.log('file reading was aborted')
             reader.onerror = () => console.log('file reading has failed')
@@ -71,6 +87,17 @@ function UploadPortfolio (){
             })
             .catch( (error) => console.log(error))
     }
+
+    function getListItemIcon(fileType){
+        switch(fileType){
+            case "application/pdf":
+                return <PictureAsPdfOutlined />;
+            case "image/png" || "image/jpeg":
+                return <Image />
+            default:
+                return <Folder />;
+        }
+    }
     return(
         <div style={{ maxWidth: '700px', margin: '2rem auto' }}>
             <Form id="uploadForm" onSubmit={onSubmit}>
@@ -88,49 +115,9 @@ function UploadPortfolio (){
                                   placeholder="Give a brief description of your portfolio"
                                   name={Description}/>
                 </Form.Group>
-                <>
-                    <Button
-                        variant="secondary"
-                        onClick={() => setFileUploadStrategy(1)}
-                        size="lg"
-                        >Upload a Folder</Button>{' '}
-                    <Button 
-                        variant ="secondary"
-                        onClick={() => setFileUploadStrategy(2)}
-                        size="lg"
-                        >Upload Images</Button>{' '}
-                    <Button 
-                        variant ="secondary"
-                        onClick = {() => setFileUploadStrategy(3)}
-                        size="lg"
-                        >Upload Documents</Button>{' '}
-                </>
-                <br/>
+                
                 <div className="file-upload-container">
-                    {(() => {
-
-                        if(fileUploadStrategy === 2){
-                            return (<FileUpload refreshFunction={updateFiles}/>)
-                        }
-                        else if (fileUploadStrategy === 1) {
-                            return(
-                                <Form.Group>
-                                    <Form.File
-                                    className="position-relative"
-                                    required
-                                    name="file"
-                                    label="Please upload the folder containing your project here"
-                                    id="validationFormik107"
-                                    feedbackTooltip
-                                    />
-                                </Form.Group>
-                            )
-                            }
-                        else if(fileUploadStrategy === 3){
-                            return "You selected uploading documents"
-                        }
-                    })()}
-                    {}
+                    <FileUpload updateAccepted={updateAccepted} updateRejected={updateRejected}/>
                 </div>
                 <br/>
                 <Button
@@ -140,6 +127,32 @@ function UploadPortfolio (){
                     onSubmit={onSubmit}>
                     Submit
                 </Button>
+
+                <List>
+                    {AcceptedFiles.map((file, index) => 
+                    <ListItem key={index}>
+                        <ListItemAvatar>
+                        <Avatar>
+                            {getListItemIcon(file.type)}
+                        </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText
+                        primary={file.name}
+                        />
+                        <ListItemSecondaryAction>
+                        <IconButton edge="end" aria-label="delete"
+                            onClick={() => {
+                                const newFiles = [...AcceptedFiles]
+                                newFiles.splice(index, 1);
+                                setAcceptedFiles(newFiles)
+                            }}
+                        >
+                            <Delete />
+                        </IconButton>
+                        </ListItemSecondaryAction>
+                    </ListItem>,
+                    )}
+                </List>
                 
 
             </Form>
