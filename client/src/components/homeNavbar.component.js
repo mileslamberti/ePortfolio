@@ -17,11 +17,13 @@ const HomeNavbar = () => {
       
       if (user) {
         setCurrentUser(user);
-        UserService.getMe().then(
-          (me) => {
-            setMe(me);
-          }
-        )
+        if (!me){
+          UserService.getMe().then(
+            (me) => {
+              setMe(me);
+            }
+          )
+        }
       }
 
     }, []);
@@ -31,7 +33,6 @@ const HomeNavbar = () => {
     };
     
     return (
-
       <nav className="navbar navbar-expand navbar-dark bg-dark">
         <Link to={"/"} className="navbar-brand">
           Tech Pirates
@@ -48,7 +49,6 @@ const HomeNavbar = () => {
             <NavDropdown title="Account" id="basic-nav-dropdown">
             <h6>Welcome {me.handle}</h6>
                 <NavDropdown.Item href="/profile">My profile</NavDropdown.Item>
-                <NavDropdown.Item href="/edit">Edit profile</NavDropdown.Item>
                 <NavDropdown.Item href="/">Account Information</NavDropdown.Item>
                 <NavDropdown.Item href="/">Account Settings</NavDropdown.Item>
                 <NavDropdown.Divider />

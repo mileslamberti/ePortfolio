@@ -7,7 +7,7 @@ import Home from "./components/home.component";
 import Login from "./components/login.component";
 import Register from "./components/registration.component";
 import MyProfile from "./components/myProfile.component";
-import EditAboutMe from './components/profileComponents/editAboutMe.component';
+import UploadPortfolio from './components/profileComponents/uploadPortfolio.component';
 import EditProject from './components/profileComponents/editProject.component';
 import ProfilePage from "./components/profilepage.component";
 import AboutThem from "./components/profileComponents/AboutThem.component";

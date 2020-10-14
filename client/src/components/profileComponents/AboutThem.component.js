@@ -10,7 +10,6 @@ export default function AboutThem (props) {
     const [inspirations, setInspirations] = useState("");
     const [jobs, setJobs] = useState("");
     const [experiences, setExperiences] = useState("");
-    
     useEffect( () => {
         axios.get(API_URL + `/${searchedUser}`)
             .then( res => {

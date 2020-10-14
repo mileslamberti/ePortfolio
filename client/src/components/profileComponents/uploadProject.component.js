@@ -10,14 +10,22 @@ import authHeader from "../../services/auth-header";
 import userService from "../../services/user.service";
 import axios from 'axios'
 
+import {Card, CardHeader, CardMedia, CardContent, CardActions, Collapse, IconButton, Typography} from '@material-ui/core';
+import {Favorite, Share, ExpandMore, Edit, Delete, Remove, ZoomOutMap, Folder, PictureAsPdfOutlined, Image} from '@material-ui/icons';
+import {List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar} from '@material-ui/core';
+
 const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
-const UploadPortfolio = () => {
-    const [fileUploadStrategy, setFileUploadStrategy] = useState(2);
+function UploadPortfolio (){
     const [ProjectTitle, setProjectTitle] = useState('');
     const [Description, setDescription] = useState('');
-    const [Files, setFiles] = useState([]);
-    const [userHandle, setUserHandle] = useState('');
+
+    // Files that have been accepted by the DND interface
+    const [AccceptedDNDFiles, setAccceptedDNDFiles] = useState([]);
+    const [RejectedDNDFiles, setRejectedDNDFiles] = useState([]);
+
+    // Files that will be uploaded to the database on submit
+    const [AcceptedFiles, setAcceptedFiles] = useState([]);
 
     useEffect(() => {
         function getHandle(){
@@ -30,26 +38,36 @@ const UploadPortfolio = () => {
         getHandle()
         InitFirebase();
     },[]);
-    const [isUploading, setIsUploading] = useState(false);
-    const updateFiles = (newFiles) =>{
-        setFiles(newFiles);
-    }
-
-    const uploadStrategy = (fileUploadStrategy) =>{
-        if(fileUploadStrategy === 1){
-            return "You selected uploading images"
-        }
-        else if(fileUploadStrategy === 2){
-            return "You selected uploading images"
-        }
-    }
     const onChangeProjectTitle = (e) => {
         setProjectTitle(e.target.value);
     }
     const onChangeDescription = (e) => {
         setDescription(e.target.value);
     }
-    
+    const updateAccepted = (acceptedFiles) => {
+        setAccceptedDNDFiles(acceptedFiles);
+        // Filter removes duplicate files by .name property; sorts by .name
+        let combineFiles = AcceptedFiles.concat(acceptedFiles).filter((file, index, self) =>
+            self.findIndex(f => f.name === file.name) === index
+        ).sort(
+            (f1, f2) => {
+                return f1.name < f2.name;
+            }
+        )
+        setAcceptedFiles(combineFiles);
+    }
+
+    const updateRejected = (rejectedFiles) => {
+        setRejectedDNDFiles(rejectedFiles);
+    }
+
+    const displayAcceptedFiles = AcceptedFiles.map(file => (
+        <li key={file.path}>
+        {file.path} - {file.size} bytes
+        </li>
+    ));
+
+
     const onSubmit = (event) => {
         const projectID = `project${Math.round(Math.random()*100000000)}`
         event.preventDefault();
@@ -73,15 +91,15 @@ const UploadPortfolio = () => {
                 });
             }
         }
-        console.log("Number of Files on submission", Files.length)
+        console.log("Number of Files on submission: ", AcceptedFiles.length)
         var links = [];
-        Files.forEach((file) => {
+        AcceptedFiles.forEach((file) => {
             firebase.storage().ref(`/${userHandle}/projects/${projectID}/file${Math.round(Math.random()*100000000)}.jpg`).put(file, {contentType:`image/${file.path.split(".")[1]}`})
                 .then( snapshot => {
                     console.log("Succefully uploaded file");
                     //console.log(snapshot.ref.getDownloadURL());
                     snapshot.ref.getDownloadURL().then( res => {
-                        submitToDatabase(`${API_URL}/projects`, res, links, Files.length, { headers: authHeader() });
+                        submitToDatabase(`${API_URL}/projects`, res, links, AcceptedFiles.length, { headers: authHeader() });
                     })
                 })
                 .catch(err => {
@@ -89,6 +107,17 @@ const UploadPortfolio = () => {
                 })
         });   
         
+    }
+
+    function getListItemIcon(fileType){
+        switch(fileType){
+            case "application/pdf":
+                return <PictureAsPdfOutlined />;
+            case "image/png" || "image/jpeg":
+                return <Image />
+            default:
+                return <Folder />;
+        }
     }
     return(
         <div style={{ maxWidth: '700px', margin: '2rem auto' }}>
@@ -110,49 +139,9 @@ const UploadPortfolio = () => {
                                   onChange={onChangeDescription}
                     />
                 </Form.Group>
-                <>
-                    <Button
-                        variant="secondary"
-                        onClick={() => setFileUploadStrategy(1)}
-                        size="lg"
-                        >Upload a Folder</Button>{' '}
-                    <Button 
-                        variant ="secondary"
-                        onClick={() => setFileUploadStrategy(2)}
-                        size="lg"
-                        >Upload Images</Button>{' '}
-                    <Button 
-                        variant ="secondary"
-                        onClick = {() => setFileUploadStrategy(3)}
-                        size="lg"
-                        >Upload Documents</Button>{' '}
-                </>
-                <br/>
+                
                 <div className="file-upload-container">
-                    {(() => {
-
-                        if(fileUploadStrategy === 2){
-                            return (<FileUpload refreshFunction={updateFiles}/>)
-                        }
-                        else if (fileUploadStrategy === 1) {
-                            return(
-                                <Form.Group>
-                                    <Form.File
-                                    className="position-relative"
-                                    required
-                                    name="file"
-                                    label="Please upload the folder containing your project here"
-                                    id="validationFormik107"
-                                    feedbackTooltip
-                                    />
-                                </Form.Group>
-                            )
-                            }
-                        else if(fileUploadStrategy === 3){
-                            return "You selected uploading documents"
-                        }
-                    })()}
-                    {}
+                    <FileUpload updateAccepted={updateAccepted} updateRejected={updateRejected}/>
                 </div>
                 <br/>
                 <Button
@@ -162,6 +151,34 @@ const UploadPortfolio = () => {
                     onSubmit={onSubmit}>
                     Submit
                 </Button>
+
+                <List>
+                    {AcceptedFiles.map((file, index) => 
+                    <ListItem key={index}>
+                        <ListItemAvatar>
+                        <Avatar>
+                            {getListItemIcon(file.type)}
+                        </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText
+                        primary={file.name}
+                        />
+                        <ListItemSecondaryAction>
+                        <IconButton edge="end" aria-label="delete"
+                            onClick={() => {
+                                const newFiles = [...AcceptedFiles]
+                                newFiles.splice(index, 1);
+                                setAcceptedFiles(newFiles)
+                            }}
+                        >
+                            <Delete />
+                        </IconButton>
+                        </ListItemSecondaryAction>
+                    </ListItem>,
+                    )}
+                </List>
+                
+
             </Form>
         </div>
 
