@@ -3,7 +3,6 @@ import {useDropzone} from 'react-dropzone';
 
 function FileUpload(props){
 
-<<<<<<< HEAD
     const onDrop = useCallback((acceptedFiles) => {
         
         console.log(acceptedFiles.length)
@@ -11,25 +10,13 @@ function FileUpload(props){
 
 
     })
-=======
-    const [Files, setFiles] = useState([]);
-
-    const onDropAccepted= useCallback((acceptedFiles) => props.updateAccepted(acceptedFiles));
-    const onDropRejected= useCallback((rejectedFiles) => props.updateRejected(rejectedFiles));
->>>>>>> 2e2c750a5c8f568d3f1af1349313bb8a279982e3
 
     const acceptableFiles = ['.pdf', '.png', '.jpg'];
 
     const {acceptedFiles, fileRejections,  getRootProps, getInputProps} = useDropzone({ 
                                                                         maxSize: 1600000000,
-<<<<<<< HEAD
                                                                         accept: acceptableFiles
                                                                         });
-=======
-                                                                        accept: acceptableFiles,
-                                                                        onDropAccepted,
-                                                                        onDropRejected});
->>>>>>> 2e2c750a5c8f568d3f1af1349313bb8a279982e3
   
 
     const fileRejectionItems = fileRejections.map(({ file, errors }) => (
