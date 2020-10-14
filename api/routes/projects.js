@@ -1,38 +1,21 @@
-var express = require('express');
-var router = express.Router();
-const multer = require('multer');
+const {db} = require('../utility/admin')
 
-var storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, './uploads/')
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname)
-  }
-})
+exports.saveProject = (req, res) => {
+  const project = {
+    title : req.body.title,
+    description : req.body.description,
+    files : req.body.files,
+  };
 
-var upload = multer({storage: storage}).single("file")
-
-
-
-router.post('/uploadPortfolio', (req, res) => {
-  if(err) return res.status(400).json({success: false, err})
-  return res.status(200).json({success: true})
-});
-
-router.post('/uploadFile', (req, res) => {
-  upload(req, res, err => {
-    console.log(req)
-    console.log(res)
-    console.log(err)
-    if(err) return res.json({success: false, err})
-    return res.json({success: true, file: res.req.file.path, fileName: res.req.filename})
-  })
-});
-
-
-router.post('/upload', function(req, res) {
-    console.log(req.files.myproject); // the uploaded file object
+  const projectID=req.body.projectID;
+  //db.collection(`/users/${req.user.handle}/data/projects/`).doc(projectID).set({aboutMe}).then(doc => {
+  db.doc(`/users/${req.user.handle}/projects/${projectID}`).set({project}).then(doc => {
+      return res.json({ message: `project added` })
+  }).catch(err => {
+      console.error(err);
+      return res.status(500).json({ error: `something went wrong` });
   });
-
-module.exports = router;
+}
+exports.getProjects = (req, res) => {
+  return res.json({ message: `looking for projects??` })
+}
