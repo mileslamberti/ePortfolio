@@ -66,6 +66,8 @@ function UploadPortfolio (){
         {file.path} - {file.size} bytes
         </li>
     ));
+
+    // sumbits to the given path once it has recieved the number of files specified by numFiles
     const submitToDatabase = (path, newLink, links, numFiles, projectID) => {
         links.push(newLink);
         if (links.length === numFiles){
