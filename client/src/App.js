@@ -54,17 +54,19 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/profilepage" component={ProfilePage} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
-          <Route exact path="/profile" component={MyProfile} />
-          <Route exact path="/uploadProject" component={UploadProject}/>
-          <Route exact path="/editProject" component={EditProject}/>
-          <Route 
-            path = "/:handle" 
-            render = {(props) => (
-              <AboutThem {...props}/>
-            )}
-          />  
+          <div className="container mt-3">
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/profile" component={MyProfile} />
+              <Route exact path="/uploadPortfolio" component={UploadPortfolio}/>
+              <Route exact path="/editPortfolio" render={() => <PortfolioCardProvider> <EditProject/> </PortfolioCardProvider>}/>
+              <Route 
+                path = "/:handle" 
+                render = {(props) => (
+                  <AboutThem {...props}/>
+                )}
+              />  
+          </div>
         </Switch>
       </Router>
     );
