@@ -6,13 +6,6 @@ import { NavDropdown } from 'react-bootstrap';
 import AuthService from "../services/auth.service";
 import UserService from "../services/user.service";
 
-import Home from "./home.component";
-import Login from "./login.component";
-import Register from "./registration.component";
-import MyProfile from "./myProfile.component";
-import EditAboutMe from './profileComponents/editAboutMe.component';
-import UploadPortfolio from './profileComponents/uploadPortfolio.component';
-import ProfilePage from "./profilespage.component";
 
 const HomeNavbar = () => {
 

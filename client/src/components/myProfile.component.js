@@ -11,18 +11,15 @@ import Tags from "./profileComponents/tags.component";
 import Tabs from "../components/tabs.component";
 import FindUser from "./profileComponents/findUser.component";
 
-const MyProfile = () => {
+export default class MyProfile extends React.Component {
 
     render() {
         return (
-
-            
-
         <div>
             <div class="profile">
                 <div class="profile_left">
                     <div class="img_here">
-                        <img src={img} alt= "profile pic" height={300} width={300} />
+                        {/* <img src={img} alt= "profile pic" height={300} width={300} /> */}
                         <DP/>
                     </div>
                     <div class="profile_content">
@@ -111,8 +108,16 @@ const MyProfile = () => {
             </div>
         </div>
 
+        )
+    }
+}
 
-                    /* <div>
+
+
+
+
+
+/* <div>
                         <Tabs> 
                         <div label="About Me"> 
                             <div class="aboutme">
@@ -142,8 +147,3 @@ const MyProfile = () => {
                         </Tabs> 
                     </div>
                 </div> */
-                )
-    }
-  }
-
-export default MyProfile;
