@@ -66,7 +66,7 @@ function PortfolioCard(props) {
     let newFiles = files;
     for(let i=0; i<files.length; i++){
         // Unassociated card that whose name is in filesToAdd
-        if(files[i].associatedWithCard === "" && filesToAdd.indexOf(files[i].fname) != -1){
+        if(files[i].associatedWithCard === "" && filesToAdd.indexOf(files[i].fname) !== -1){
             //files[i].associatedWithCard = cardID;
             newFiles[i].associatedWithCard = cardID;
             
@@ -199,7 +199,7 @@ function unassociateFileWithCard(file){
             {extendedDescription}
           </Typography>
             <List>
-            {getFilesAssociatedWithCard().map((file, index) => 
+            {associatedFiles.map((file, index) => 
               <ListItem key={index}>
                 <ListItemAvatar>
                   <Avatar>

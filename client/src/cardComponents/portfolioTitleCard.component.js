@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import { Card, CardHeader, IconButton, makeStyles} from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
-import Dialog from '@material-ui/core/Dialog';
 import DialogTitleCard from "./DialogTitleCard.component";
 
 

@@ -16,11 +16,12 @@ import AboutThem from "./components/profileComponents/AboutThem.component";
 import {PortfolioCardProvider} from "./cardComponents/portfolioCardContext"; 
 
 //import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
+//import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
 //import landing from './views/landing'
 //import login from './views/login'
 //import signup from './views/signup'
 //import NavBar from './components/NavBar'
+/*
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -33,7 +34,7 @@ const theme = createMuiTheme({
   typography : {
     useNextVariants: true
   }
-})
+})*/
 
 
 
@@ -44,15 +45,7 @@ class App extends Component {
     super(props);
     this.state = { apiResponse: "" };
   }
-  callWelcome() {
-    fetch("http://localhost:9000/welcome")
-      .then(res => res.text())
-      .then(res => this.setState({ apiResponse: res }));
-  }
 
-  componentDidMount() {
-    this.callWelcome();
-  }
   render() {
     return (
       <Router>
@@ -64,8 +57,8 @@ class App extends Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/profile" component={MyProfile} />
-              <Route exact path="/edit" exact component={EditAboutMe}/>
-              <Route exact path="/uploadPortfolio" exact component={UploadPortfolio}/>
+              <Route exact path="/edit" component={EditAboutMe}/>
+              <Route exact path="/uploadPortfolio" component={UploadPortfolio}/>
               <Route exact path="/editPortfolio" render={() => <PortfolioCardProvider> <EditProject/> </PortfolioCardProvider>}/>
               <Route 
                 path = "/:handle" 

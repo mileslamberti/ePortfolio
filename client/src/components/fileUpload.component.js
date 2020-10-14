@@ -1,10 +1,8 @@
-import React, {useState, useCallback} from 'react'
+import React, {useCallback} from 'react'
 import {useDropzone} from 'react-dropzone';
-import Axios from 'axios'
 
 function FileUpload(props){
 
-    const [Files, setFiles] = useState([]);
     const onDrop = useCallback((acceptedFiles) => {
         
         console.log(acceptedFiles.length)
@@ -12,14 +10,13 @@ function FileUpload(props){
 
 
     })
-    const onDropAccepted= () => console.log(Files.length)
 
     const acceptableFiles = ['.pdf', '.png', '.jpg'];
 
     const {acceptedFiles, fileRejections,  getRootProps, getInputProps} = useDropzone({  onDrop,
                                                                         maxSize: 1600000000,
-                                                                        accept: acceptableFiles,
-                                                                        onDropAccepted});
+                                                                        accept: acceptableFiles
+                                                                        });
   
     const acceptedFileItems = acceptedFiles.map(file => (
         <li key={file.path}>
