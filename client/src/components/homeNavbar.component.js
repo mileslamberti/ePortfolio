@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import { NavDropdown } from 'react-bootstrap';
 
@@ -71,6 +71,7 @@ const HomeNavbar = () => {
           </div>
         )}
       </nav>
+
     )
 }
 
