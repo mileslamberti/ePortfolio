@@ -1,4 +1,4 @@
-import firebase from "firebase";
+const firebase = require('firebase/app');
  
 const config = {
     apiKey: "AIzaSyB6d557V-lUNBHcGoNTYFQwSOQ095Ua3CE",
@@ -15,11 +15,7 @@ const config = {
 const InitFirebase = () => {
     if (firebase.apps.length === 0) {
         return (
-            firebase.initializeApp(config).then( res =>
-                console.log("Firebase connection established")
-            ).catch ( err => {
-                console.log(err);
-            })
+            firebase.initializeApp(config)
         );
     }
   }
