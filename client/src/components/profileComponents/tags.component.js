@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TagInput } from 'reactjs-tag-input';
+//import { TagInput } from 'reactjs-tag-input';
 import "./tags.component.css";
 
 
