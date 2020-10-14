@@ -1,5 +1,4 @@
 import React, { useState, useEffect }from 'react';
-import Axios from 'axios'
 import FileUpload from "../fileUpload.component"
 
 import { Form, Button } from 'react-bootstrap'
@@ -7,16 +6,19 @@ import { Form, Button } from 'react-bootstrap'
 import firebase from "firebase";
 import InitFirebase from "../../services/initFirebase";
 
+import authHeader from "../../services/auth-header";
 import userService from "../../services/user.service";
+import axios from 'axios'
 
 const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
 const UploadPortfolio = () => {
     const [fileUploadStrategy, setFileUploadStrategy] = useState(2);
-    const [PortfolioName, setPortfolioName] = useState('');
+    const [ProjectTitle, setProjectTitle] = useState('');
     const [Description, setDescription] = useState('');
     const [Files, setFiles] = useState([]);
     const [userHandle, setUserHandle] = useState('');
+    const [fileLinks, setFileLinks] = useState([]);
 
     useEffect(() => {
         function getHandle(){
@@ -27,15 +29,12 @@ const UploadPortfolio = () => {
             }
         }
         getHandle()
+        InitFirebase();
     },[]);
     const [isUploading, setIsUploading] = useState(false);
-    // TODO HANDLE THE INIT BETTER
-    InitFirebase();
-
     const updateFiles = (newFiles) =>{
         setFiles(newFiles);
     }
-
 
     const uploadStrategy = (fileUploadStrategy) =>{
         if(fileUploadStrategy === 1){
@@ -45,16 +44,17 @@ const UploadPortfolio = () => {
             return "You selected uploading images"
         }
     }
+    const onChangeProjectTitle = (e) => {
+        setProjectTitle(e.target.value);
+    }
+    const onChangeDescription = (e) => {
+        setDescription(e.target.value);
+    }
 
     const onSubmit = (event) => {
         event.preventDefault();
         
-        const variables = {
-            name: PortfolioName,
-            description: Description,
-            files: Files
-        }
-        console.log("Number of Files on submission", variables.files.length)
+        console.log("Number of Files on submission", Files.length)
         Files.forEach((file) => {
 
             const reader = new FileReader()
@@ -69,35 +69,56 @@ const UploadPortfolio = () => {
                  formData.append("file", file, file.path)
 
                 const binaryStr = reader.result
-                firebase.storage().ref(`/${userHandle}/projects/images/img${Math.round(Math.random()*100000000)}.jpg`).put(binaryStr, {contentType:`image/${file.path.split(".")[1]}`})
-                    .then(res => {
-                        console.log("Succefully uploaded file");
+                var uploadTask = firebase.storage().ref(`/${userHandle}/projects/images/img${Math.round(Math.random()*100000000)}.jpg`).put(binaryStr, {contentType:`image/${file.path.split(".")[1]}`})
+                .then( snapshot => {
+                    console.log("Succefully uploaded file");
+                    //console.log(snapshot.ref.getDownloadURL());
+                    snapshot.ref.getDownloadURL().then( res => {
+                        console.log(res);
+                        setFileLinks( res => fileLinks.concat(res));
                     })
-                    .catch(err => {
-                        console.log(err);
-                    })
-                     
+                })
+                .catch(err => {
+                    console.log(err);
+                })
             }
-            reader.readAsArrayBuffer(file);
-          //})
+                 
         })
+        const project = {
+            projectID: `project${Math.round(Math.random()*100000000)}`,
+            title: ProjectTitle,
+            description: Description,
+            files: fileLinks
+        }
+        console.log(project);
+        axios.post(API_URL+'/projects', project, { headers: authHeader() })
+            .then( res => {
+                console.log(res.data);
+                setFileLinks([]);
+                setProjectTitle('');
+                setDescription('');
+                setFiles([]);
+            });
     }
     return(
         <div style={{ maxWidth: '700px', margin: '2rem auto' }}>
             <Form id="uploadForm" onSubmit={onSubmit}>
-                <Form.Group controlId="PortfolioName">
-                    <Form.Label>Portfolio Name</Form.Label>
+                <Form.Group controlId="ProjectTitle">
+                    <Form.Label>Project Title</Form.Label>
                     <Form.Control type="text"
-                                  name={PortfolioName}
+                                  name={ProjectTitle}
+                                  onChange={onChangeProjectTitle}
                                   placeholder="Enter the name of your portfolio"/>
                 </Form.Group>
 
-                <Form.Group controlId="PortfolioDescription">
-                    <Form.Label>Portfolio Description</Form.Label>
+                <Form.Group controlId="Description">
+                    <Form.Label>Description</Form.Label>
                     <Form.Control as="textarea"
                                   rows="6"
                                   placeholder="Give a brief description of your portfolio"
-                                  name={Description}/>
+                                  name={Description}
+                                  onChange={onChangeDescription}
+                    />
                 </Form.Group>
                 <>
                     <Button
