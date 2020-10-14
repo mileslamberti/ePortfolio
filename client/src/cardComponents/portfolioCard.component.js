@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { red } from '@material-ui/core/colors';
@@ -8,6 +8,9 @@ import {Favorite, Share, ExpandMore, Edit, Delete, Remove, ZoomOutMap, Folder} f
 import {List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar} from '@material-ui/core';
 
 import DialogPortfolioCard from "./DialogPortfolioCard.component";
+
+import {PortfolioCardContext} from "./portfolioCardContext";
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +41,54 @@ function PortfolioCard(props) {
   const [expanded, setExpanded] = React.useState(false);
   const [Picture, setPicture] = useState(require("./images/programming.png"))
   const [showMedia, setMedia] = useState(true);
+  
+
+  // These files are common across all cards
+  const [files, setFiles] = useContext(PortfolioCardContext);
+
+  // Returns an array of filenames that are associated with a particular cardID
+  function getFilesAssociatedWithCard(){
+      return files.filter(file => file.associatedWithCard === props.id);
+  }
+
+  function getFilesUnassociatedWithAnyCard(){
+      return files.filter(file => file.associatedWithCard === "")
+  }
+
+  // Files associated with Card, we need this to force immediate re-renders when removing files
+  // associated with the card.
+  const [associatedFiles, setAssociatedFiles] = useState(getFilesAssociatedWithCard());
+
+  // Associates the filesToAdd files with a particular card
+  function associateFilesWithCard(filesToAdd){
+    filesToAdd = filesToAdd.map(file => file.fname);
+    const cardID = props.id;
+    let newFiles = files;
+    for(let i=0; i<files.length; i++){
+        // Unassociated card that whose name is in filesToAdd
+        if(files[i].associatedWithCard === "" && filesToAdd.indexOf(files[i].fname) != -1){
+            //files[i].associatedWithCard = cardID;
+            newFiles[i].associatedWithCard = cardID;
+            
+        }
+    }
+    setAssociatedFiles(getFilesAssociatedWithCard());
+    setFiles(newFiles);
+}
+function unassociateFileWithCard(file){
+      let newFiles = files;
+      const cardID = props.id;
+      for(let i=0; i<files.length; i++){
+          if(files[i].fname === file){
+              console.assert(files[i].associatedWithCard === cardID, "Different card IDs")
+              newFiles[i].associatedWithCard = ""
+              break;
+          }    
+      }
+      setFiles(newFiles);
+      setAssociatedFiles(getFilesAssociatedWithCard());
+}
+
 
   // Title of Card
   const [title, setTitle] = useState(props.title);
@@ -51,10 +102,6 @@ function PortfolioCard(props) {
 
   // Whether edit dialog is open
   const [open, setOpen] = React.useState(false);
-
-  // Files associated with this particular card
-  const [files, setFiles] = useState(props.getFilesAssociatedWithCard(props.id))
-
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -72,9 +119,8 @@ function PortfolioCard(props) {
     setTitle(t);
     setDescription(d);
     setExtendedDescription(e);
-    setFiles([...files, ...fs])
     if(fs.length > 0){
-        props.associateFilesWithCard(props.id, fs);
+        associateFilesWithCard(fs);
     }
     setOpen(false);
   }
@@ -122,8 +168,8 @@ function PortfolioCard(props) {
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites"> <Favorite /> </IconButton>
         <IconButton aria-label="share"> <Share /> </IconButton>
-        <IconButton> <Edit onClick={handleClickOpen}/> </IconButton>
-        <IconButton> <Delete onClick={props.onDeleteClick}/> </IconButton>
+        <IconButton onClick={handleClickOpen}> <Edit /> </IconButton>
+        <IconButton onClick={props.onDeleteClick}> <Delete /> </IconButton>
         <IconButton
           className={clsx(classes.expand, {
             [classes.expandOpen]: expanded,
@@ -143,8 +189,9 @@ function PortfolioCard(props) {
             title={title}
             description={description}
             extendedDescription={extendedDescription}
+            cardID={props.id}
             dialogInformation={getDialogDescription()}
-            files={props.getFilesUnassociatedWithAnyCard()}
+            files={getFilesUnassociatedWithAnyCard()}
         />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
@@ -152,8 +199,8 @@ function PortfolioCard(props) {
             {extendedDescription}
           </Typography>
             <List>
-            {files.map((file, index) => 
-              <ListItem>
+            {getFilesAssociatedWithCard().map((file, index) => 
+              <ListItem key={index}>
                 <ListItemAvatar>
                   <Avatar>
                     <Folder />
@@ -163,13 +210,11 @@ function PortfolioCard(props) {
                   primary={file.fname}
                 />
                 <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete">
-                    <Delete onClick={() => {
-                      props.unassociateFileWithCard(props.id, file.fname);
-                      const newFiles = [...files]
-                      newFiles.splice(index, 1);
-                      setFiles(newFiles)
-                    }}/>
+                  <IconButton edge="end" aria-label="delete"
+                    onClick={() => {
+                      unassociateFileWithCard(file.fname);
+                     }}>
+                    <Delete />
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListItem>,

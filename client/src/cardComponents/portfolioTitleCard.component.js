@@ -48,8 +48,8 @@ function PortfolioTitleCard(props){
         <Card className={classes.root}>
             <CardHeader
                 action={
-                    <IconButton>
-                        <EditIcon onClick={handleClickOpen}/>
+                    <IconButton onClick={handleClickOpen}>
+                        <EditIcon />
                     </IconButton>
                 }
                 title={title}

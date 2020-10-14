@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -8,7 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 function DiaglogTitleCard(props){
-    const {handleClickOpen, handleDialogConfirm, handleDialogCancel, open, title, description} = props
+    const {handleDialogConfirm, handleDialogCancel, open, title, description} = props
     const [formTitle, setFormTitle] = useState(title);
     const [formDescription, setFormDescription] = useState(description);
 
