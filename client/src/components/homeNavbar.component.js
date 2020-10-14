@@ -71,7 +71,6 @@ const HomeNavbar = () => {
           </div>
         )}
       </nav>
-
     )
 }
 
