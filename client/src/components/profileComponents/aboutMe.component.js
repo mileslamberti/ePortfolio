@@ -1,47 +1,118 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import { Button } from 'react-bootstrap';
+import React, { useState, useEffect }from 'react';
 import axios from 'axios';
-import EditAboutMe from "./editAboutMe.component"
 
-export default class AboutMe extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            displayName: "",
-            inspirations: "",
-            jobs:"",
-            experiences:""
-        };
-    }
-    componentWillMount(){
-        // TODO hard code remove
-        axios.get("http://localhost:9000/aboutme/5f5f245a79559420689a8de9")
+import {CardHeader, CardContent, Typography, IconButton, Input, FormControl, InputLabel} from '@material-ui/core';
+import {Edit} from '@material-ui/icons';
+
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
+import authHeader from "../../services/auth-header";
+
+
+const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
+
+const AboutMe = () => {
+
+    const [loading, setLoading] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [aboutMe, setAboutMe] = useState("");
+    const [updatedAboutMe, setUpdatedAboutMe] = useState("");
+
+    useEffect( () => {
+        setLoading(true);
+        axios.get(API_URL + "/aboutme", { headers: authHeader() })
             .then( res => {
-                this.setState({ 
-                    displayName: res.data.displayName,
-                    inspirations: res.data.inspirations,
-                    jobs: res.data.jobs,
-                    experiences: res.data.experiences })
+                console.log(res);
+                setAboutMe(res.data.aboutMe);
+                setUpdatedAboutMe(res.data.aboutMe);
+                setLoading(false);
             })
             .catch( err => {
                 console.log(err);
             })
+    }, []);
+    
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+    
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleCancel = () => {
+        setUpdatedAboutMe(aboutMe);
+        setOpen(false);
+    };
+
+    const onChangeDisplayName = (e) => {
+        setUpdatedAboutMe({...updatedAboutMe, displayName: e.target.value});
     }
-    render() {
-        return (
-            <Router>
-                <div>
-                    <h3>Hi I am {this.state.displayName}</h3>
-                    <h3>I would love to {this.state.inspirations}</h3>
-                    <h3>I have worked as a {this.state.jobs}</h3>
-                    <h3>I have experienced {this.state.experiences}</h3>
-                    <Button href="/edit" variant="secondary">Edit about me</Button>
-                </div>
-                {/* <div className="container"> */}
-                    <Route path="/edit" exact component={EditAboutMe}/>
-                {/* </div> */}
-            </Router>
-        )
+    const onChangeInspirations = (e) => {
+        setUpdatedAboutMe({...updatedAboutMe, inspirations: e.target.value});
     }
+    const onChangeJobs = (e) => {
+        setUpdatedAboutMe({...updatedAboutMe, jobs: e.target.value});
+    }
+    const onChangeExperiences= (e) =>{
+        setUpdatedAboutMe({...updatedAboutMe, experiences: e.target.value});
+    }
+
+    const onSubmit = (e) => {
+        e.preventDefault(); // allows us override the default html stuff
+
+        axios.post(API_URL+'/aboutme', updatedAboutMe, { headers: authHeader() })
+            .then( res => {
+                setAboutMe(updatedAboutMe);
+                console.log(res.data);
+                handleClose();
+            });
+    }
+    
+    return (
+            <div>
+            {loading ? <span className="spinner-border spinner-border-sm"></span> : 
+            <>
+            <CardContent>
+                <CardHeader title={aboutMe.displayName} />
+                    <Typography variant="h6" color="textSecondary" component="p"> I would love to: {aboutMe.inspirations} </Typography>
+                    <Typography variant="h6" color="textSecondary" component="p"> I have worked as a: {aboutMe.jobs} </Typography>
+                    <Typography variant="h6" color="textSecondary" component="p"> I have experienced: {aboutMe.experiences} </Typography>
+            </CardContent>
+            <IconButton> <Edit onClick={handleClickOpen} /> </IconButton>
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title">Edit about me</DialogTitle>
+                    <DialogContent>
+                        <FormControl>
+                            <InputLabel htmlFor="component-helper">Display Name</InputLabel>
+                            <Input defaultValue={aboutMe.displayName} onChange={onChangeDisplayName}/></FormControl>
+                        <FormControl>
+                            <InputLabel htmlFor="component-helper">Inspirations</InputLabel>
+                            <Input defaultValue={aboutMe.inspirations} onChange={onChangeInspirations}/></FormControl>
+                        <FormControl>
+                            <InputLabel htmlFor="component-helper">Jobs</InputLabel>
+                            <Input defaultValue={aboutMe.jobs} onChange={onChangeJobs}/></FormControl>
+                        <FormControl>
+                            <InputLabel htmlFor="component-helper">Experiences</InputLabel>
+                            <Input defaultValue={aboutMe.experiences} onChange={onChangeExperiences}/></FormControl>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCancel} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={onSubmit} color="primary">
+                            Confirm
+                        </Button>
+                    </DialogActions>
+                </Dialog>        
+            </>
+            }
+        </div>
+    )
 }
+
+export default AboutMe;

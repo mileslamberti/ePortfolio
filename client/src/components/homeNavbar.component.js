@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Link } from "react-router-dom";
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import { NavDropdown } from 'react-bootstrap';
 
@@ -24,11 +24,13 @@ const HomeNavbar = () => {
       
       if (user) {
         setCurrentUser(user);
-        UserService.getMe().then(
-          (me) => {
-            setMe(me);
-          }
-        )
+        if (!me){
+          UserService.getMe().then(
+            (me) => {
+              setMe(me);
+            }
+          )
+        }
       }
 
     }, []);
@@ -38,7 +40,6 @@ const HomeNavbar = () => {
     };
     
     return (
-    <Router>
       <nav className="navbar navbar-expand navbar-dark bg-dark">
         <Link to={"/"} className="navbar-brand">
           Tech Pirates
@@ -55,7 +56,6 @@ const HomeNavbar = () => {
             <NavDropdown title="Account" id="basic-nav-dropdown">
             <h6>Welcome {me.handle}</h6>
                 <NavDropdown.Item href="/profile">My profile</NavDropdown.Item>
-                <NavDropdown.Item href="/edit">Edit profile</NavDropdown.Item>
                 <NavDropdown.Item href="/">Account Information</NavDropdown.Item>
                 <NavDropdown.Item href="/">Account Settings</NavDropdown.Item>
                 <NavDropdown.Divider />
@@ -78,19 +78,6 @@ const HomeNavbar = () => {
           </div>
         )}
       </nav>
-
-      <Route exact path="/" component={Home} />
-      <Route exact path="/profilepage" component={ProfilePage} />
-      <div className="container mt-3">
-        <Switch>
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
-          <Route exact path="/profile" component={MyProfile} />
-          <Route exact path="/edit" exact component={EditAboutMe}/>
-          <Route exact path="/uploadPortfolio" exact component={UploadPortfolio}/>
-        </Switch>
-      </div>
-    </Router>
     )
 }
 

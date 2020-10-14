@@ -2,17 +2,16 @@ import React from 'react';
 //import { Grid, Nav, NavDropdown } from 'react-bootstrap';
 import './myprofile.component.css';
 import img from './random.jpg';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import DP from "./profileComponents/dp.component";
 import AboutMe from "./profileComponents/aboutMe.component";
 import Projects from "./profileComponents/projects.component";
 import Tags from "./profileComponents/tags.component";
 import Tabs from "../components/tabs.component";
+import FindUser from "./profileComponents/findUser.component";
 
-const axios=require("axios");
-
-export default class MyProfile extends React.Component {
+const MyProfile = () => {
 
     render() {
         return (
@@ -107,6 +106,8 @@ export default class MyProfile extends React.Component {
                         </ul>
                     </div>            
                 </div>
+                
+                
             </div>
         </div>
 
@@ -144,3 +145,5 @@ export default class MyProfile extends React.Component {
                 )
     }
   }
+
+export default MyProfile;

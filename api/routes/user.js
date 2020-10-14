@@ -99,7 +99,7 @@ exports.uploadImage = (req,res) => {
         const extension = filename.split('.').slice(-1)[0]
         imageFileName = `${Math.round(Math.random()*100000000000)}.${extension}`
         const filepath = path.join(os.tmpdir(),imageFileName);
-        image = {filepath, mimetype}
+        image = {filepath, mimetype};
 
 
         file.pipe(fs.createWriteStream(filepath))
@@ -135,6 +135,18 @@ exports.addUserDetails  = (req,res) => {
         console.error(err)
         return res.status(400).json({error:err.code})
         })
+}
+
+exports.updateProfilePic  = (req,res) => {
+    let url = Object.keys(req.body)[0] + '=media';
+    console.log(url);
+    db.doc(`/users/${req.user.handle}`).update({"imageUrl": url}).then(() => {
+        return res.status(201).json({message: 'Success'})
+    }).catch( err => {
+        console.error(err)
+        return res.status(400).json({error:err.code})
+    })
+
 }
 
 exports.getAuthorisedUser = (req,res) => {

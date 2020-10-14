@@ -1,5 +1,5 @@
 import axios from "axios";
-import userService from "./user.service";
+//import userService from "./user.service";
 
 const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 

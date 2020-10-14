@@ -5,28 +5,19 @@ import Axios from 'axios'
 function FileUpload(props){
 
     const [Files, setFiles] = useState([]);
-    const onDrop = useCallback((acceptedFiles) => {
-        
-        console.log(acceptedFiles.length)
-        props.refreshFunction(acceptedFiles)
 
-
-    })
-    const onDropAccepted= () => console.log(Files.length)
+    const onDropAccepted= useCallback((acceptedFiles) => props.updateAccepted(acceptedFiles));
+    const onDropRejected= useCallback((rejectedFiles) => props.updateRejected(rejectedFiles));
 
     const acceptableFiles = ['.pdf', '.png', '.jpg'];
 
-    const {acceptedFiles, fileRejections,  getRootProps, getInputProps} = useDropzone({  onDrop,
+    const {acceptedFiles, fileRejections,  getRootProps, getInputProps} = useDropzone({ 
                                                                         maxSize: 1600000000,
                                                                         accept: acceptableFiles,
-                                                                        onDropAccepted});
+                                                                        onDropAccepted,
+                                                                        onDropRejected});
   
-    const acceptedFileItems = acceptedFiles.map(file => (
-        <li key={file.path}>
-        {file.path} - {file.size} bytes
-        </li>
-    ));
-        
+
     const fileRejectionItems = fileRejections.map(({ file, errors }) => (
         <li key={file.path}>
           {file.path} - {file.size} bytes
@@ -41,7 +32,6 @@ function FileUpload(props){
     return (
         
       <>
-        <br/>
         <div className="dropbox"
              style={{width: '700px',
                      height: '100px',
@@ -61,8 +51,6 @@ function FileUpload(props){
         </div>
         <br/>
         <aside>
-          <h4>Files</h4>
-          <ul>{acceptedFileItems}</ul>
           <h4>Rejected files</h4>
           <ul>{fileRejectionItems}</ul>
         </aside>
