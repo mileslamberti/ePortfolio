@@ -58,7 +58,7 @@ class App extends Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/profile" component={MyProfile} />
-              <Route exact path="/uploadPortfolio" component={UploadPortfolio}/>
+              <Route exact path="/uploadPortfolio" component={UploadProject}/>
               <Route exact path="/editPortfolio" render={() => <PortfolioCardProvider> <EditProject/> </PortfolioCardProvider>}/>
               <Route 
                 path = "/:handle" 
