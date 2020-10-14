@@ -1,18 +1,18 @@
-import React, {useState, useRef} from 'react';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core';
 
 import MultiselectCheckbox from "./MultiselectCheckbox.component";
 
-
 function DialogPortfolioCard(props){
 
-    const {handleClickOpen, handleDialogConfirm, handleDialogCancel, open, title, description, extendedDescription, dialogInformation} = props
+    const {handleDialogConfirm, handleDialogCancel, open, title, description, extendedDescription, dialogInformation} = props
     const [formTitle, setFormTitle] = useState(title);
     const [formDescription, setFormDescription] = useState(description);
     const [formExtendedDescription, setFormExtendedDescription] = useState(extendedDescription);
     const [filesToAssociate, setFilesToAssociate] = useState([])
+
 
     const updateFilesToAssociate = (fs) =>{
         setFilesToAssociate(fs);
@@ -73,12 +73,12 @@ function DialogPortfolioCard(props){
             onChange={onChangeExtendedDescription}
           />
           {/* Ability to associate files with cards only allowed in edit mode */}
-          {console.log(dialogInformation)}
           {dialogInformation.edit &&
             <> 
             <br/> 
             <MultiselectCheckbox 
               files={props.files}
+              cardId={props.cardid}
               updateFilesToAssociate={updateFilesToAssociate}
             /> 
             </>

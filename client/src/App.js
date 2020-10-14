@@ -12,6 +12,7 @@ import EditProject from './components/profileComponents/editProject.component';
 import ProfilePage from "./components/profilepage.component";
 import AboutThem from "./components/profileComponents/AboutThem.component";
 
+import {PortfolioCardProvider} from "./cardComponents/portfolioCardContext";
 import InitFirebase from  "./services/initFirebase";
 //import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
@@ -34,23 +35,18 @@ const theme = createMuiTheme({
   }
 })
 
-
-
-
 class App extends Component {
 
   constructor(props) {
     super(props);
     this.state = { apiResponse: "" };
   }
+  
   callWelcome() {
 
       InitFirebase();
   }
 
-  componentDidMount() {
-    this.callWelcome();
-  }
   render() {
     return (
       <Router>
