@@ -18,7 +18,6 @@ const UploadPortfolio = () => {
     const [Description, setDescription] = useState('');
     const [Files, setFiles] = useState([]);
     const [userHandle, setUserHandle] = useState('');
-    const [fileLinks, setFileLinks] = useState([]);
 
     useEffect(() => {
         function getHandle(){
@@ -50,55 +49,46 @@ const UploadPortfolio = () => {
     const onChangeDescription = (e) => {
         setDescription(e.target.value);
     }
-
+    
     const onSubmit = (event) => {
+        const projectID = `project${Math.round(Math.random()*100000000)}`
         event.preventDefault();
-        
-        console.log("Number of Files on submission", Files.length)
-        Files.forEach((file) => {
-
-            const reader = new FileReader()
-            reader.onabort = () => console.log('file reading was aborted')
-            reader.onerror = () => console.log('file reading has failed')
-            reader.onload = () => {
-            // Do whatever you want with the file contents
-                const formData = new FormData();
-                const config = {
-                      header: {'content-type': 'multipart/form-data'}
+        const submitToDatabase = (path, newLink, links, numFiles, authenticationHeader) => {
+            links.push(newLink);
+            if (links.length === numFiles){
+                const project = {
+                    projectID: projectID,
+                    title: ProjectTitle,
+                    description: Description,
+                    files: links
                 }
-                 formData.append("file", file, file.path)
-
-                const binaryStr = reader.result
-                var uploadTask = firebase.storage().ref(`/${userHandle}/projects/images/img${Math.round(Math.random()*100000000)}.jpg`).put(binaryStr, {contentType:`image/${file.path.split(".")[1]}`})
+                axios.post(path, project, authenticationHeader)
+                .then( res => {
+                    console.log(res.data);
+                    // TODO HANDLE RESETTING BETTER
+                    setProjectTitle('');
+                    setDescription('');
+                    setFiles([]);
+                    window.location="/uploadPortfolio";
+                });
+            }
+        }
+        console.log("Number of Files on submission", Files.length)
+        var links = [];
+        Files.forEach((file) => {
+            firebase.storage().ref(`/${userHandle}/projects/${projectID}/file${Math.round(Math.random()*100000000)}.jpg`).put(file, {contentType:`image/${file.path.split(".")[1]}`})
                 .then( snapshot => {
                     console.log("Succefully uploaded file");
                     //console.log(snapshot.ref.getDownloadURL());
                     snapshot.ref.getDownloadURL().then( res => {
-                        console.log(res);
-                        setFileLinks( res => fileLinks.concat(res));
+                        submitToDatabase(`${API_URL}/projects`, res, links, Files.length, { headers: authHeader() });
                     })
                 })
                 .catch(err => {
                     console.log(err);
                 })
-            }
-                 
-        })
-        const project = {
-            projectID: `project${Math.round(Math.random()*100000000)}`,
-            title: ProjectTitle,
-            description: Description,
-            files: fileLinks
-        }
-        console.log(project);
-        axios.post(API_URL+'/projects', project, { headers: authHeader() })
-            .then( res => {
-                console.log(res.data);
-                setFileLinks([]);
-                setProjectTitle('');
-                setDescription('');
-                setFiles([]);
-            });
+        });   
+        
     }
     return(
         <div style={{ maxWidth: '700px', margin: '2rem auto' }}>
