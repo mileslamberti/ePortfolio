@@ -1,23 +1,72 @@
 import React from 'react';
+import axios from 'axios';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from "react";
 
 import { Card, Button } from "react-bootstrap" ;
 
+const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
-function ProfilePage(){
+function ProfilesPage(){
 
-    const [search, setSearch] = useState('')
-    
-    const cardInfo = [
-        { image: "", displayName: "Misko Denasha", handle: "mishtest",description: "Software Engineer"},
-    ];
+    const [search, setSearch] = useState('');
+    const [profiles, setProfiles] = useState([]);
 
-    const filteredProfiles = cardInfo.filter ( profile => {
-       return profile.displayName.includes( search )
+    useEffect( () => {
+        axios.get(API_URL + "/profiles")
+            .then( res => {
+                res.data.users.forEach(user => {
+                    getProfileInfo(user);
+                })
+            })
+            .catch( err => {
+                console.log(err);
+            })
+    }, []);
+
+    const renderProfileCard = (handle, aboutMe, index) => {
+        return(
+            <div className="col-md-3" style={{ marginTop: "20px" }}>
+                <Card style={{ width: '18rem' }} key={ index }>
+                <Card.Img variant="top" src="holder.js/100px180" src= {aboutMe.image}/>
+                <Card.Body>
+                    <Card.Title>{aboutMe.displayName}</Card.Title>
+                    <Card.Text>{aboutMe.description}</Card.Text>
+                    <Card.Text>{aboutMe.handle}</Card.Text>
+                    <Button href={`/${aboutMe.handle}`} variant="primary">View Profile</Button>
+                </Card.Body>
+                </Card>
+            </div>
+        );
+    }
+    const saveProfileCard = (handle, aboutMe) => {
+        const newProfile = {
+            image: "", 
+            displayName: aboutMe.displayName, 
+            handle: handle,
+            description: aboutMe.handle
+        }
+        setProfiles(profiles => profiles.concat([newProfile]));
+    }
+    const getProfileInfo = (handle) => {
+        axios.get(API_URL+`/${handle}`).then( res => {
+            switch (res.status){
+                case 200:
+                    saveProfileCard(handle,res.data.aboutMe);
+                    break;
+                case 204:
+                    // user has no about me 
+                    break;
+            } 
+        }).catch( err => console.log(err))
+    }
+    const filteredProfiles = profiles.filter ( profile => {
+       return profile.handle.includes( search )
     })
 
     const renderCard = (card, index) => {
+        console.log(index);
         return(
             <div className="col-md-3" style={{ marginTop: "20px" }}>
                 <Card style={{ width: '18rem' }} key={ index }>
@@ -44,4 +93,4 @@ function ProfilePage(){
         </div>
     );
 }
-export default ProfilePage;
+export default ProfilesPage;
