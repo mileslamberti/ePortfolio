@@ -1,0 +1,121 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    font-family: "Montserrat", sans-serif;
+  }
+  
+  body {
+    background: #585c68;
+    font-size: 14px;
+    line-height: 22px;
+    color: #555555;
+  }
+  
+  .bold {
+    font-weight: 700;
+    font-size: 20px;
+    text-transform: uppercase;
+  }
+  
+  .semi-bold {
+    font-weight: 500;
+    font-size: 16px;
+  }
+  
+  .profile {
+    width: 1200px;
+    height: auto;
+    display: flex;
+    margin: 50px auto;
+  }
+  
+  .profile .profile_left {
+    width: 300px;
+    background: #484848;
+    color: #ffffff;
+  }
+  
+  .profile .profile_left .profile_profile {
+    width: 100%;
+    height: 300px;
+  }
+  
+  
+  .profile .profile_left .profile_content {
+    padding: 0 25px;
+  }
+  
+  .profile .profile_left .bold {
+    color: #fff;
+  }
+  
+  .profile .profile_left .regular {
+    color: #fff;
+  }
+  
+  .profile .profile_item {
+    padding: 25px 0;
+    border-bottom: 2px solid#fff;
+  }
+  .profile .title {
+    margin-bottom: 20px;
+  }
+
+  .profile .profile_right {
+    width: 850px;
+    background: #fff;
+    padding: 25px;
+  }
+  
+  .profile .profile_right .bold {
+    color:  #484848;
+  }
+  
+  .profile .profile_right .profile_work ul,
+  .profile .profile_right .profile_education ul {
+    padding-left: 40px;
+    overflow: hidden;
+  }
+  
+  .profile .profile_right ul li {
+    position: relative;
+  }
+  
+  .profile .profile_right ul li .date {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 15px;
+  }
+  
+  .profile .profile_right ul li .info {
+    margin-bottom: 20px;
+  }
+  
+  .profile .profile_right ul li:last-child .info {
+    margin-bottom: 0;
+  }
+  
+  .profile .profile_right .profile_work ul li:before,
+  .profile .profile_right .profile_education ul li:before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: -25px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: 2px solid #484848;
+  }
+  
+  .profile .profile_right .profile_work ul li:after,
+  .profile .profile_right .profile_education ul li:after {
+    content: "";
+    position: absolute;
+    top: 14px;
+    left: -21px;
+    width: 2px;
+    height: 115px;
+    background:  #484848;
+  }
