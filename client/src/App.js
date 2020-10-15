@@ -9,7 +9,7 @@ import Register from "./components/registration.component";
 import MyProfile from "./components/myProfile.component";
 import UploadProject from './components/profileComponents/uploadProject.component';
 import EditProject from './components/profileComponents/editProject.component';
-import ProfilePage from "./components/profilepage.component";
+import ProfilesPage from "./components/profilespage.component";
 import AboutThem from "./components/profileComponents/AboutThem.component";
 import {PortfolioCardProvider} from "./cardComponents/portfolioCardContext";
 
@@ -53,7 +53,7 @@ class App extends Component {
         <HomeNavbar/>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/profilespage" component={ProfilePage} />
+          <Route exact path="/profilespage" component={ProfilesPage} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/profile" component={MyProfile} />
