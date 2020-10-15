@@ -34,8 +34,8 @@ app.get("/projects", userAuth, getProjects);
 
 app.get("/profiles", getAllUsers);
 
-app.get("/getproject/:projectID", getProject);
+app.get("/getproject/:projectID", userAuth, getProject);
 // TODO, NEED TO ENSURE NO USERS ARE NAMED THE OTHER API ROUTES
-app.get("/:handle", userAuth, viewUser);
+app.get("/:handle", viewUser);
 
 exports.api = functions.https.onRequest(app);
