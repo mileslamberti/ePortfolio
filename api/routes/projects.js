@@ -1,3 +1,4 @@
+const { json } = require('express');
 const {db} = require('../utility/admin')
 
 exports.saveProject = (req, res) => {
@@ -18,4 +19,15 @@ exports.saveProject = (req, res) => {
 }
 exports.getProjects = (req, res) => {
   return res.json({ message: `looking for projects??` })
+}
+
+exports.getProject = (req, res) => {
+  db.doc(`/users/${req.user.handle}/projects/${req.params.projectID}`).get().then(doc => {
+    if (doc.exists){
+      project=doc.data()
+      return res.status(200).json({ project });
+    } else {
+      return res.status(206).json({error: `${req.params.projectID} does not exist under this user`})
+    }
+  })
 }

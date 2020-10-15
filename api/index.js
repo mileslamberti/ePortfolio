@@ -4,8 +4,9 @@ const { createPost, getAllPosts } = require('./routes/Posts');
 const {signup, login, uploadImage, updateProfilePic, addUserDetails, getAuthorisedUser} = require('./routes/user');
 const { getAboutMe, createAboutMe } = require("./routes/aboutMe");
 const { viewUser } = require("./routes/viewUser");
-const { saveProject, getProjects} = require("./routes/projects");
+const { saveProject, getProjects, updateProject, getProject } = require("./routes/projects");
 const { getAllUsers } = require("./routes/profiles");
+
 
 const userAuth = require('./utility/userAuthMiddleware.js')
 var cors = require('cors');
@@ -32,7 +33,9 @@ app.post("/projects", userAuth, saveProject);
 app.get("/projects", userAuth, getProjects);
 
 app.get("/profiles", getAllUsers);
+
+app.get("/getproject/:projectID", getProject);
 // TODO, NEED TO ENSURE NO USERS ARE NAMED THE OTHER API ROUTES
-app.get("/:handle", viewUser);
+app.get("/:handle", userAuth, viewUser);
 
 exports.api = functions.https.onRequest(app);
