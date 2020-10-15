@@ -38,6 +38,7 @@ const getListStyle = isDraggingOver => ({
 function EditProject() {
     // These are the cards associated with the project
     // Card IDs MUST be unique.
+    // GET RETURNS ALL CARDS IN PROJECT : title,
     const [cards, setCards] = useState([
       {
           id: `item-1`,
