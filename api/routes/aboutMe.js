@@ -7,9 +7,7 @@ exports.createAboutMe = (req, res) => {
     }
     const aboutMe = {
         displayName : req.body.displayName,
-        inspirations : req.body.inspirations,
-        jobs : req.body.jobs,
-        experiences : req.body.experiences
+        description : req.body.description,
     };
     //db.collection(`/users/${req.user.handle}/data/`).doc("aboutme").set({aboutMe}).then(doc => {
     db.doc(`/users/${req.user.handle}/data/aboutme`).set({aboutMe}).then(doc => {
