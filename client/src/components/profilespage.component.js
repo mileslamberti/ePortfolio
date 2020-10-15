@@ -66,7 +66,6 @@ function ProfilesPage(){
     })
 
     const renderCard = (card, index) => {
-        console.log(index);
         return(
             <div className="col-md-3" style={{ marginTop: "20px" }}>
                 <Card style={{ width: '18rem' }} key={ index }>
