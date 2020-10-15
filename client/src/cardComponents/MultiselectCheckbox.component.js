@@ -11,7 +11,6 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 function MultiselectCheckbox(props) {
   return (
       <>
-      {console.log("Multiselect", props.files)}
       {props.files.length > 0 &&
         <Autocomplete
         multiple

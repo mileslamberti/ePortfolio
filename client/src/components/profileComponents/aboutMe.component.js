@@ -52,15 +52,10 @@ const AboutMe = () => {
     const onChangeDisplayName = (e) => {
         setUpdatedAboutMe({...updatedAboutMe, displayName: e.target.value});
     }
-    const onChangeInspirations = (e) => {
-        setUpdatedAboutMe({...updatedAboutMe, inspirations: e.target.value});
+    const onChangeDescription = (e) => {
+        setUpdatedAboutMe({...updatedAboutMe, description: e.target.value});
     }
-    const onChangeJobs = (e) => {
-        setUpdatedAboutMe({...updatedAboutMe, jobs: e.target.value});
-    }
-    const onChangeExperiences= (e) =>{
-        setUpdatedAboutMe({...updatedAboutMe, experiences: e.target.value});
-    }
+
 
     const onSubmit = (e) => {
         e.preventDefault(); // allows us override the default html stuff
@@ -79,9 +74,7 @@ const AboutMe = () => {
             <>
             <CardContent>
                 <CardHeader title={aboutMe.displayName} />
-                    <Typography variant="h6" color="textSecondary" component="p"> I would love to: {aboutMe.inspirations} </Typography>
-                    <Typography variant="h6" color="textSecondary" component="p"> I have worked as a: {aboutMe.jobs} </Typography>
-                    <Typography variant="h6" color="textSecondary" component="p"> I have experienced: {aboutMe.experiences} </Typography>
+                    <Typography variant="h6" color="textSecondary" component="p">{aboutMe.description}</Typography>
             </CardContent>
             <IconButton> <Edit onClick={handleClickOpen} /> </IconButton>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -91,14 +84,8 @@ const AboutMe = () => {
                             <InputLabel htmlFor="component-helper">Display Name</InputLabel>
                             <Input defaultValue={aboutMe.displayName} onChange={onChangeDisplayName}/></FormControl>
                         <FormControl>
-                            <InputLabel htmlFor="component-helper">Inspirations</InputLabel>
-                            <Input defaultValue={aboutMe.inspirations} onChange={onChangeInspirations}/></FormControl>
-                        <FormControl>
-                            <InputLabel htmlFor="component-helper">Jobs</InputLabel>
-                            <Input defaultValue={aboutMe.jobs} onChange={onChangeJobs}/></FormControl>
-                        <FormControl>
-                            <InputLabel htmlFor="component-helper">Experiences</InputLabel>
-                            <Input defaultValue={aboutMe.experiences} onChange={onChangeExperiences}/></FormControl>
+                            <InputLabel htmlFor="component-helper">Profile description</InputLabel>
+                            <Input defaultValue={aboutMe.description} onChange={onChangeDescription}/></FormControl>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleCancel} color="primary">

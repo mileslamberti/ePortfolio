@@ -10,8 +10,8 @@ const useStyles = makeStyles({
         display: 'none',
     },
     image: {
-        width: 128,
-        height: 128,
+        width: 300,
+        height: 300,
     },
     img: {
         margin: 'auto',

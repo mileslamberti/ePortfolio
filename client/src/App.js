@@ -9,8 +9,9 @@ import Register from "./components/registration.component";
 import MyProfile from "./components/myProfile.component";
 import UploadProject from './components/profileComponents/uploadProject.component';
 import EditProject from './components/profileComponents/editProject.component';
-import ProfilePage from "./components/profilepage.component";
+import ProfilesPage from "./components/profilespage.component";
 import AboutThem from "./components/profileComponents/AboutThem.component";
+import {PortfolioCardProvider} from "./cardComponents/portfolioCardContext";
 
 import InitFirebase from  "./services/initFirebase";
 //import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
@@ -34,9 +35,6 @@ const theme = createMuiTheme({
   }
 })
 
-
-
-
 class App extends Component {
 
   constructor(props) {
@@ -44,10 +42,8 @@ class App extends Component {
     this.state = { apiResponse: "" };
   }
   callWelcome() {
-
       InitFirebase();
   }
-
   componentDidMount() {
     this.callWelcome();
   }
@@ -57,18 +53,19 @@ class App extends Component {
         <HomeNavbar/>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/profilepage" component={ProfilePage} />
+          <Route exact path="/profilespage" component={ProfilesPage} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/profile" component={MyProfile} />
           <Route exact path="/uploadProject" component={UploadProject}/>
-          <Route exact path="/editProject" component={EditProject}/>
+          <Route exact path="/editProject" render={() => <PortfolioCardProvider> <EditProject/> </PortfolioCardProvider>}/>
+
           <Route 
             path = "/:handle" 
             render = {(props) => (
               <AboutThem {...props}/>
             )}
-          />  
+          />   
         </Switch>
       </Router>
     );
