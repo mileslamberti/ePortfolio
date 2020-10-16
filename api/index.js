@@ -36,8 +36,8 @@ app.get("/profiles", getAllUsers);
 
 app.get("/project/:projectID", userAuth, getProject);
 
-app.get("/getprojectcards/:projectID", getAllProjectCards);
-app.post("/projectcards", addProjectCard);
+app.get("/getprojectcards/:projectID", userAuth, getAllProjectCards);
+app.post("/projectcards", userAuth, addProjectCard);
 
 
 // TODO, NEED TO ENSURE NO USERS ARE NAMED THE OTHER API ROUTES
