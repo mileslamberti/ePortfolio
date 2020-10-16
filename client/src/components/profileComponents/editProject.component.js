@@ -1,4 +1,7 @@
-import React, { useState, useContext} from "react";
+import React, { useState, useEffect, useContext} from "react";
+import axios from 'axios';
+import authHeader from "../../services/auth-header";
+
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {Button, Box} from '@material-ui/core/';
 import PortfolioCard from "../../cardComponents/portfolioCard.component";
@@ -6,6 +9,8 @@ import PortfolioTitleCard from "../../cardComponents/portfolioTitleCard.componen
 import DialogPortfolioCard from "../../cardComponents/DialogPortfolioCard.component"
 
 import {PortfolioCardContext} from "../../cardComponents/portfolioCardContext"; 
+
+const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -35,34 +40,45 @@ const getListStyle = isDraggingOver => ({
   padding: grid,
 });
 
-function EditProject() {
+function EditProject(props) {
+    // TODO REMOVEEE BAD BAD BAD BAD
+    const projectID = props.location.pathname.split("/")[3];
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [cards, setCards] = useState([]); 
+    const [files, setFiles] = useContext(PortfolioCardContext);
+
+    useEffect( () => {
+      // TODO REMOVE CONSOLE LOG
+      axios.get(API_URL + `/project/${projectID}`, { headers: authHeader() })
+          .then( projectRes => {
+              const project = projectRes.data.project;
+              setTitle(project.title);
+              setDescription(project.description);
+              setFiles(project.files);
+              //TODO remove console log
+              console.log(project);
+              axios.get(`${API_URL}/getprojectcards/${projectID}`,{ headers: authHeader() })
+                .then( cardRes => {
+                  console.log(cardRes);
+                  
+                })
+              
+          })
+          .catch( err => {
+              console.log(err);
+          })
+  }, []);
     // These are the cards associated with the project
     // Card IDs MUST be unique.
     // GET RETURNS ALL CARDS IN PROJECT : title,
-    const [cards, setCards] = useState([
-      {
-          id: `item-1`,
-          title: "Assignment 1",
-          description: "A very hard assignmnet",
-          extendedDescription: "Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10 minutes",
-      },
-      {
-          id: `item-2`,
-          title: "Assignment 2",
-          description: "An easy assignment",
-          extendedDescription: "Below are the files that relate to Assignment 2",
-      },
-      {
-          id: `item-3`,
-          title: "Assignment 3",
-          description: "A joke of an assignment",
-      },
-      {
-          id: `item-4`,
-          title: "Assignment 4",
-          description: "A difficult assignment",
-      }]); 
-    const [files, setFiles] = useContext(PortfolioCardContext);
+    const willsCard = {
+      id: `item-1`,
+      title: "Assignment 1",
+      description: "A very hard assignmnet",
+      extendedDescription: "Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10 minutes",
+  }
+
 
 
     // Whether add card dialog is open
@@ -80,7 +96,25 @@ function EditProject() {
                 description: d,
                 extendedDescription: e}
               ])
+      // POST TO API
+      const card = {
+        projectID: projectID,
+        //TODO REMOVE HARD CODING
+        id :"card1",
+        position : 1,
+        title : t,
+        description : d,
+        extendedDescription: e,
+        img: "REALLY COOL IMAGESs"
+      }
+      console.log(card);
+      axios.post(`${API_URL}/projectcards/`, card, { headers: authHeader() })
+          .then( res => {
+              console.log(card);
+              console.log(res.data);
+      });        
       setOpen(false);
+      
     }
     /** Close dialog on cancel */
     const handleDialogCancel = () =>{
@@ -115,8 +149,8 @@ function EditProject() {
     return (
       <>
       <PortfolioTitleCard 
-          title={"Title of Portfolio"}
-          description={"Description of Portfolio"}
+          title={title}
+          description={description}
       />
       <Box mx="auto" m={1} mr={10}>
           <Button 
