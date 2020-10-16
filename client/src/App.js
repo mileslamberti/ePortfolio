@@ -59,12 +59,19 @@ class App extends Component {
           <Route exact path="/register" component={Register} />
           <Route exact path="/profile" component={MyProfile} />
           <Route exact path="/uploadProject" component={UploadProject}/>
-          <Route exact path="/editProject" render={() => <PortfolioCardProvider> <EditProject/> </PortfolioCardProvider>}/>
           <Route exact path="/projects" component={Projects} />
           <Route exact 
             path="/projects/:projectID" 
             render = {(props) => (
               <ViewProject {...props}/>
+            )}
+          />
+          <Route exact 
+            path="/projects/edit/:projectID" 
+            render = {(props) => (
+              <PortfolioCardProvider>
+                <EditProject {...props}/>
+              </PortfolioCardProvider>
             )}
           />
           <Route 
