@@ -73,6 +73,7 @@ const ViewProject = (props) => {
             <h2>Title: {title}</h2>
             <h3>Description: {description}</h3>
             <Button href={`/projects`} variant="primary">Back to projects</Button>
+            <Button href={`/projects/edit/${projectID}`}>Edit project</Button>
         </div>
     )
 }
