@@ -11,7 +11,8 @@ import UploadProject from './components/profileComponents/uploadProject.componen
 import EditProject from './components/profileComponents/editProject.component';
 import ProfilesPage from "./components/profilespage.component";
 import AboutThem from "./components/profileComponents/AboutThem.component";
-import {PortfolioCardProvider} from "./cardComponents/portfolioCardContext";
+import { PortfolioCardProvider } from "./cardComponents/portfolioCardContext";
+import { Projects, ViewProject } from "./components/profileComponents/projects.component";
 
 import InitFirebase from  "./services/initFirebase";
 //import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
@@ -58,8 +59,21 @@ class App extends Component {
           <Route exact path="/register" component={Register} />
           <Route exact path="/profile" component={MyProfile} />
           <Route exact path="/uploadProject" component={UploadProject}/>
-          <Route exact path="/editProject" render={() => <PortfolioCardProvider> <EditProject/> </PortfolioCardProvider>}/>
-
+          <Route exact path="/projects" component={Projects} />
+          <Route exact 
+            path="/projects/:projectID" 
+            render = {(props) => (
+              <ViewProject {...props}/>
+            )}
+          />
+          <Route exact 
+            path="/projects/edit/:projectID" 
+            render = {(props) => (
+              <PortfolioCardProvider>
+                <EditProject {...props}/>
+              </PortfolioCardProvider>
+            )}
+          />
           <Route 
             path = "/:handle" 
             render = {(props) => (

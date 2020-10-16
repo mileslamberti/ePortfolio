@@ -122,6 +122,7 @@ function unassociateFileWithCard(file){
     if(fs.length > 0){
         associateFilesWithCard(fs);
     }
+    //TODO SUbmit to backend
     setOpen(false);
   }
 
