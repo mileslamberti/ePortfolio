@@ -44,7 +44,7 @@ exports.getProject = (req, res) => {
 exports.getAllProjectCards = async (req, res) => {
   //TODO CHANGE to use UserAuth
   //const userHandle = req.user.handle;
-  const userHandle = req.body.handle;
+  const userHandle = req.user.handle;
   if (!userHandle){
     return res.status(206).json({ error: "no user given"});
   }
@@ -60,24 +60,58 @@ exports.getAllProjectCards = async (req, res) => {
 }
 
 exports.addProjectCard = (req, res) => {
-    //TODO CHANGE to use UserAuth
-  const userHandle = req.body.handle;
-  if ( !hasCardData(req.body) ){
-    return res.status(400).json( { error: "req body does not contain all card details"})
+  const userHandle = req.user.handle;
+  console.log(req.body);
+  if ( !checkCardData(req.body) ){
+    return res.status(200).json( { 
+      error: "req body does not contain all card details",
+      body: req.body
+    })
   }
   const card = req.body;
-  db.doc(`/users/${userHandle}/projects/${newCard.projectID}/cards/${newCard.id}`).set({card})
+  db.doc(`/users/${userHandle}/projects/${card.projectID}/cards/${card.id}`).set({card})
     .then( doc => {
-      return res.json({ message: `card ${doc.id} created` })
+      return res.json({ message: `card ${card.id} created` })
     }).catch(err => {
         console.error(err);
         return res.status(500).json({ error: `something went wrong` });
     });
 }
 
-const hasCardData = (card) => {
-  if ( !card.projectID || !card.id || !card.position || !card.title || !card.subtitle || !card.description || !card.img){
-    return false;
+const checkCardData = (card) => {
+  var validBody = true;
+
+  if ( !card.projectID){
+    validBody = false;
+    console.log("no projectID")
   }
-  return true;
+  if ( !card.id){
+    validBody = false;
+    console.log("no id")
+
+  }
+  if ( !card.position){
+    validBody = false;
+    console.log("no position")
+
+  }
+  if ( !card.title){
+    validBody = false;
+    console.log("no title")
+  }
+  if ( !card.description){
+    validBody = false;
+    console.log("no description")
+
+  }
+  if ( !card.extendedDescription){
+    validBody = false;
+    console.log("no extendedDescription")
+
+  }
+  if ( !card.img){
+    validBody = false;
+    console.log("no img")
+  }
+  return validBody;
 }
