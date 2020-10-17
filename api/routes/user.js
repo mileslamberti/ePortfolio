@@ -43,10 +43,6 @@ exports.signup = (req, res) => {
         }
         return db.doc(`/users/${newUser.handle}`).set(userCredentials);
     }).then(() => {
-        const aboutMe = { displayName : "Display name", description : "Profile description"};
-        db.doc(`/users/${newUser.handle}/data/aboutme`).set({aboutMe}) //create about me
-        const userInfo = { occupation : "Occupation", location : "Location", number : "Phone number", email : "Contact email" };
-        db.doc(`/users/${newUser.handle}/data/userinfo`).set({userInfo}) //create user info
         return res.status(201).json({ token })
     }).catch(err => {
         console.error(err)
