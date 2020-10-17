@@ -55,7 +55,7 @@ function DialogPortfolioCard(props){
           />
           <TextField
             margin="dense"
-            id="description"
+            id="subtitle"
             label="Subtitle of Card"
             fullWidth
             value={formSubtitle}
@@ -63,7 +63,7 @@ function DialogPortfolioCard(props){
           />
         <TextField
             margin="dense"
-            id="extendedDescription"
+            id="description"
             label="Description (visible in when pressing dropdown button)"
             fullWidth
             value={formDescription}

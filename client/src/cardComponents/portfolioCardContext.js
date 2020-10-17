@@ -22,6 +22,10 @@ const initialFiles ={
     files:[{
         fname: "Assignment1.pdf",
         associatedWithCard: "card-1"
+    },
+    {
+        fname: "Assignment2.pdf",
+        associatedWithCard: ""
     }]
     
 }
@@ -71,6 +75,36 @@ function reducer2(state, action){
     }
 }
 
+function reducer3(state, action){
+    switch(action.type){
+        case "associateCard":
+            return {
+                ...state,
+                files: state.files.map(file => {
+                    if(file.fname === action.payload.fname){
+                        return{...file, ...action.payload}
+                    }
+                    return file;
+                })
+            }
+        case "unassociateCard":
+            return{
+                ...state,
+                files: state.files.map(file => {
+                    if(file.associatedWithCard === ""){
+                        console.log("File not associated with any card")
+                    }
+                    if(file.fname === action.payload.fname){
+                        return{...file, ...action.payload}
+                    }
+                    return file;
+                })
+            }
+        default:
+            return state;
+    }
+}
+
 export const PortfolioCardProvider = props => {
     // Can be removed later, and while it is hard coded the IDs must sync up with what is in editProject
     const hardCodedCard = [{
@@ -85,10 +119,28 @@ export const PortfolioCardProvider = props => {
     }
     const [projectInfoState, dispatchProjectInfo] = useReducer(reducer, initialProjectInfo);
     const [cardsState, dispatchCards] = useReducer(reducer2, initialCards);
-    const [filesState, dispatchFiles] = useReducer(reducer, initialFiles);
+    const [filesState, dispatchFiles] = useReducer(reducer3, initialFiles);
     
+    function associateFileWithCard(fname, cardid){
+        dispatchFiles({
+            type: 'associateCard',
+            payload: {
+                fname: fname,
+                associatedWithCard: cardid
+            }
+        })
+    }
+
+    function unassociateFileWithCard(fname){
+        dispatchFiles({
+            type: 'unassociateCard',
+            payload: {
+                fname: fname,
+                associatedWithCard: ""
+            }
+        })
+    }
     // TODO get files associated with wihtr
-    const [files, setFiles] = useState([])
     //useEffect( () => {
         // TODO REMOVE CONSOLE LOG
         //console.log(projectID);
@@ -128,6 +180,10 @@ export const PortfolioCardProvider = props => {
     }
 
     function deleteCard(id){
+        const associatedFiles = getFilesAssociatedWithCard(id);
+        associatedFiles.forEach(file => {
+            unassociateFileWithCard(file.fname);
+        })
         dispatchCards({
             type: "delete-card",
             payload: id
@@ -165,6 +221,14 @@ export const PortfolioCardProvider = props => {
         })
     }
 
+    function getFilesAssociatedWithCard(id){
+        return filesState.files.filter(file => file.associatedWithCard === id);
+    }
+
+    function getFilesUnassociatedWithAnyCard(id){
+        return filesState.files.filter(file => file.associatedWithCard === "");
+    }
+
 
     return(
         <PortfolioCardContext.Provider value={{
@@ -175,7 +239,11 @@ export const PortfolioCardProvider = props => {
             addCard,
             deleteCard,
             editCard,
-            getCard
+            getCard,
+            associateFileWithCard,
+            unassociateFileWithCard,
+            getFilesAssociatedWithCard,
+            getFilesUnassociatedWithAnyCard
         }}>
             {props.children}
         </PortfolioCardContext.Provider>
