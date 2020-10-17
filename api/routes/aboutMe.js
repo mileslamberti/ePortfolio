@@ -71,3 +71,30 @@ exports.getUserInfo = (req,res) => {
         return res.status(500).json({error:err.code})
     })
 }
+
+exports.createUserTags = (req, res) => {
+
+    if(req.body.body ===''){
+        return res.status(400).json({body: "Body must not be empty!"})
+    }
+    const tags = req.body.tags;
+    db.doc(`/users/${req.user.handle}/data/tags`).set({tags}).then(doc => {
+            return res.json({ message: `tags updated` })
+        }).catch(err => {
+            console.error(err);
+            return res.status(500).json({ error: `something went wrong` });
+        });
+}
+
+exports.getUserTags = (req,res) => {
+    let tags = [];
+    db.doc(`/users/${req.user.handle}/data/tags`).get().then(doc => {
+        if(doc.exists){
+            tags = doc.data().tags;
+        }
+        return res.status(200).json({tags: tags});
+    }).catch(err => {
+        console.error(err);
+        return res.status(500).json({error:err.code})
+    })
+}

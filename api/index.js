@@ -2,8 +2,9 @@ const functions = require('firebase-functions');
 const app = require('express')();
 const { createPost, getAllPosts } = require('./routes/Posts');
 const {signup, login, uploadImage, updateProfilePic, addUserDetails, getAuthorisedUser} = require('./routes/user');
-const { getAboutMe, createAboutMe, createUserInfo, getUserInfo } = require("./routes/aboutMe");
+const { getAboutMe, createAboutMe, createUserInfo, getUserInfo, getUserTags, createUserTags } = require("./routes/aboutMe");const { viewUser } = require("./routes/viewUser");
 const { viewUser } = require("./routes/viewUser");
+
 const { saveProject, getProjects, updateProject, getProject, getAllProjectCards, addProjectCard } = require("./routes/projects");
 const { getAllUsers } = require("./routes/profiles");
 
@@ -30,6 +31,8 @@ app.post("/aboutme", userAuth, createAboutMe);
 app.get("/aboutme", userAuth, getAboutMe);
 app.post("/userinfo", userAuth, createUserInfo);
 app.get("/userinfo", userAuth, getUserInfo);
+app.post("/tags", userAuth, createUserTags);
+app.get("/tags", userAuth, getUserTags);
 
 app.post("/projects", userAuth, saveProject);
 app.get("/projects", userAuth, getProjects);
