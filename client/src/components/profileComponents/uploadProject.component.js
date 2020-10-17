@@ -67,7 +67,7 @@ function UploadPortfolio (){
         links.push({
             file: newLink,
             filename: filename,
-            cardID: "unassigned"
+            cardID: ""
         })
         if (links.length === numFiles){
             const project = {

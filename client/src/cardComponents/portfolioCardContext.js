@@ -136,12 +136,8 @@ export const PortfolioCardProvider = props => {
                  editProjectInfo(project.title, project.description);
                  
                  project.files.forEach(file => {
-                     // 3rd argument should be file.cardID, but rn db stores unassigned cards as "unassigned" as opposed to ""
-                    addFile(file.filename, file.file, "")
+                    addFile(file.filename, file.file, file.cardID)
                  })
-        //         setTitle(project.title);
-        //         setDescription(project.description);
-        //         setFiles(project.files);
              })
              .catch( err => {
                  console.log("Error", err);
