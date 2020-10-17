@@ -1,4 +1,6 @@
 import React, {useState, useEffect, createContext, useReducer} from 'react';
+import axios from 'axios';
+import authHeader from "../services/auth-header";
 
 import {projectInfoReducer, cardReducer, fileReducer, ACTIONS} from './ProjectReducers';
 
@@ -14,25 +16,18 @@ const initialCards = {
 }
 
 const initialProjectInfo = {
-    title: "Doggo",
-    subtitle: "Catto"
+    title: "",
+    subtitle: ""
 }
 
 const initialFiles ={
-    files:[{
-        fname: "Assignment1.pdf",
-        associatedWithCard: "card-1"
-    },
-    {
-        fname: "Assignment2.pdf",
-        associatedWithCard: ""
-    }]
-    
+    files:[]
 }
 
 export const PortfolioCardContext = createContext();
 
 export const PortfolioCardProvider = props => {
+    const projectID = props.location.pathname.split("/")[3];
     const [projectInfoState, dispatchProjectInfo] = useReducer(projectInfoReducer, initialProjectInfo);
     const [cardsState, dispatchCards] = useReducer(cardReducer, initialCards);
     const [filesState, dispatchFiles] = useReducer(fileReducer, initialFiles);
@@ -95,6 +90,17 @@ export const PortfolioCardProvider = props => {
 
 
     /** Functions that manage filesState */
+    function addFile(fname, downloadLink, cardid){
+        dispatchFiles({
+            type: ACTIONS.ADD_FILE,
+            payload: {
+                fname: fname,
+                downloadLink: downloadLink,
+                associatedWithCard: cardid
+            }
+        })
+    }
+
     function associateFileWithCard(fname, cardid){
         dispatchFiles({
             type: ACTIONS.ASSOCIATE_CARD,
@@ -123,22 +129,29 @@ export const PortfolioCardProvider = props => {
         return filesState.files.filter(file => file.associatedWithCard === "");
     }
 
-    // TODO get files associated with wihtr
-    //useEffect( () => {
-        // TODO REMOVE CONSOLE LOG
-        //console.log(projectID);
-        // axios.get(API_URL + `/project/${projectID}`, { headers: authHeader() })
-        //     .then( res => {
-        //         const project = res.data.project;
-        //         //TODO remove console log
+    useEffect( () => {
+         axios.get(API_URL + `/project/${projectID}`, { headers: authHeader() })
+             .then( res => {
+                 const project = res.data.project;
+                 editProjectInfo(project.title, project.description);
+                 
+                 project.files.forEach(file => {
+                     // 3rd argument should be file.cardID, but rn db stores unassigned cards as "unassigned" as opposed to ""
+                    addFile(file.filename, file.file, "")
+                 })
         //         setTitle(project.title);
         //         setDescription(project.description);
         //         setFiles(project.files);
-        //     })
-        //     .catch( err => {
-        //         console.log(err);
-        //     })
-    //}, []);
+             })
+             .catch( err => {
+                 console.log("Error", err);
+             })
+        // To add get request for cards.
+        axios.get(`${API_URL}/getprojectcards/${projectID}`,{ headers: authHeader() })
+            .then( cardRes => {
+                console.log("CARDS", cardRes);
+             })
+    }, []);
 
 
 

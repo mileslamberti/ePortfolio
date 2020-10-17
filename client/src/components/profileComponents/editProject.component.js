@@ -52,28 +52,6 @@ function EditProject(props) {
     const { addCard } = useContext(PortfolioCardContext);
     const { deleteCard } = useContext(PortfolioCardContext);
 
-    useEffect( () => {
-      // TODO REMOVE CONSOLE LOG
-      axios.get(API_URL + `/project/${projectID}`, { headers: authHeader() })
-          .then( projectRes => {
-              const project = projectRes.data.project;
-              setTitle(project.title);
-              setDescription(project.description);
-              //setFiles(project.files);
-              //TODO remove console log
-              console.log("Reading in data", project);
-              axios.get(`${API_URL}/getprojectcards/${projectID}`,{ headers: authHeader() })
-                .then( cardRes => {
-                  console.log(cardRes);
-                  
-                })
-              
-          })
-          .catch( err => {
-              console.log(err);
-          })
-  }, []);
-
     // Whether add card dialog is open
     const [open, setOpen] = React.useState(false);
 
@@ -133,7 +111,6 @@ function EditProject(props) {
     return (
       <>
       <PortfolioTitleCard />
-
       <Box mx="auto" m={1} mr={10}>
           <Button 
               variant="contained"

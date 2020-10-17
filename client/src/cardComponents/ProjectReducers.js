@@ -4,6 +4,7 @@ export const ACTIONS = {
     ADD_CARD: "add-card",
     DELETE_CARD: "delete-card",
     UPDATE_CARD: "update-card",
+    ADD_FILE: "add-file",
     ASSOCIATE_CARD: "associate-card",
     UNASSOCIATE_CARD: "unassociate-card"
 }
@@ -53,6 +54,11 @@ export function cardReducer(state, action){
 
 export function fileReducer(state, action){
     switch(action.type){
+        case ACTIONS.ADD_FILE:
+            return{
+                ...state,
+                files: [...state.files, action.payload]
+            }
         case ACTIONS.ASSOCIATE_CARD:
             return {
                 ...state,
