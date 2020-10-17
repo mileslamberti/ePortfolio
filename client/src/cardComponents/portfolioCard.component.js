@@ -44,7 +44,7 @@ function PortfolioCard(props) {
   
 
   // These files are common across all cards
-  const [files, setFiles] = useContext(PortfolioCardContext);
+  const { files } = useContext(PortfolioCardContext);
 
   // Returns an array of filenames that are associated with a particular cardID
   function getFilesAssociatedWithCard(){
@@ -73,7 +73,7 @@ function PortfolioCard(props) {
         }
     }
     setAssociatedFiles(getFilesAssociatedWithCard());
-    setFiles(newFiles);
+    //setFiles(newFiles);
 }
 function unassociateFileWithCard(file){
       let newFiles = files;
@@ -85,7 +85,7 @@ function unassociateFileWithCard(file){
               break;
           }    
       }
-      setFiles(newFiles);
+      //setFiles(newFiles);
       setAssociatedFiles(getFilesAssociatedWithCard());
 }
 

@@ -46,10 +46,11 @@ function EditProject(props) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const { cards } = useContext(PortfolioCardContext);
-    const [files, setFiles] = useState([]); //useContext(PortfolioCardContext);
+    const { files } = useContext(PortfolioCardContext); //useContext(PortfolioCardContext);
 
 
     const { addCard } = useContext(PortfolioCardContext);
+    const { deleteCard } = useContext(PortfolioCardContext);
 
     useEffect( () => {
       // TODO REMOVE CONSOLE LOG
@@ -58,7 +59,7 @@ function EditProject(props) {
               const project = projectRes.data.project;
               setTitle(project.title);
               setDescription(project.description);
-              setFiles(project.files);
+              //setFiles(project.files);
               //TODO remove console log
               console.log("Reading in data", project);
               axios.get(`${API_URL}/getprojectcards/${projectID}`,{ headers: authHeader() })
@@ -177,6 +178,59 @@ function EditProject(props) {
           dialogInformation={getDialogDescription()}
       />
       
+      <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId="droppable">
+        {(provided, snapshot) => (
+          <div
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            style={getListStyle(snapshot.isDraggingOver)}
+          >
+            {/*We map each card into a PortfolioCard*/}
+            {cards.map((item, index) => (
+              <Draggable key={item.id} draggableId={item.id} index={index}>
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    style={getItemStyle(
+                      snapshot.isDragging,
+                      provided.draggableProps.style
+                    )}
+                  >
+                      <PortfolioCard
+                          id={item.id}
+                          title={item.title}
+                          description={item.description}
+                          extendedDescription={item.extendedDescription}
+                          picture={item.picture}
+                          onDeleteClick={() => deleteCard(item.id)
+                            /*
+                              console.log("Clicked", index)
+                              const newState = [...cards];
+                              newState.splice(index, 1);
+                              setCards(newState);
+
+                              let associatedFiles = files.filter(file => file.associatedWithCard === item.id);
+                              let newFiles = files;
+                              for(let i=0; i<files.length; i++){
+                                  if(associatedFiles.map(file => file.fname).indexOf(files[i].fname) !== -1){
+                                      newFiles[i].associatedWithCard = "";
+                                  }
+                              }
+                              setFiles(newFiles); */
+                          }
+                      />
+                  </div>
+                )}
+              </Draggable>
+            ))}
+          {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
     </>
 
     );

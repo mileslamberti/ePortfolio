@@ -18,6 +18,14 @@ let initialProjectInfo = {
     subtitle: "Catto"
 }
 
+const initialFiles ={
+    files:[{
+        fname: "Assignment1.pdf",
+        associatedWithCard: "card-1"
+    }]
+    
+}
+
 export const PortfolioCardContext = createContext();
 
 function reducer(state, action){
@@ -42,6 +50,11 @@ function reducer2(state, action){
                 cards: [...state.cards, action.payload]
 
             }
+        case "delete-card":
+            return {
+                ...state,
+                cards: state.cards.filter(card => card.id !== action.payload)
+            }
         default:
             return state;
     }
@@ -61,6 +74,8 @@ export const PortfolioCardProvider = props => {
     }
     const [projectInfoState, dispatchProjectInfo] = useReducer(reducer, initialProjectInfo);
     const [cardsState, dispatchCards] = useReducer(reducer2, initialCards);
+    const [filesState, dispatchFiles] = useReducer(reducer, initialFiles);
+    
     // TODO get files associated with wihtr
     const [files, setFiles] = useState([])
     //useEffect( () => {
@@ -101,13 +116,21 @@ export const PortfolioCardProvider = props => {
         });
     }
 
+    function deleteCard(id){
+        dispatchCards({
+            type: "delete-card",
+            payload: id
+        })
+    }
+
     return(
         <PortfolioCardContext.Provider value={{
             projectInfo: projectInfoState,
             cards: cardsState.cards,
-            files: cardsState.files,
+            files: filesState.files,
             editProjectInfo,
-            addCard
+            addCard,
+            deleteCard
         }}>
             {props.children}
         </PortfolioCardContext.Provider>
