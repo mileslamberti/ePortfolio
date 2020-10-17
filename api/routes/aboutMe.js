@@ -17,6 +17,7 @@ exports.createAboutMe = (req, res) => {
             return res.status(500).json({ error: `something went wrong` });
         });
 }
+
 exports.getAboutMe = (req,res) => {
     let aboutMe = {};
     db.doc(`/users/${req.user.handle}/data/aboutme`).get().then(doc => {
@@ -25,6 +26,41 @@ exports.getAboutMe = (req,res) => {
             return res.status(200).json({aboutMe});
         } else {
             res.status(204).json({error: "user has no about me"})
+        }
+    }).catch(err => {
+        console.error(err);
+        return res.status(500).json({error:err.code})
+    })
+}
+
+exports.createUserInfo = (req, res) => {
+
+    if(req.body.body ===''){
+        return res.status(400).json({body: "Body must not be empty!"})
+    }
+    const userInfo = {
+        occupation : req.body.occupation,
+        location : req.body.location,
+        number : req.body.number,
+        email : req.body.email
+    };
+
+    db.doc(`/users/${req.user.handle}/data/userinfo`).set({userInfo}).then(doc => {
+            return res.json({ message: `document ${doc.id} created` })
+        }).catch(err => {
+            console.error(err);
+            return res.status(500).json({ error: `something went wrong` });
+        });
+}
+
+exports.getUserInfo = (req,res) => {
+    let userInfo = {};
+    db.doc(`/users/${req.user.handle}/data/userinfo`).get().then(doc => {
+        if(doc.exists){
+            userInfo = doc.data().userInfo;
+            return res.status(200).json({userInfo});
+        } else {
+            res.status(204).json({error: "user has no info"})
         }
     }).catch(err => {
         console.error(err);
