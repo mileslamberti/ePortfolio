@@ -73,17 +73,6 @@ function EditProject(props) {
               console.log(err);
           })
   }, []);
-    // These are the cards associated with the project
-    // Card IDs MUST be unique.
-    // GET RETURNS ALL CARDS IN PROJECT : title,
-    const willsCard = {
-      id: `item-1`,
-      title: "Assignment 1",
-      description: "A very hard assignmnet",
-      extendedDescription: "Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10 minutes",
-  }
-
-
 
     // Whether add card dialog is open
     const [open, setOpen] = React.useState(false);
@@ -101,21 +90,14 @@ function EditProject(props) {
           subtitle: s,
           description: d
       }
-      addCard(card);
-      
-      //setCards([...cards, {id: `item-${new Date().getTime()}`,
-      //          title: t,
-      //          description: d,
-      //          extendedDescription: e}
-      //        ])
-      // POST TO API
-     
-      console.log(card);
+      addCard(card);     
+      /*
       axios.post(`${API_URL}/projectcards/`, card, { headers: authHeader() })
           .then( res => {
               console.log(card);
               console.log(res.data);
       });        
+      */
       setOpen(false);
       
     }
@@ -168,7 +150,6 @@ function EditProject(props) {
               Add Files to Project
           </Button>
       </Box>
-      {console.log(cards)}
       <DialogPortfolioCard 
           handleDialogConfirm={handleDialogConfirm}
           handleDialogCancel={handleDialogCancel}
@@ -203,22 +184,7 @@ function EditProject(props) {
                           description={item.description}
                           extendedDescription={item.extendedDescription}
                           picture={item.picture}
-                          onDeleteClick={() => deleteCard(item.id)
-                            /*
-                              console.log("Clicked", index)
-                              const newState = [...cards];
-                              newState.splice(index, 1);
-                              setCards(newState);
-
-                              let associatedFiles = files.filter(file => file.associatedWithCard === item.id);
-                              let newFiles = files;
-                              for(let i=0; i<files.length; i++){
-                                  if(associatedFiles.map(file => file.fname).indexOf(files[i].fname) !== -1){
-                                      newFiles[i].associatedWithCard = "";
-                                  }
-                              }
-                              setFiles(newFiles); */
-                          }
+                          onDeleteClick={() => deleteCard(item.id)}
                       />
                   </div>
                 )}

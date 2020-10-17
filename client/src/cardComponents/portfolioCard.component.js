@@ -48,13 +48,12 @@ function PortfolioCard(props) {
   
   const { getCard } = useContext(PortfolioCardContext);
   // Edit the contents of this card with this function
-  const { editCard } = useContext(PortfolioCardContext);
+  const { updateCard } = useContext(PortfolioCardContext);
   const { associateFileWithCard } = useContext(PortfolioCardContext);
   const { unassociateFileWithCard } = useContext(PortfolioCardContext);
   const { getFilesAssociatedWithCard } = useContext(PortfolioCardContext);
   const { getFilesUnassociatedWithAnyCard } = useContext(PortfolioCardContext);
 
-  
   // Contents of this card in this varaible
   const card = getCard(props.id);
 
@@ -63,18 +62,9 @@ function PortfolioCard(props) {
   // These files are common across all cards
   const { files } = useContext(PortfolioCardContext);
 
-  // Returns an array of filenames that are associated with a particular cardID
-
-
-  // Files associated with Card, we need this to force immediate re-renders when removing files
-  // associated with the card.
-
-
-
-
-
   // Whether edit dialog is open
   const [open, setOpen] = React.useState(false);
+
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -89,7 +79,7 @@ function PortfolioCard(props) {
   };
 
   const handleDialogConfirm = (t, s, d, fs) =>{
-    editCard({
+    updateCard({
       id: props.id,
       title: t,
       subtitle: s,
@@ -99,7 +89,6 @@ function PortfolioCard(props) {
     fs.forEach(file => {
       associateFileWithCard(file.fname, card.id);
     });
-    //TODO SUbmit to backend
     setOpen(false);
   }
 
@@ -158,7 +147,6 @@ function PortfolioCard(props) {
           <ExpandMore />
         </IconButton>
       </CardActions>
-      {console.log(unassociatedFiles)}
       <DialogPortfolioCard 
             handleDialogConfirm={handleDialogConfirm}
             handleDialogCancel={handleDialogCancel}

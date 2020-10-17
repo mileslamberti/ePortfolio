@@ -1,6 +1,6 @@
 import React, {useState, useEffect, createContext, useReducer} from 'react';
 
-import portfolioCardReducer from './portfolioCardReducer';
+import {projectInfoReducer, cardReducer, fileReducer, ACTIONS} from './ProjectReducers';
 
 const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
@@ -13,7 +13,7 @@ const initialCards = {
     }]
 }
 
-let initialProjectInfo = {
+const initialProjectInfo = {
     title: "Doggo",
     subtitle: "Catto"
 }
@@ -32,98 +32,72 @@ const initialFiles ={
 
 export const PortfolioCardContext = createContext();
 
-function reducer(state, action){
-    switch(action.type){
-        case "update-info":
-            return{
-                ...state,
-                title: action.payload.title,
-                subtitle: action.payload.subtitle
-            }
-        default:
-            console.log("in default");
-            return state
-    }
-}
-
-function reducer2(state, action){
-    switch(action.type){
-        case "add-card":
-            return{
-                ...state,
-                cards: [...state.cards, action.payload]
-
-            }
-        case "delete-card":
-            return {
-                ...state,
-                cards: state.cards.filter(card => card.id !== action.payload)
-            }
-        case "edit-card":
-            const updatedCards = state.cards.map(card => {
-                if(card.id === action.payload.id){
-                    return {...card, ...action.payload}
-                }
-                return card;
-            })
-            return {
-                ...state,
-                cards: updatedCards
-            }
-        default:
-            return state;
-    }
-}
-
-function reducer3(state, action){
-    switch(action.type){
-        case "associateCard":
-            return {
-                ...state,
-                files: state.files.map(file => {
-                    if(file.fname === action.payload.fname){
-                        return{...file, ...action.payload}
-                    }
-                    return file;
-                })
-            }
-        case "unassociateCard":
-            return{
-                ...state,
-                files: state.files.map(file => {
-                    if(file.associatedWithCard === ""){
-                        console.log("File not associated with any card")
-                    }
-                    if(file.fname === action.payload.fname){
-                        return{...file, ...action.payload}
-                    }
-                    return file;
-                })
-            }
-        default:
-            return state;
-    }
-}
-
 export const PortfolioCardProvider = props => {
-    // Can be removed later, and while it is hard coded the IDs must sync up with what is in editProject
-    const hardCodedCard = [{
-        id: `item-1`,
-        title: "Card 1",
-        description: "A very hard assignmnet",
-        extendedDescription: "Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10 minutes",
-    }]
-    const hardCodedFile ={
-        fname: "Assignment1.pdf",
-        associatedWithCard: hardCodedCard[0].id
+    const [projectInfoState, dispatchProjectInfo] = useReducer(projectInfoReducer, initialProjectInfo);
+    const [cardsState, dispatchCards] = useReducer(cardReducer, initialCards);
+    const [filesState, dispatchFiles] = useReducer(fileReducer, initialFiles);
+
+    /** Functions that manage cardsState */
+
+    function addCard(cardInfo){
+        dispatchCards({
+            type: ACTIONS.ADD_CARD,
+            payload: {
+                id: cardInfo.id,
+                title: cardInfo.title,
+                subtitle: cardInfo.subtitle,
+                description: cardInfo.description
+            }
+        });
     }
-    const [projectInfoState, dispatchProjectInfo] = useReducer(reducer, initialProjectInfo);
-    const [cardsState, dispatchCards] = useReducer(reducer2, initialCards);
-    const [filesState, dispatchFiles] = useReducer(reducer3, initialFiles);
-    
+
+    function deleteCard(id){
+        const associatedFiles = getFilesAssociatedWithCard(id);
+        associatedFiles.forEach(file => {
+            unassociateFileWithCard(file.fname);
+        })
+        dispatchCards({
+            type: ACTIONS.DELETE_CARD,
+            payload: id
+        })
+    }
+
+    function updateCard(cardInfo){
+        dispatchCards({
+            type: ACTIONS.UPDATE_CARD,
+            payload: {
+                id: cardInfo.id,
+                title: cardInfo.title,
+                subtitle: cardInfo.subtitle,
+                description: cardInfo.description
+            }
+        })
+    }
+
+    function getCard(id){
+        for(let i=0; i<cardsState.cards.length; i++){
+            if(cardsState.cards[i].id === id){
+                return cardsState.cards[i];
+            }
+        }
+    }
+
+    /** Functions that manage projectInfoState */
+    function editProjectInfo(title, subtitle){
+        dispatchProjectInfo({
+            type: ACTIONS.UPDATE_PROJECT_INFO,
+            payload: {
+                title: title,
+                subtitle: subtitle
+            }
+        });
+    }
+
+
+    /** Functions that manage filesState */
     function associateFileWithCard(fname, cardid){
         dispatchFiles({
-            type: 'associateCard',
+            type: ACTIONS.ASSOCIATE_CARD,
             payload: {
                 fname: fname,
                 associatedWithCard: cardid
@@ -133,13 +107,22 @@ export const PortfolioCardProvider = props => {
 
     function unassociateFileWithCard(fname){
         dispatchFiles({
-            type: 'unassociateCard',
+            type: ACTIONS.UNASSOCIATE_CARD,
             payload: {
                 fname: fname,
                 associatedWithCard: ""
             }
         })
     }
+
+    function getFilesAssociatedWithCard(id){
+        return filesState.files.filter(file => file.associatedWithCard === id);
+    }
+
+    function getFilesUnassociatedWithAnyCard(id){
+        return filesState.files.filter(file => file.associatedWithCard === "");
+    }
+
     // TODO get files associated with wihtr
     //useEffect( () => {
         // TODO REMOVE CONSOLE LOG
@@ -157,59 +140,10 @@ export const PortfolioCardProvider = props => {
         //     })
     //}, []);
 
-    function editProjectInfo(title, subtitle){
-        dispatchProjectInfo({
-            type: 'update-info',
-            payload: {
-                title: title,
-                subtitle: subtitle
-            }
-        });
-    }
 
-    function addCard(cardInfo){
-        dispatchCards({
-            type: "add-card",
-            payload: {
-                id: cardInfo.id,
-                title: cardInfo.title,
-                subtitle: cardInfo.subtitle,
-                description: cardInfo.description
-            }
-        });
-    }
 
-    function deleteCard(id){
-        const associatedFiles = getFilesAssociatedWithCard(id);
-        associatedFiles.forEach(file => {
-            unassociateFileWithCard(file.fname);
-        })
-        dispatchCards({
-            type: "delete-card",
-            payload: id
-        })
-    }
 
-    function getCard(id){
-        for(let i=0; i<cardsState.cards.length; i++){
-            if(cardsState.cards[i].id === id){
-                return cardsState.cards[i];
-            }
-        }
-    }
-
-    function editCard(cardInfo){
-        dispatchCards({
-            type: "edit-card",
-            payload: {
-                id: cardInfo.id,
-                title: cardInfo.title,
-                subtitle: cardInfo. subtitle,
-                description: cardInfo.description
-            }
-        })
-    }
-
+    /* TO do */
     function reorderCards(sourceIndex, destIndex){
         const result = Array.from(cardsState);
         const [removed] = result.splice(sourceIndex, 1);
@@ -221,24 +155,21 @@ export const PortfolioCardProvider = props => {
         })
     }
 
-    function getFilesAssociatedWithCard(id){
-        return filesState.files.filter(file => file.associatedWithCard === id);
-    }
 
-    function getFilesUnassociatedWithAnyCard(id){
-        return filesState.files.filter(file => file.associatedWithCard === "");
-    }
 
 
     return(
         <PortfolioCardContext.Provider value={{
+            // variables that can be accessed within the context
             projectInfo: projectInfoState,
             cards: cardsState.cards,
             files: filesState.files,
+
+            // functions that can be accessed within the context
             editProjectInfo,
             addCard,
             deleteCard,
-            editCard,
+            updateCard,
             getCard,
             associateFileWithCard,
             unassociateFileWithCard,
