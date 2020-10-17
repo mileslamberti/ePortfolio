@@ -73,8 +73,8 @@ const AboutMe = () => {
             {loading ? <span className="spinner-border spinner-border-sm"></span> : 
             <>
             <CardContent>
-                <CardHeader title={aboutMe.displayName} />
-                    <Typography variant="h6" color="textSecondary" component="p">{aboutMe.description}</Typography>
+                <Typography variant="h3" component="p">{aboutMe.displayName}</Typography>
+                    <Typography variant="h4" color="textSecondary" component="p">{aboutMe.description}</Typography>
             </CardContent>
             <IconButton> <Edit onClick={handleClickOpen} /> </IconButton>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
