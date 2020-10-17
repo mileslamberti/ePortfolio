@@ -140,7 +140,6 @@ function EditProject(props) {
         if (!result.destination) {
             return;
         }
-
         const items = reorder(
             cards,
             result.source.index,
@@ -169,7 +168,6 @@ function EditProject(props) {
               Add Files to Project
           </Button>
       </Box>
-      What
       {console.log(cards)}
       <DialogPortfolioCard 
           handleDialogConfirm={handleDialogConfirm}

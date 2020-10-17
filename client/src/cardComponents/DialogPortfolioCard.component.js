@@ -7,10 +7,10 @@ import MultiselectCheckbox from "./MultiselectCheckbox.component";
 
 function DialogPortfolioCard(props){
 
-    const {handleDialogConfirm, handleDialogCancel, open, title, description, extendedDescription, dialogInformation} = props
+    const {handleDialogConfirm, handleDialogCancel, open, title, subtitle, description, dialogInformation} = props
     const [formTitle, setFormTitle] = useState(title);
+    const [formSubtitle, setFormSubtitle] = useState(subtitle);
     const [formDescription, setFormDescription] = useState(description);
-    const [formExtendedDescription, setFormExtendedDescription] = useState(extendedDescription);
     const [filesToAssociate, setFilesToAssociate] = useState([])
 
 
@@ -22,18 +22,18 @@ function DialogPortfolioCard(props){
         setFormTitle(e.target.value);
     }
 
+    const onChangeSubtitle = (e) => {
+        setFormSubtitle(e.target.value);
+    }
+
     const onChangeDescription = (e) => {
         setFormDescription(e.target.value);
     }
 
-    const onChangeExtendedDescription = (e) => {
-        setFormExtendedDescription(e.target.value);
-    }
-
     const handleCancelClick = () =>{
         setFormTitle(title);
+        setFormSubtitle(subtitle);
         setFormDescription(description);
-        setFormExtendedDescription(extendedDescription);
         setFilesToAssociate([]);
         handleDialogCancel();
     }
@@ -50,27 +50,24 @@ function DialogPortfolioCard(props){
             id="title"
             label="Title of Card"
             fullWidth
-            defaultValue={title}
             value={formTitle}
             onChange={onChangeTitle}
           />
           <TextField
             margin="dense"
             id="description"
-            label="Description of Card"
+            label="Subtitle of Card"
             fullWidth
-            defaultValue={description}
-            value={formDescription}
-            onChange={onChangeDescription}
+            value={formSubtitle}
+            onChange={onChangeSubtitle}
           />
         <TextField
             margin="dense"
             id="extendedDescription"
-            label="Extended Description (visible in when pressing dropdown button)"
+            label="Description (visible in when pressing dropdown button)"
             fullWidth
-            defaultValue={extendedDescription}
-            value={formExtendedDescription}
-            onChange={onChangeExtendedDescription}
+            value={formDescription}
+            onChange={onChangeDescription}
           />
           {/* Ability to associate files with cards only allowed in edit mode */}
           {dialogInformation.edit &&
@@ -90,7 +87,7 @@ function DialogPortfolioCard(props){
           <Button onClick={handleCancelClick} color="primary">
             Cancel
           </Button>
-          <Button onClick={() => handleDialogConfirm(formTitle, formDescription, formExtendedDescription, filesToAssociate)} color="primary">
+          <Button onClick={() => handleDialogConfirm(formTitle, formSubtitle, formDescription, filesToAssociate)} color="primary">
             Confirm
           </Button>
           

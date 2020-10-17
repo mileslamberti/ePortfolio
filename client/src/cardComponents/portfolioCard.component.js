@@ -42,7 +42,10 @@ function PortfolioCard(props) {
   const [Picture, setPicture] = useState(require("./images/programming.png"))
   const [showMedia, setMedia] = useState(true);
   
+  const { getCard } = useContext(PortfolioCardContext);
+  const { editCard } = useContext(PortfolioCardContext);
 
+  const card = getCard(props.id);
   // These files are common across all cards
   const { files } = useContext(PortfolioCardContext);
 
@@ -115,10 +118,17 @@ function unassociateFileWithCard(file){
     setOpen(true);
   };
 
-  const handleDialogConfirm = (t, d, e, fs) =>{
+  const handleDialogConfirm = (t, s, d, fs) =>{
+    editCard({
+      id: props.id,
+      title: t,
+      subtitle: s,
+      description: d
+    });
+
     setTitle(t);
-    setDescription(d);
-    setExtendedDescription(e);
+    setDescription(s);
+    setExtendedDescription(d);
     if(fs.length > 0){
         associateFilesWithCard(fs);
     }
@@ -149,20 +159,19 @@ function unassociateFileWithCard(file){
             {showMedia ? <Remove /> : <ZoomOutMap />}
           </IconButton>
         }
-        title={title}
+        title={card.title}
       />
-
       {/* The media (example an image) of the card can be minimised*/}
       {showMedia && <CardMedia
         className={classes.media}
         image={Picture}
-        title={title}
+        title={card.title}
         onClick={() => console.log("Clicked Picture")}
       />}
       
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-          {description}
+          {card.subtitle}
         </Typography>
       </CardContent>
 
@@ -187,9 +196,9 @@ function unassociateFileWithCard(file){
             handleDialogConfirm={handleDialogConfirm}
             handleDialogCancel={handleDialogCancel}
             open={open}
-            title={title}
-            description={description}
-            extendedDescription={extendedDescription}
+            title={card.title}
+            subtitle={card.subtitle}
+            description={card.description}
             cardID={props.id}
             dialogInformation={getDialogDescription()}
             files={getFilesUnassociatedWithAnyCard()}
@@ -197,7 +206,7 @@ function unassociateFileWithCard(file){
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography paragraph>
-            {extendedDescription}
+            {description}
           </Typography>
             <List>
             {associatedFiles.map((file, index) => 

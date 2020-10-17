@@ -55,6 +55,17 @@ function reducer2(state, action){
                 ...state,
                 cards: state.cards.filter(card => card.id !== action.payload)
             }
+        case "edit-card":
+            const updatedCards = state.cards.map(card => {
+                if(card.id === action.payload.id){
+                    return {...card, ...action.payload}
+                }
+                return card;
+            })
+            return {
+                ...state,
+                cards: updatedCards
+            }
         default:
             return state;
     }
@@ -123,6 +134,38 @@ export const PortfolioCardProvider = props => {
         })
     }
 
+    function getCard(id){
+        for(let i=0; i<cardsState.cards.length; i++){
+            if(cardsState.cards[i].id === id){
+                return cardsState.cards[i];
+            }
+        }
+    }
+
+    function editCard(cardInfo){
+        dispatchCards({
+            type: "edit-card",
+            payload: {
+                id: cardInfo.id,
+                title: cardInfo.title,
+                subtitle: cardInfo. subtitle,
+                description: cardInfo.description
+            }
+        })
+    }
+
+    function reorderCards(sourceIndex, destIndex){
+        const result = Array.from(cardsState);
+        const [removed] = result.splice(sourceIndex, 1);
+        result.splice(destIndex, 0, removed);
+        console.log(result);
+        dispatchCards({
+            type: "reorder-cards",
+            payload: result
+        })
+    }
+
+
     return(
         <PortfolioCardContext.Provider value={{
             projectInfo: projectInfoState,
@@ -130,7 +173,9 @@ export const PortfolioCardProvider = props => {
             files: filesState.files,
             editProjectInfo,
             addCard,
-            deleteCard
+            deleteCard,
+            editCard,
+            getCard
         }}>
             {props.children}
         </PortfolioCardContext.Provider>
