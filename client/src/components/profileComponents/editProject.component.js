@@ -45,41 +45,12 @@ function EditProject(props) {
     const projectID = props.location.pathname.split("/")[3];
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [cards, setCards] = useState([]); 
-    const [files, setFiles] = useContext(PortfolioCardContext);
-
-    useEffect( () => {
-      // TODO REMOVE CONSOLE LOG
-      axios.get(API_URL + `/project/${projectID}`, { headers: authHeader() })
-          .then( projectRes => {
-              const project = projectRes.data.project;
-              setTitle(project.title);
-              setDescription(project.description);
-              setFiles(project.files);
-              //TODO remove console log
-              console.log(project);
-              axios.get(`${API_URL}/getprojectcards/${projectID}`,{ headers: authHeader() })
-                .then( cardRes => {
-                  console.log(cardRes);
-                  
-                })
-              
-          })
-          .catch( err => {
-              console.log(err);
-          })
-  }, []);
-    // These are the cards associated with the project
-    // Card IDs MUST be unique.
-    // GET RETURNS ALL CARDS IN PROJECT : title,
-    const willsCard = {
-      id: `item-1`,
-      title: "Assignment 1",
-      description: "A very hard assignmnet",
-      extendedDescription: "Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10 minutes",
-  }
+    const { cards } = useContext(PortfolioCardContext);
+    const { files } = useContext(PortfolioCardContext); //useContext(PortfolioCardContext);
 
 
+    const { addCard } = useContext(PortfolioCardContext);
+    const { deleteCard } = useContext(PortfolioCardContext);
 
     // Whether add card dialog is open
     const [open, setOpen] = React.useState(false);
@@ -90,29 +61,21 @@ function EditProject(props) {
     };
 
     /** Once adding a new card is confirmed */
-    const handleDialogConfirm = (t, d, e, _) =>{
-      setCards([...cards, {id: `item-${new Date().getTime()}`,
-                title: t,
-                description: d,
-                extendedDescription: e}
-              ])
-      // POST TO API
+    const handleDialogConfirm = (t, s, d, _) => {
       const card = {
-        projectID: projectID,
-        //TODO REMOVE HARD CODING
-        id :"card1",
-        position : 1,
-        title : t,
-        description : d,
-        extendedDescription: e,
-        img: "REALLY COOL IMAGESs"
+          id: `item-${new Date().getTime()}`,
+          title: t,
+          subtitle: s,
+          description: d
       }
-      console.log(card);
+      addCard(card);     
+      /*
       axios.post(`${API_URL}/projectcards/`, card, { headers: authHeader() })
           .then( res => {
               console.log(card);
               console.log(res.data);
       });        
+      */
       setOpen(false);
       
     }
@@ -137,21 +100,17 @@ function EditProject(props) {
         if (!result.destination) {
             return;
         }
-
         const items = reorder(
             cards,
             result.source.index,
             result.destination.index
         );
-        setCards(items);
+        //setCards(items);
     }
 
     return (
       <>
-      <PortfolioTitleCard 
-          title={title}
-          description={description}
-      />
+      <PortfolioTitleCard />
       <Box mx="auto" m={1} mr={10}>
           <Button 
               variant="contained"
@@ -168,7 +127,6 @@ function EditProject(props) {
               Add Files to Project
           </Button>
       </Box>
-
       <DialogPortfolioCard 
           handleDialogConfirm={handleDialogConfirm}
           handleDialogCancel={handleDialogCancel}
@@ -176,7 +134,7 @@ function EditProject(props) {
           dialogInformation={getDialogDescription()}
       />
       
-    <DragDropContext onDragEnd={onDragEnd}>
+      <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="droppable">
         {(provided, snapshot) => (
           <div
@@ -203,21 +161,7 @@ function EditProject(props) {
                           description={item.description}
                           extendedDescription={item.extendedDescription}
                           picture={item.picture}
-                          onDeleteClick={() => {
-                              console.log("Clicked", index)
-                              const newState = [...cards];
-                              newState.splice(index, 1);
-                              setCards(newState);
-
-                              let associatedFiles = files.filter(file => file.associatedWithCard === item.id);
-                              let newFiles = files;
-                              for(let i=0; i<files.length; i++){
-                                  if(associatedFiles.map(file => file.fname).indexOf(files[i].fname) !== -1){
-                                      newFiles[i].associatedWithCard = "";
-                                  }
-                              }
-                              setFiles(newFiles);
-                          }}
+                          onDeleteClick={() => deleteCard(item.id)}
                       />
                   </div>
                 )}
@@ -229,6 +173,7 @@ function EditProject(props) {
       </Droppable>
     </DragDropContext>
     </>
+
     );
   }
 

@@ -10,8 +10,8 @@ import authHeader from "../../services/auth-header";
 import userService from "../../services/user.service";
 import axios from 'axios'
 
-import {Card, CardHeader, CardMedia, CardContent, CardActions, Collapse, IconButton, Typography} from '@material-ui/core';
-import {Favorite, Share, ExpandMore, Edit, Delete, Remove, ZoomOutMap, Folder, PictureAsPdfOutlined, Image} from '@material-ui/icons';
+import {IconButton} from '@material-ui/core';
+import { Delete, Folder, PictureAsPdfOutlined, Image} from '@material-ui/icons';
 import {List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar} from '@material-ui/core';
 
 const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
@@ -61,18 +61,13 @@ function UploadPortfolio (){
         setRejectedDNDFiles(rejectedFiles);
     }
 
-    const displayAcceptedFiles = AcceptedFiles.map(file => (
-        <li key={file.path}>
-        {file.path} - {file.size} bytes
-        </li>
-    ));
 
     // sumbits to the given path once it has recieved the number of files specified by numFiles
     const submitToDatabase = (path, filename, newLink, links, numFiles, projectID) => {
         links.push({
             file: newLink,
             filename: filename,
-            cardID: "unassigned"
+            cardID: ""
         })
         if (links.length === numFiles){
             const project = {
