@@ -45,8 +45,11 @@ function EditProject(props) {
     const projectID = props.location.pathname.split("/")[3];
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [cards, setCards] = useState([]); 
-    const [files, setFiles] = useContext(PortfolioCardContext);
+    const { cards } = useContext(PortfolioCardContext);
+    const [files, setFiles] = useState([]); //useContext(PortfolioCardContext);
+
+
+    const { addCard } = useContext(PortfolioCardContext);
 
     useEffect( () => {
       // TODO REMOVE CONSOLE LOG
@@ -57,7 +60,7 @@ function EditProject(props) {
               setDescription(project.description);
               setFiles(project.files);
               //TODO remove console log
-              console.log(project);
+              console.log("Reading in data", project);
               axios.get(`${API_URL}/getprojectcards/${projectID}`,{ headers: authHeader() })
                 .then( cardRes => {
                   console.log(cardRes);
@@ -90,23 +93,22 @@ function EditProject(props) {
     };
 
     /** Once adding a new card is confirmed */
-    const handleDialogConfirm = (t, d, e, _) =>{
-      setCards([...cards, {id: `item-${new Date().getTime()}`,
-                title: t,
-                description: d,
-                extendedDescription: e}
-              ])
-      // POST TO API
+    const handleDialogConfirm = (t, s, d, _) => {
       const card = {
-        projectID: projectID,
-        //TODO REMOVE HARD CODING
-        id :"card1",
-        position : 1,
-        title : t,
-        description : d,
-        extendedDescription: e,
-        img: "REALLY COOL IMAGESs"
+          id: `item-${new Date().getTime()}`,
+          title: t,
+          subtitle: s,
+          description: d
       }
+      addCard(card);
+      
+      //setCards([...cards, {id: `item-${new Date().getTime()}`,
+      //          title: t,
+      //          description: d,
+      //          extendedDescription: e}
+      //        ])
+      // POST TO API
+     
       console.log(card);
       axios.post(`${API_URL}/projectcards/`, card, { headers: authHeader() })
           .then( res => {
@@ -143,15 +145,13 @@ function EditProject(props) {
             result.source.index,
             result.destination.index
         );
-        setCards(items);
+        //setCards(items);
     }
 
     return (
       <>
-      <PortfolioTitleCard 
-          title={title}
-          description={description}
-      />
+      <PortfolioTitleCard />
+
       <Box mx="auto" m={1} mr={10}>
           <Button 
               variant="contained"
@@ -168,7 +168,8 @@ function EditProject(props) {
               Add Files to Project
           </Button>
       </Box>
-
+      What
+      {console.log(cards)}
       <DialogPortfolioCard 
           handleDialogConfirm={handleDialogConfirm}
           handleDialogCancel={handleDialogCancel}
@@ -176,59 +177,8 @@ function EditProject(props) {
           dialogInformation={getDialogDescription()}
       />
       
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="droppable">
-        {(provided, snapshot) => (
-          <div
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-            style={getListStyle(snapshot.isDraggingOver)}
-          >
-            {/*We map each card into a PortfolioCard*/}
-            {cards.map((item, index) => (
-              <Draggable key={item.id} draggableId={item.id} index={index}>
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    style={getItemStyle(
-                      snapshot.isDragging,
-                      provided.draggableProps.style
-                    )}
-                  >
-                      <PortfolioCard
-                          id={item.id}
-                          title={item.title}
-                          description={item.description}
-                          extendedDescription={item.extendedDescription}
-                          picture={item.picture}
-                          onDeleteClick={() => {
-                              console.log("Clicked", index)
-                              const newState = [...cards];
-                              newState.splice(index, 1);
-                              setCards(newState);
-
-                              let associatedFiles = files.filter(file => file.associatedWithCard === item.id);
-                              let newFiles = files;
-                              for(let i=0; i<files.length; i++){
-                                  if(associatedFiles.map(file => file.fname).indexOf(files[i].fname) !== -1){
-                                      newFiles[i].associatedWithCard = "";
-                                  }
-                              }
-                              setFiles(newFiles);
-                          }}
-                      />
-                  </div>
-                )}
-              </Draggable>
-            ))}
-          {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
     </>
+
     );
   }
 

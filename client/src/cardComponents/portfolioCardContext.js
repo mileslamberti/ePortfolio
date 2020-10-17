@@ -1,6 +1,51 @@
-import React, {useState, useEffect, createContext} from 'react';
+import React, {useState, useEffect, createContext, useReducer} from 'react';
+
+import portfolioCardReducer from './portfolioCardReducer';
+
+const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
+
+const initialCards = {
+    cards: [{
+        id: "card-1",
+        title: "Title",
+        subtitle: "Subtitle",
+        description: "Description"
+    }]
+}
+
+let initialProjectInfo = {
+    title: "Doggo",
+    subtitle: "Catto"
+}
 
 export const PortfolioCardContext = createContext();
+
+function reducer(state, action){
+    switch(action.type){
+        case "update-info":
+            return{
+                ...state,
+                title: action.payload.title,
+                subtitle: action.payload.subtitle
+            }
+        default:
+            console.log("in default");
+            return state
+    }
+}
+
+function reducer2(state, action){
+    switch(action.type){
+        case "add-card":
+            return{
+                ...state,
+                cards: [...state.cards, action.payload]
+
+            }
+        default:
+            return state;
+    }
+}
 
 export const PortfolioCardProvider = props => {
     // Can be removed later, and while it is hard coded the IDs must sync up with what is in editProject
@@ -14,10 +59,11 @@ export const PortfolioCardProvider = props => {
         fname: "Assignment1.pdf",
         associatedWithCard: hardCodedCard[0].id
     }
-    const [cards, setCards] = useState([]);
+    const [projectInfoState, dispatchProjectInfo] = useReducer(reducer, initialProjectInfo);
+    const [cardsState, dispatchCards] = useReducer(reducer2, initialCards);
     // TODO get files associated with wihtr
     const [files, setFiles] = useState([])
-    useEffect( () => {
+    //useEffect( () => {
         // TODO REMOVE CONSOLE LOG
         //console.log(projectID);
         // axios.get(API_URL + `/project/${projectID}`, { headers: authHeader() })
@@ -31,9 +77,38 @@ export const PortfolioCardProvider = props => {
         //     .catch( err => {
         //         console.log(err);
         //     })
-    }, []);
+    //}, []);
+
+    function editProjectInfo(title, subtitle){
+        dispatchProjectInfo({
+            type: 'update-info',
+            payload: {
+                title: title,
+                subtitle: subtitle
+            }
+        });
+    }
+
+    function addCard(cardInfo){
+        dispatchCards({
+            type: "add-card",
+            payload: {
+                id: cardInfo.id,
+                title: cardInfo.title,
+                subtitle: cardInfo.subtitle,
+                description: cardInfo.description
+            }
+        });
+    }
+
     return(
-        <PortfolioCardContext.Provider value={[files, setFiles]}>
+        <PortfolioCardContext.Provider value={{
+            projectInfo: projectInfoState,
+            cards: cardsState.cards,
+            files: cardsState.files,
+            editProjectInfo,
+            addCard
+        }}>
             {props.children}
         </PortfolioCardContext.Provider>
     )
