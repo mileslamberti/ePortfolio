@@ -25,7 +25,9 @@ exports.getAboutMe = (req,res) => {
             aboutMe = doc.data().aboutMe;
             return res.status(200).json({aboutMe});
         } else {
-            res.status(204).json({error: "user has no about me"})
+            aboutMe = { displayName : "Display name", description : "Profile description"};
+            db.doc(`/users/${req.user.handle}/data/aboutme`).set({aboutMe})
+            return res.status(200).json({aboutMe});
         }
     }).catch(err => {
         console.error(err);
@@ -60,7 +62,9 @@ exports.getUserInfo = (req,res) => {
             userInfo = doc.data().userInfo;
             return res.status(200).json({userInfo});
         } else {
-            res.status(204).json({error: "user has no info"})
+            userInfo = { occupation : "Occupation", location : "Location", number : "Phone number", email : "Contact email" };
+            db.doc(`/users/${req.user.handle}/data/userInfo`).set({userInfo})
+            return res.status(200).json({userInfo});
         }
     }).catch(err => {
         console.error(err);
