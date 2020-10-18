@@ -79,12 +79,16 @@ function PortfolioCard(props) {
   };
 
   const handleDialogConfirm = (t, s, d, fs) =>{
-    updateCard({
+    const updatedCard = {
       id: props.id,
       title: t,
       subtitle: s,
-      description: d
-    });
+      description: d,
+      projectID: card.projectID,
+      position: card.position,
+      img: card.img
+    }
+    updateCard(updatedCard);
 
     fs.forEach(file => {
       associateFileWithCard(file.fname, card.id);
