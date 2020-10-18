@@ -13,7 +13,10 @@ const initialCards = {
 
 const initialProjectInfo = {
     title: "",
-    description: ""
+    description: "",
+    projectID: "",
+    files: []
+
 }
 
 const initialFiles ={
