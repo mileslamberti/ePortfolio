@@ -9,15 +9,15 @@ exports.saveProject = (req, res) => {
     files : req.body.files,
   };
 
-  const projectID=req.body.projectID;
   //db.collection(`/users/${req.user.handle}/data/projects/`).doc(projectID).set({aboutMe}).then(doc => {
-    db.doc(`/users/${req.user.handle}/projects/${projectID}`).set({project}).then(doc => {
-      return res.json({ message: `${projectID} added` })
+    db.doc(`/users/${req.user.handle}/projects/${project.projectID}`).set({project}).then(doc => {
+      return res.json({ message: `${project.projectID} updated` })
   }).catch(err => {
       console.error(err);
       return res.status(500).json({ error: `something went wrong` });
   });
 }
+
 exports.getProjects = async (req, res) => {
   var projects = [];
   const databaseSnapshot = await db.collection(`/users/${req.user.handle}/projects`).get();
@@ -56,9 +56,17 @@ exports.getAllProjectCards = async (req, res) => {
     return res.status(200).json({cards});
 }
 
+exports.deleteProjectCard = (req, res) => {
+  const cardID = req.body.id;
+  const projectID = req.body.projectID;
+  const userHandle = req.user.handle;
+  db.doc(`/users/${userHandle}/projects/${projectID}/cards/${cardID}`).delete()
+    .then(doc => {
+      return res.json({ message: `card ${cardID} created` })
+    })
+}
 exports.addProjectCard = (req, res) => {
   const userHandle = req.user.handle;
-  console.log(req.body);
   if ( !checkCardData(req.body) ){
     return res.status(200).json( { 
       error: "req body does not contain all card details",
@@ -68,7 +76,7 @@ exports.addProjectCard = (req, res) => {
   const card = req.body;
   db.doc(`/users/${userHandle}/projects/${card.projectID}/cards/${card.id}`).set({card})
     .then( doc => {
-      return res.json({ message: `card ${card.id} created` })
+      return res.json({ message: `card ${card.id} updated` })
     }).catch(err => {
         console.error(err);
         return res.status(500).json({ error: `something went wrong` });
@@ -77,7 +85,6 @@ exports.addProjectCard = (req, res) => {
 
 const checkCardData = (card) => {
   var validBody = true;
-
   if ( !card.hasOwnProperty("projectID")){
     validBody = false;
     console.log("no projectID");
@@ -100,9 +107,9 @@ const checkCardData = (card) => {
     console.log("no description");
 
   }
-  if ( !card.hasOwnProperty("extendedDescription")){
+  if ( !card.hasOwnProperty("subtitle")){
     validBody = false;
-    console.log("no extendedDescription");
+    console.log("no subtitle");
 
   }
   if ( !card.hasOwnProperty("img")){

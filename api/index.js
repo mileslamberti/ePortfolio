@@ -5,7 +5,7 @@ const {signup, login, uploadImage, updateProfilePic, addUserDetails, getAuthoris
 const { getAboutMe, createAboutMe, createUserInfo, getUserInfo, getUserTags, createUserTags } = require("./routes/aboutMe");
 const { viewUser } = require("./routes/viewUser");
 
-const { saveProject, getProjects, updateProject, getProject, getAllProjectCards, addProjectCard } = require("./routes/projects");
+const { saveProject, getProjects, getProject, getAllProjectCards, addProjectCard, deleteProjectCard } = require("./routes/projects");
 const { getAllUsers } = require("./routes/profiles");
 
 
@@ -43,7 +43,7 @@ app.get("/project/:projectID", userAuth, getProject);
 
 app.get("/getprojectcards/:projectID", userAuth, getAllProjectCards);
 app.post("/projectcards", userAuth, addProjectCard);
-
+app.post("/deleteprojectcard", userAuth, deleteProjectCard);
 
 // TODO, NEED TO ENSURE NO USERS ARE NAMED THE OTHER API ROUTES
 app.get("/:handle", viewUser);
