@@ -9,11 +9,8 @@ function FileUpload(props){
     const onDropAccepted= useCallback((acceptedFiles) => props.updateAccepted(acceptedFiles));
     const onDropRejected= useCallback((rejectedFiles) => props.updateRejected(rejectedFiles));
 
-    const acceptableFiles = ['.pdf', '.png', '.jpg'];
-
     const {acceptedFiles, fileRejections,  getRootProps, getInputProps} = useDropzone({ 
                                                                         maxSize: 1600000000,
-                                                                        accept: acceptableFiles,
                                                                         onDropAccepted,
                                                                         onDropRejected});
   

@@ -36,7 +36,14 @@ function PortfolioTitleCard(props){
     };
 
     const handleDialogConfirm = (t, d) =>{
-      editProjectInfo(t, d);
+      const project = {
+        title: t,
+        description: d,
+        numCards: projectInfo.numCards,
+        projectID: projectInfo.projectID,
+        files: projectInfo.files
+      }
+      editProjectInfo(project);
       setOpen(false);
     }
 
@@ -54,7 +61,7 @@ function PortfolioTitleCard(props){
                     </IconButton>
                 }
                 title={projectInfo.title}
-                subheader={projectInfo.subtitle}
+                subheader={projectInfo.description}
             />
             
         </Card>
