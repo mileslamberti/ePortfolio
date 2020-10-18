@@ -15,7 +15,7 @@ function DiaglogTitleCard(props){
 
     const {handleDialogConfirm, handleDialogCancel, open} = props
     const [formTitle, setFormTitle] = useState(projectInfo.title);
-    const [formDescription, setFormDescription] = useState(projectInfo.subtitle);
+    const [formDescription, setFormDescription] = useState(projectInfo.description);
     
     const onChangeTitle = (e) => {
         setFormTitle(e.target.value);
@@ -27,7 +27,7 @@ function DiaglogTitleCard(props){
 
     const handleCancelClick = () =>{
         setFormTitle(projectInfo.title);
-        setFormDescription(projectInfo.subtitle);
+        setFormDescription(projectInfo.description);
         handleDialogCancel();
     }
     
