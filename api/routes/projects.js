@@ -53,10 +53,7 @@ exports.getAllProjectCards = async (req, res) => {
     snapshot.forEach(card => {
       cards.push(card.data());
     });
-    if (cards.length > 0){
-      return res.status(200).json({cards});
-    }
-    return res.status(206).json({ error: "no data in users collection"});
+    return res.status(200).json({cards});
 }
 
 exports.addProjectCard = (req, res) => {
@@ -81,37 +78,36 @@ exports.addProjectCard = (req, res) => {
 const checkCardData = (card) => {
   var validBody = true;
 
-  if ( !card.projectID){
+  if ( !card.hasOwnProperty("projectID")){
     validBody = false;
-    console.log("no projectID")
+    console.log("no projectID");
   }
-  if ( !card.id){
+  if ( !card.hasOwnProperty("id")){
     validBody = false;
-    console.log("no id")
+    console.log("no id");
+  }
+  if ( !card.hasOwnProperty("position")){
+    validBody = false;
+    console.log("no position");
 
   }
-  if ( !card.position){
+  if ( !card.hasOwnProperty("title")){
     validBody = false;
-    console.log("no position")
+    console.log("no title");
+  }
+  if ( !card.hasOwnProperty("description")){
+    validBody = false;
+    console.log("no description");
 
   }
-  if ( !card.title){
+  if ( !card.hasOwnProperty("extendedDescription")){
     validBody = false;
-    console.log("no title")
-  }
-  if ( !card.description){
-    validBody = false;
-    console.log("no description")
+    console.log("no extendedDescription");
 
   }
-  if ( !card.extendedDescription){
+  if ( !card.hasOwnProperty("img")){
     validBody = false;
-    console.log("no extendedDescription")
-
-  }
-  if ( !card.img){
-    validBody = false;
-    console.log("no img")
+    console.log("no img");
   }
   return validBody;
 }
