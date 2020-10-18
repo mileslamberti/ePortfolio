@@ -15,7 +15,9 @@ export function projectInfoReducer(state, action){
             return{
                 ...state,
                 title: action.payload.title,
-                subtitle: action.payload.subtitle
+                description: action.payload.description,
+                projectID: action.payload.projectID,
+                files: action.payload.files
             }
         default:
             console.log("in default");
