@@ -18,7 +18,6 @@ const Tags = () => {
   useEffect( () => {
     axios.get(API_URL + "/tags", { headers: authHeader() })
         .then( res => {
-            console.log(res);
             setTags(tags => tags.concat(res.data.tags));
         })
         .catch( err => {
@@ -26,18 +25,15 @@ const Tags = () => {
         })
   }, []);
 
-  //  updates when tags changes
-  useEffect( () => {
-    axios.post(API_URL+'/tags', {tags: tags}, { headers: authHeader() })
-    .then( res => {
-      console.log(res.data);
-    }); 
-  }, [tags]);
   
   const removeTag = (i) => {
     const newTags = [ ...tags ];
     newTags.splice(i, 1);
     setTags(newTags);
+    axios.post(API_URL+'/tags', {tags: newTags}, { headers: authHeader() })
+        .then( res => {
+          console.log(res.data);
+        }); 
   }
 
   const inputKeyDown = (e) => {
@@ -55,7 +51,12 @@ const Tags = () => {
     // Check for tagInput value and make sure the same card does not exist
     if (tagInput !== "" && ! (tags.find(tag => tag.toLowerCase() === tagInput.toLowerCase())) ){
       setTags(tags => tags.concat([tagInput]));
+      const updatedTags = tags.concat([tagInput]);
       setTagInput("");
+      axios.post(API_URL+'/tags', {tags: updatedTags}, { headers: authHeader() })
+        .then( res => {
+          console.log(res.data);
+        }); 
     }
   }
 
