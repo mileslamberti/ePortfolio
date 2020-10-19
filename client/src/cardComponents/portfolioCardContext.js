@@ -57,7 +57,7 @@ export const PortfolioCardProvider = props => {
         }
         console.log(card);
         axios.post(`${API_URL}/projectcards/`, card, { headers: authHeader() })
-            .then(res => console.log(res));
+            .then(res => console.log(res.data));
     }
     function loadCard(cardInfo){
         dispatchCards({
@@ -76,7 +76,7 @@ export const PortfolioCardProvider = props => {
     function deleteCard(id){
         const associatedFiles = getFilesAssociatedWithCard(id);
         associatedFiles.forEach(file => {
-            unassociateFileWithCard(file.fname);
+            unassociateFileWithCard(file.filename);
         })
         dispatchCards({
             type: ACTIONS.DELETE_CARD,
@@ -125,10 +125,9 @@ export const PortfolioCardProvider = props => {
                 title: project.title,
                 description: project.description,
                 projectID: project.projectID,
-                files: project.files,
             }
         });
-        axios.post(`${API_URL}/projects/`, project, { headers: authHeader() })
+        axios.post(`${API_URL}/saveproject/`, project, { headers: authHeader() })
             .then(res => console.log(res.data))
             .catch(err => console.log(err))
     }
@@ -140,51 +139,64 @@ export const PortfolioCardProvider = props => {
                 title: project.title,
                 description: project.description,
                 projectID: project.projectID,
-                files: project.files,
             }
         });
     }
 
     /** Functions that manage filesState */
-    function addFile(fname, downloadLink, cardid){
+    function addFile(filename, downloadLink, cardid){
         dispatchFiles({
             type: ACTIONS.ADD_FILE,
             payload: {
-                fname: fname,
+                filename: filename,
                 downloadLink: downloadLink,
                 associatedWithCard: cardid
             }
         })
     }
-    function loadFile(fname, downloadLink, cardid){
+    function loadFile(file){
         dispatchFiles({
             type: ACTIONS.ADD_FILE,
             payload: {
-                fname: fname,
-                downloadLink: downloadLink,
-                associatedWithCard: cardid
+                filename: file.filename,
+                downloadLink: file.file,
+                associatedWithCard: file.associatedWithCard
             }
         })
     }
 
-    function associateFileWithCard(fname, cardid){
+    function associateFileWithCard(filename, cardid){
         dispatchFiles({
             type: ACTIONS.ASSOCIATE_CARD,
             payload: {
-                fname: fname,
+                filename: filename,
                 associatedWithCard: cardid
             }
         })
+        const reqBody = {
+            filename: filename,
+            id: cardid,
+            projectID: projectInfoState.projectID
+        }
+        axios.post(`${API_URL}/assignfiletocard`,reqBody, { headers: authHeader() })
+            .then(res => console.log(res))
     }
 
-    function unassociateFileWithCard(fname){
+    function unassociateFileWithCard(filename){
         dispatchFiles({
             type: ACTIONS.UNASSOCIATE_CARD,
             payload: {
-                fname: fname,
+                filename: filename,
                 associatedWithCard: ""
             }
         })
+        const reqBody = {
+            filename: filename,
+            id: "",
+            projectID: projectInfoState.projectID
+        }
+        axios.post(`${API_URL}/assignfiletocard`,reqBody, { headers: authHeader() })
+            .then(res => console.log(res))
     }
 
     function getFilesAssociatedWithCard(id){
@@ -196,27 +208,36 @@ export const PortfolioCardProvider = props => {
     }
 
     useEffect( () => {
+
+        //fetch project
          axios.get(API_URL + `/project/${projectID}`, { headers: authHeader() })
              .then( res => {
-                 const project = res.data.project;
-                 console.log(project);
-                 loadProjectInfo(project);
-                 
-                 project.files.forEach(file => {
-                    loadFile(file.filename, file.file, file.cardID)
-                 })
+                const project = res.data.project;
+                loadProjectInfo(project);
              })
              .catch( err => {
                  console.log("Error", err);
              })
-        // To add get request for cards.
+        // fetch project files
+        axios.get(API_URL + `/files/${projectID}`,{ headers: authHeader() })
+            .then( res => {
+                const files = res.data.files;
+                files.forEach(file => {
+                    loadFile(file);
+                })
+            })
+            .catch( err => {
+                console.log("Error", err);
+            })
+        // fetch project cards
         axios.get(`${API_URL}/getprojectcards/${projectID}`,{ headers: authHeader() })
             .then( cardRes => {
-                console.log("CARDS", cardRes);
                 cardRes.data.cards.forEach( card => {
                     loadCard(card.card);
                 })
-             })
+             }).catch( err => {
+                console.log("Error", err);
+            })
     }, []);
 
     /* TO do */
