@@ -17,7 +17,7 @@ function MultiselectCheckbox(props) {
         id="checkboxes-tags-demo"
         options={props.files}
         disableCloseOnSelect
-        getOptionLabel={(option) => option.fname}
+        getOptionLabel={(option) => option.filename}
         renderOption={(option, { selected }) => (
             <React.Fragment>
             <Checkbox
@@ -26,7 +26,7 @@ function MultiselectCheckbox(props) {
                 style={{ marginRight: 8 }}
                 checked={selected}
             />
-            {option.fname}
+            {option.filename}
             </React.Fragment>
         )}
         style={{ width: 500 }}
