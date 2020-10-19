@@ -38,7 +38,7 @@ function ProjectPanelCard(props){
 
     const [project, setProject] = useState(props)
     // TODO IMPLEMENTE IMAGES
-    const [Img, setImg] = useState("./images/pdf.png");
+    const [Img, setImg] = useState(require("./images/programming.png"));
 
     
     const handleMinimizeClick = () =>{
