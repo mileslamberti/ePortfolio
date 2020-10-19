@@ -52,6 +52,9 @@ function EditProject(props) {
     const { addCard } = useContext(PortfolioCardContext);
     const { deleteCard } = useContext(PortfolioCardContext);
 
+    const { associateFileWithCard } = useContext(PortfolioCardContext);
+
+
     // Whether add card dialog is open
     const [open, setOpen] = React.useState(false);
 
@@ -61,21 +64,18 @@ function EditProject(props) {
     };
 
     /** Once adding a new card is confirmed */
-    const handleDialogConfirm = (t, s, d, _) => {
+    const handleDialogConfirm = (t, s, d, files) => {
+      console.log("dialog cofirming!!!!!");
       const card = {
           id: `item-${new Date().getTime()}`,
           title: t,
           subtitle: s,
           description: d
       }
-      addCard(card);     
-      /*
-      axios.post(`${API_URL}/projectcards/`, card, { headers: authHeader() })
-          .then( res => {
-              console.log(card);
-              console.log(res.data);
-      });        
-      */
+      addCard(card);
+      files.forEach(file => {
+        associateFileWithCard(file.filename, card.id)
+      })
       setOpen(false);
       
     }

@@ -65,7 +65,7 @@ export function fileReducer(state, action){
             return {
                 ...state,
                 files: state.files.map(file => {
-                    if(file.fname === action.payload.fname){
+                    if(file.filename === action.payload.filename){
                         return{...file, ...action.payload}
                     }
                     return file;
@@ -78,7 +78,7 @@ export function fileReducer(state, action){
                     if(file.associatedWithCard === ""){
                         console.log("File not associated with any card")
                     }
-                    if(file.fname === action.payload.fname){
+                    if(file.filename === action.payload.filename){
                         return{...file, ...action.payload}
                     }
                     return file;

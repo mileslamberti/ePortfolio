@@ -89,10 +89,10 @@ function PortfolioCard(props) {
       img: card.img
     }
     updateCard(updatedCard);
-
-    fs.forEach(file => {
-      associateFileWithCard(file.fname, card.id);
-    });
+    
+    fs.forEach(file =>{
+      associateFileWithCard(file.filename, updatedCard.id);
+    })
     setOpen(false);
   }
 
@@ -176,12 +176,12 @@ function PortfolioCard(props) {
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={file.fname}
+                  primary={file.filename}
                 />
                 <ListItemSecondaryAction>
                   <IconButton edge="end" aria-label="delete"
                     onClick={() => {
-                      unassociateFileWithCard(file.fname);
+                      unassociateFileWithCard(file.filename);
                      }}>
                     <Delete />
                   </IconButton>
