@@ -28,41 +28,49 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: red[500],
     },
   }));
-
+// pass in project object in projectPanel component
 function ProjectPanelCard(props){
     const classes = useStyles();
 
-    const [Picture, setPicture] = useState(require("./images/programming.png"))
 
     // Whether the media element is showing (can be minimised)
     const [showMedia, setMedia] = useState(true);
 
+    const [project, setProject] = useState(props)
+    // TODO IMPLEMENTE IMAGES
+    const [Img, setImg] = useState(require("./images/programming.png"));
 
     
-      const handleMinimizeClick = () =>{
+    const handleMinimizeClick = () =>{
         setMedia(showMedia === false)
-      }
+    }
+
+    const handleCardClick = () => {
+      console.log("clicked component");
+      window.location=`/projects/${project.projectID}`;
+    }
 
     return(
-        <Card className={classes.root}>
+        <Card className={classes.root} >
             <CardHeader
                 action={
                     <IconButton areia-label="settings" onClick={handleMinimizeClick}>
                         {showMedia ? <Remove /> : <ZoomOutMap />}
                     </IconButton>
                 }
-                title={"Name of Project"}
+                title={project.title}
             />
 
             {showMedia && <CardMedia
                 className={classes.media}
-                image={Picture}
-                title={"Title of ???"}
+                image={Img}
+                title={Img}
+                onClick={handleCardClick}
             />}
 
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">
-                    {"Description of Project"}
+                    {project.description}
                 </Typography>
             </CardContent>
 
