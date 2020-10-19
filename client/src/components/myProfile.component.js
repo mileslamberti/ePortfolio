@@ -12,6 +12,7 @@ import Tags from "./profileComponents/tags.component";
 import Tabs from "../components/tabs.component";
 import FindUser from "./profileComponents/findUser.component";
 
+import ProjectPanel from "../cardComponents/projectPanel.component"
 export default class MyProfile extends React.Component {
 
     render() {
@@ -86,7 +87,8 @@ export default class MyProfile extends React.Component {
                         </div>
                         </li>
                         </ul>
-                    </div>            
+                    </div>
+                    <ProjectPanel/>   
                 </div>
                 
                 

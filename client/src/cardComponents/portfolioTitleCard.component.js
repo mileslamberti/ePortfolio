@@ -65,11 +65,11 @@ function PortfolioTitleCard(props){
             />
             
         </Card>
-        <DialogTitleCard 
+        {open && <DialogTitleCard 
             handleDialogConfirm={handleDialogConfirm}
             handleDialogCancel={handleDialogCancel}
             open={open}
-        />
+        />}
       </>
     );
 }
