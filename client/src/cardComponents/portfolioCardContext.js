@@ -109,6 +109,13 @@ export const PortfolioCardProvider = props => {
             .then(res => console.log(res.data));
     }
 
+    function reorderCards(sourceIndex, destIndex){
+        dispatchCards({
+            type: ACTIONS.REORDER_CARD,
+            payload: {sourceIndex: sourceIndex, destIndex: destIndex}
+        })
+    }
+
     function getCard(id){
         for(let i=0; i<cardsState.cards.length; i++){
             if(cardsState.cards[i].id === id){
@@ -240,17 +247,6 @@ export const PortfolioCardProvider = props => {
             })
     }, []);
 
-    /* TO do */
-    function reorderCards(sourceIndex, destIndex){
-        const result = Array.from(cardsState);
-        const [removed] = result.splice(sourceIndex, 1);
-        result.splice(destIndex, 0, removed);
-        console.log(result);
-        dispatchCards({
-            type: "reorder-cards",
-            payload: result
-        })
-    }
 
 
 
@@ -268,11 +264,13 @@ export const PortfolioCardProvider = props => {
             addCard,
             deleteCard,
             updateCard,
+            reorderCards,
             getCard,
             associateFileWithCard,
             unassociateFileWithCard,
             getFilesAssociatedWithCard,
             getFilesUnassociatedWithAnyCard
+            
         }}>
             {props.children}
         </PortfolioCardContext.Provider>
