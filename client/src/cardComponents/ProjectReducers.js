@@ -35,10 +35,13 @@ export function cardReducer(state, action){
 
             }
         case ACTIONS.DELETE_CARD:
+            const deletedCards = state.cards.filter(card => card.id !== action.payload).map((card, index) => {
+                return {...card, ...{position:index}}})
             return {
                 ...state,
-                cards: state.cards.filter(card => card.id !== action.payload)
+                cards: deletedCards
             }
+
         case ACTIONS.UPDATE_CARD:
             const updatedCards = state.cards.map(card => {
                 if(card.id === action.payload.id){
