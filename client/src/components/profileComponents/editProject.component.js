@@ -51,7 +51,7 @@ function EditProject(props) {
 
     const { addCard } = useContext(PortfolioCardContext);
     const { deleteCard } = useContext(PortfolioCardContext);
-
+    const { reorderCards } = useContext(PortfolioCardContext);
     const { associateFileWithCard } = useContext(PortfolioCardContext);
 
 
@@ -105,6 +105,7 @@ function EditProject(props) {
             result.source.index,
             result.destination.index
         );
+        reorderCards(result.source.index, result.destination.index);
         //setCards(items);
     }
 

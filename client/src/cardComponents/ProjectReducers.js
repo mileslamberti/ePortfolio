@@ -4,6 +4,7 @@ export const ACTIONS = {
     ADD_CARD: "add-card",
     DELETE_CARD: "delete-card",
     UPDATE_CARD: "update-card",
+    REORDER_CARD: "reorder-card",
     ADD_FILE: "add-file",
     ASSOCIATE_CARD: "associate-card",
     UNASSOCIATE_CARD: "unassociate-card"
@@ -34,10 +35,13 @@ export function cardReducer(state, action){
 
             }
         case ACTIONS.DELETE_CARD:
+            const deletedCards = state.cards.filter(card => card.id !== action.payload).map((card, index) => {
+                return {...card, ...{position:index}}})
             return {
                 ...state,
-                cards: state.cards.filter(card => card.id !== action.payload)
+                cards: deletedCards
             }
+
         case ACTIONS.UPDATE_CARD:
             const updatedCards = state.cards.map(card => {
                 if(card.id === action.payload.id){
@@ -48,6 +52,21 @@ export function cardReducer(state, action){
             return {
                 ...state,
                 cards: updatedCards
+            }
+        case ACTIONS.REORDER_CARD:
+            // Swaps the source and destination index
+            const result = Array.from(state.cards);
+            const [removed] = result.splice(action.payload.sourceIndex, 1);
+            result.splice(action.payload.destIndex, 0, removed);
+            const fixed = result.map((card, index) => {
+                return{...card, ...{position: index}}
+            })
+            const reorderedCards = state.cards.map((card, index) => {
+                return{...card, ...fixed[index]}
+            })
+            return {
+                ...state,
+                cards: reorderedCards
             }
         default:
             return state;
