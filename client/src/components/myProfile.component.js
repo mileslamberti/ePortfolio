@@ -6,12 +6,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import DP from "./profileComponents/dp.component";
 import AboutMe from "./profileComponents/aboutMe.component";
-<<<<<<< Updated upstream
-=======
 import UserInfo from "./profileComponents/userInfo.component";
 import Experience from "./profileComponents/experience.component";
 import Education from "./profileComponents/education.component";
->>>>>>> Stashed changes
 import Projects from "./profileComponents/projects.component";
 import Tags from "./profileComponents/tags.component";
 import Tabs from "../components/tabs.component";
