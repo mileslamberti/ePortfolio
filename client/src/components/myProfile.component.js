@@ -6,6 +6,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import DP from "./profileComponents/dp.component";
 import AboutMe from "./profileComponents/aboutMe.component";
+<<<<<<< Updated upstream
+=======
+import UserInfo from "./profileComponents/userInfo.component";
+import Experience from "./profileComponents/experience.component";
+import Education from "./profileComponents/education.component";
+>>>>>>> Stashed changes
 import Projects from "./profileComponents/projects.component";
 import Tags from "./profileComponents/tags.component";
 import Tabs from "../components/tabs.component";
@@ -61,9 +67,9 @@ export default class MyProfile extends React.Component {
                         </div>
                         <ul>
                             <li>
-
+                            <Experience/>
                             
-                        <div class="date">Example date: 2013 - 2015</div> 
+                        {/* <div class="date">Example date: 2013 - 2015</div> 
                             <div class="info">
                                 <p class="semi-bold">Company name</p> 
                                 <p>job title</p>
@@ -77,7 +83,7 @@ export default class MyProfile extends React.Component {
                                 <p class="semi-bold">Company name</p> 
                                 <p>job title</p>
                                 <p>job description</p>
-                            </div>
+                            </div> */}
                             </li>
                         </ul>
                     </div>
@@ -87,7 +93,8 @@ export default class MyProfile extends React.Component {
                         </div>
                         <ul>
                         <li>
-                        <div class="date">2018 - present</div> 
+                            <Education/>
+                        {/* <div class="date">2018 - present</div> 
                         <div class="info">
                             <p class="semi-bold">Unimelb</p> 
                             <p>N/A</p>
@@ -98,7 +105,7 @@ export default class MyProfile extends React.Component {
                         <div class="info">
                             <p class="semi-bold">BRS</p> 
                             <p>High School</p>
-                        </div>
+                        </div> */}
                         </li>
                         </ul>
                     </div>            
