@@ -14,6 +14,7 @@ import Tags from "./profileComponents/tags.component";
 import Tabs from "../components/tabs.component";
 import FindUser from "./profileComponents/findUser.component";
 
+import ProjectPanel from "../cardComponents/projectPanel.component"
 export default class MyProfile extends React.Component {
 
     render() {
@@ -22,28 +23,15 @@ export default class MyProfile extends React.Component {
             <div class="profile">
                 <div class="profile_left">
                     <div class="img_here">
-                        {/* <img src={img} alt= "profile pic" height={300} width={300} /> */}
                         <DP/>
                     </div>
                     <div class="profile_content">
                         <div class="profile_item profile_info">
-                            <div class="title">
-                            <p class="bold">Name</p>
-                            <p class="regular">Occupation</p>
-                            </div>
-                            <ul>
-                            <li>
-                            <div class = "profile_data">
-                                <p>Location</p>
-                                <p>Number</p>
-                                <p>Email</p>
-                            </div>
-                            </li>
-                            </ul>
+                            <UserInfo/>
                         </div>
                         <div class="profile_item profile_skills">
                             <div class="title">
-                                <p class="bold">skill's</p>
+                                <p class="bold">skills</p>
                                 <div>
                                     <Tags/>
                                 </div>
@@ -53,9 +41,6 @@ export default class MyProfile extends React.Component {
                 </div>
                 <div class="profile_right">
                     <div class="profile_item profile_about">
-                        <div class="title">
-                        <p class="bold">About us</p>
-                        </div>
                         <AboutMe/>
                     </div>
                     <div class="profile_item profile_work">
@@ -105,7 +90,8 @@ export default class MyProfile extends React.Component {
                         </div> */}
                         </li>
                         </ul>
-                    </div>            
+                    </div>
+                    <ProjectPanel/>   
                 </div>
                 
                 

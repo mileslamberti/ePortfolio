@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import { NavDropdown } from 'react-bootstrap';
 
@@ -39,11 +39,11 @@ const HomeNavbar = () => {
         </Link>
         <div className="navbar-nav">
             <li className="nav-item">
-              <Link to={"/profilepage"} className="nav-link">
+              <Link to={"/profilespage"} className="nav-link">
                 Profiles
               </Link>
             </li>
-          </div>
+        </div>
         {currentUser ? ( // if logged in...
           <div className="navbar-nav ml-auto">
             <NavDropdown title="Account" id="basic-nav-dropdown">

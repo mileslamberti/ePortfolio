@@ -1,4 +1,7 @@
-import React, { useState, useContext} from "react";
+import React, { useState, useEffect, useContext} from "react";
+import axios from 'axios';
+import authHeader from "../../services/auth-header";
+
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {Button, Box} from '@material-ui/core/';
 import PortfolioCard from "../../cardComponents/portfolioCard.component";
@@ -6,6 +9,8 @@ import PortfolioTitleCard from "../../cardComponents/portfolioTitleCard.componen
 import DialogPortfolioCard from "../../cardComponents/DialogPortfolioCard.component"
 
 import {PortfolioCardContext} from "../../cardComponents/portfolioCardContext"; 
+
+const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -35,34 +40,17 @@ const getListStyle = isDraggingOver => ({
   padding: grid,
 });
 
-function EditProject() {
-    // These are the cards associated with the project
-    // Card IDs MUST be unique.
-    const [cards, setCards] = useState([
-      {
-          id: `item-1`,
-          title: "Assignment 1",
-          description: "A very hard assignmnet",
-          extendedDescription: "Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10 minutes",
-      },
-      {
-          id: `item-2`,
-          title: "Assignment 2",
-          description: "An easy assignment",
-          extendedDescription: "Below are the files that relate to Assignment 2",
-      },
-      {
-          id: `item-3`,
-          title: "Assignment 3",
-          description: "A joke of an assignment",
-      },
-      {
-          id: `item-4`,
-          title: "Assignment 4",
-          description: "A difficult assignment",
-      }]); 
-    const [files, setFiles] = useContext(PortfolioCardContext);
+function EditProject(props) {
+    // TODO REMOVEEE BAD BAD BAD BAD
+    const projectID = props.location.pathname.split("/")[3];
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const { cards } = useContext(PortfolioCardContext);
+    const { files } = useContext(PortfolioCardContext); //useContext(PortfolioCardContext);
 
+
+    const { addCard } = useContext(PortfolioCardContext);
+    const { deleteCard } = useContext(PortfolioCardContext);
 
     // Whether add card dialog is open
     const [open, setOpen] = React.useState(false);
@@ -73,13 +61,23 @@ function EditProject() {
     };
 
     /** Once adding a new card is confirmed */
-    const handleDialogConfirm = (t, d, e, _) =>{
-      setCards([...cards, {id: `item-${new Date().getTime()}`,
-                title: t,
-                description: d,
-                extendedDescription: e}
-              ])
+    const handleDialogConfirm = (t, s, d, _) => {
+      const card = {
+          id: `item-${new Date().getTime()}`,
+          title: t,
+          subtitle: s,
+          description: d
+      }
+      addCard(card);     
+      /*
+      axios.post(`${API_URL}/projectcards/`, card, { headers: authHeader() })
+          .then( res => {
+              console.log(card);
+              console.log(res.data);
+      });        
+      */
       setOpen(false);
+      
     }
     /** Close dialog on cancel */
     const handleDialogCancel = () =>{
@@ -102,21 +100,17 @@ function EditProject() {
         if (!result.destination) {
             return;
         }
-
         const items = reorder(
             cards,
             result.source.index,
             result.destination.index
         );
-        setCards(items);
+        //setCards(items);
     }
 
     return (
       <>
-      <PortfolioTitleCard 
-          title={"Title of Portfolio"}
-          description={"Description of Portfolio"}
-      />
+      <PortfolioTitleCard />
       <Box mx="auto" m={1} mr={10}>
           <Button 
               variant="contained"
@@ -133,7 +127,6 @@ function EditProject() {
               Add Files to Project
           </Button>
       </Box>
-
       <DialogPortfolioCard 
           handleDialogConfirm={handleDialogConfirm}
           handleDialogCancel={handleDialogCancel}
@@ -141,7 +134,7 @@ function EditProject() {
           dialogInformation={getDialogDescription()}
       />
       
-    <DragDropContext onDragEnd={onDragEnd}>
+      <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="droppable">
         {(provided, snapshot) => (
           <div
@@ -168,21 +161,7 @@ function EditProject() {
                           description={item.description}
                           extendedDescription={item.extendedDescription}
                           picture={item.picture}
-                          onDeleteClick={() => {
-                              console.log("Clicked", index)
-                              const newState = [...cards];
-                              newState.splice(index, 1);
-                              setCards(newState);
-
-                              let associatedFiles = files.filter(file => file.associatedWithCard === item.id);
-                              let newFiles = files;
-                              for(let i=0; i<files.length; i++){
-                                  if(associatedFiles.map(file => file.fname).indexOf(files[i].fname) !== -1){
-                                      newFiles[i].associatedWithCard = "";
-                                  }
-                              }
-                              setFiles(newFiles);
-                          }}
+                          onDeleteClick={() => deleteCard(item.id)}
                       />
                   </div>
                 )}
@@ -194,6 +173,7 @@ function EditProject() {
       </Droppable>
     </DragDropContext>
     </>
+
     );
   }
 

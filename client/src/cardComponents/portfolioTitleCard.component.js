@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useContext} from 'react';
 import { Card, CardHeader, IconButton, makeStyles} from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
 import DialogTitleCard from "./DialogTitleCard.component";
 
+import {PortfolioCardContext} from "./portfolioCardContext";
 
 
 const useStyles = makeStyles({
@@ -23,18 +24,26 @@ const useStyles = makeStyles({
   });
 
 function PortfolioTitleCard(props){
-    const [title, setTitle] = useState(props.title);
-    const [description, setDescription] = useState(props.description);
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+
+    const { editProjectInfo } = useContext(PortfolioCardContext);
+    const { projectInfo } = useContext(PortfolioCardContext);
+
 
     const handleClickOpen = () =>{
         setOpen(true);
     };
 
     const handleDialogConfirm = (t, d) =>{
-      setTitle(t);
-      setDescription(d);
+      const project = {
+        title: t,
+        description: d,
+        numCards: projectInfo.numCards,
+        projectID: projectInfo.projectID,
+        files: projectInfo.files
+      }
+      editProjectInfo(project);
       setOpen(false);
     }
 
@@ -51,18 +60,16 @@ function PortfolioTitleCard(props){
                         <EditIcon />
                     </IconButton>
                 }
-                title={title}
-                subheader={description}
+                title={projectInfo.title}
+                subheader={projectInfo.description}
             />
             
         </Card>
-        <DialogTitleCard 
+        {open && <DialogTitleCard 
             handleDialogConfirm={handleDialogConfirm}
             handleDialogCancel={handleDialogCancel}
             open={open}
-            title={title}
-            description={description}
-        />
+        />}
       </>
     );
 }

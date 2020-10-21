@@ -1,58 +1,258 @@
-import React, {useState, createContext} from 'react';
+import React, {useState, useEffect, createContext, useReducer} from 'react';
+import axios from 'axios';
+import authHeader from "../services/auth-header";
+
+import {projectInfoReducer, cardReducer, fileReducer, ACTIONS} from './ProjectReducers';
+import { ScreenLockLandscapeRounded } from '@material-ui/icons';
+
+const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
+
+const initialCards = {
+    cards: []
+}
+
+const initialProjectInfo = {
+    title: "",
+    description: "",
+    projectID: "",
+    files: []
+
+}
+
+const initialFiles ={
+    files:[]
+}
 
 export const PortfolioCardContext = createContext();
 
 export const PortfolioCardProvider = props => {
-    // Can be removed later, and while it is hard coded the IDs must sync up with what is in editProject
-    const [cards, setCards] = useState([
-        {
-            id: `item-1`,
-            title: "Assignment 1",
-            description: "A very hard assignmnet",
-            extendedDescription: "Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10 minutes",
-        },
-        {
-            id: `item-2`,
-            title: "Assignment 2",
-            description: "An easy assignment",
-            extendedDescription: "Below are the files that relate to Assignment 2",
-        },
-        {
-            id: `item-3`,
-            title: "Assignment 3",
-            description: "A joke of an assignment",
-        },
-        {
-            id: `item-4`,
-            title: "Assignment 4",
-            description: "A difficult assignment",
-        }]
-    );
-    const [files, setFiles] = useState([
-        {
-            fname: "Assignment1.pdf",
-            associatedWithCard: cards[0].id
-        },
-        {
-            fname: "Assignment2.pdf",
-            associatedWithCard: cards[1].id
-        },
-        {
-            fname: "Assignment3.pdf",
-            associatedWithCard: ""
-        },
-        {
-            fname: "main.c",
-            associatedWithCard: cards[0].id
-        },
-        {
-            fname: "file.py",
-            associatedWithCard: ""
+    const projectID = props.location.pathname.split("/")[3];
+    const [projectInfoState, dispatchProjectInfo] = useReducer(projectInfoReducer, initialProjectInfo);
+    const [cardsState, dispatchCards] = useReducer(cardReducer, initialCards);
+    const [filesState, dispatchFiles] = useReducer(fileReducer, initialFiles);
+
+    /** Functions that manage cardsState */
+
+    function addCard(cardInfo){
+        dispatchCards({
+            type: ACTIONS.ADD_CARD,
+            payload: {
+                id: cardInfo.id,
+                title: cardInfo.title,
+                subtitle: cardInfo.subtitle,
+                description: cardInfo.description,
+                projectID: projectID,
+                position: cardsState.cards.length,
+                img: "implementImgLink.com"
+            }
+        });
+        const card = {
+            id: cardInfo.id,
+            title: cardInfo.title,
+            subtitle: cardInfo.subtitle,
+            description: cardInfo.description,
+            projectID: projectID,
+            position: cardsState.cards.length,
+            img: "implementImgLink.com"
         }
-    ])
+        console.log(card);
+        axios.post(`${API_URL}/projectcards/`, card, { headers: authHeader() })
+            .then(res => console.log(res));
+    }
+    function loadCard(cardInfo){
+        dispatchCards({
+            type: ACTIONS.ADD_CARD,
+            payload: {
+                id: cardInfo.id,
+                title: cardInfo.title,
+                subtitle: cardInfo.subtitle,
+                description: cardInfo.description,
+                position: cardInfo.position,
+                projectID: cardInfo.projectID,
+                img: cardInfo.img
+            }
+        });
+    }
+    function deleteCard(id){
+        const associatedFiles = getFilesAssociatedWithCard(id);
+        associatedFiles.forEach(file => {
+            unassociateFileWithCard(file.fname);
+        })
+        dispatchCards({
+            type: ACTIONS.DELETE_CARD,
+            payload: id
+        })
+        // backend needs a card object with id and projectID
+        const card = {
+            id: id,
+            projectID: projectID
+        }
+        // card sent as object to be in expected form card={id,projectID}
+        axios.post(`${API_URL}/deleteprojectcard/`, card, { headers: authHeader() })
+            .then(res => console.log(res));
+    }
+
+    function updateCard(cardInfo){
+        dispatchCards({
+            type: ACTIONS.UPDATE_CARD,
+            payload: {
+                id: cardInfo.id,
+                title: cardInfo.title,
+                subtitle: cardInfo.subtitle,
+                description: cardInfo.description,
+                position: cardInfo.position,
+                projectID: cardInfo.projectID,
+                img: cardInfo.img
+            }
+        })
+        axios.post(`${API_URL}/projectcards/`, cardInfo, { headers: authHeader() })
+            .then(res => console.log(res.data));
+    }
+
+    function getCard(id){
+        for(let i=0; i<cardsState.cards.length; i++){
+            if(cardsState.cards[i].id === id){
+                return cardsState.cards[i];
+            }
+        }
+    }
+
+    /** Functions that manage projectInfoState */
+    function editProjectInfo(project){
+        dispatchProjectInfo({
+            type: ACTIONS.UPDATE_PROJECT_INFO,
+            payload: {
+                title: project.title,
+                description: project.description,
+                projectID: project.projectID,
+                files: project.files,
+            }
+        });
+        axios.post(`${API_URL}/projects/`, project, { headers: authHeader() })
+            .then(res => console.log(res.data))
+            .catch(err => console.log(err))
+    }
+    /** Functions that manage projectInfoState */
+    function loadProjectInfo(project){
+        dispatchProjectInfo({
+            type: ACTIONS.UPDATE_PROJECT_INFO,
+            payload: {
+                title: project.title,
+                description: project.description,
+                projectID: project.projectID,
+                files: project.files,
+            }
+        });
+    }
+
+    /** Functions that manage filesState */
+    function addFile(fname, downloadLink, cardid){
+        dispatchFiles({
+            type: ACTIONS.ADD_FILE,
+            payload: {
+                fname: fname,
+                downloadLink: downloadLink,
+                associatedWithCard: cardid
+            }
+        })
+    }
+    function loadFile(fname, downloadLink, cardid){
+        dispatchFiles({
+            type: ACTIONS.ADD_FILE,
+            payload: {
+                fname: fname,
+                downloadLink: downloadLink,
+                associatedWithCard: cardid
+            }
+        })
+    }
+
+    function associateFileWithCard(fname, cardid){
+        dispatchFiles({
+            type: ACTIONS.ASSOCIATE_CARD,
+            payload: {
+                fname: fname,
+                associatedWithCard: cardid
+            }
+        })
+    }
+
+    function unassociateFileWithCard(fname){
+        dispatchFiles({
+            type: ACTIONS.UNASSOCIATE_CARD,
+            payload: {
+                fname: fname,
+                associatedWithCard: ""
+            }
+        })
+    }
+
+    function getFilesAssociatedWithCard(id){
+        return filesState.files.filter(file => file.associatedWithCard === id);
+    }
+
+    function getFilesUnassociatedWithAnyCard(id){
+        return filesState.files.filter(file => file.associatedWithCard === "");
+    }
+
+    useEffect( () => {
+         axios.get(API_URL + `/project/${projectID}`, { headers: authHeader() })
+             .then( res => {
+                 const project = res.data.project;
+                 console.log(project);
+                 loadProjectInfo(project);
+                 
+                 project.files.forEach(file => {
+                    loadFile(file.filename, file.file, file.cardID)
+                 })
+             })
+             .catch( err => {
+                 console.log("Error", err);
+             })
+        // To add get request for cards.
+        axios.get(`${API_URL}/getprojectcards/${projectID}`,{ headers: authHeader() })
+            .then( cardRes => {
+                console.log("CARDS", cardRes);
+                cardRes.data.cards.forEach( card => {
+                    loadCard(card.card);
+                })
+             })
+    }, []);
+
+    /* TO do */
+    function reorderCards(sourceIndex, destIndex){
+        const result = Array.from(cardsState);
+        const [removed] = result.splice(sourceIndex, 1);
+        result.splice(destIndex, 0, removed);
+        console.log(result);
+        dispatchCards({
+            type: "reorder-cards",
+            payload: result
+        })
+    }
+
+
+
 
     return(
-        <PortfolioCardContext.Provider value={[files, setFiles]}>
+        <PortfolioCardContext.Provider value={{
+            // variables that can be accessed within the context
+            projectInfo: projectInfoState,
+            cards: cardsState.cards,
+            files: filesState.files,
+
+            // functions that can be accessed within the context
+            editProjectInfo,
+            loadCard,
+            addCard,
+            deleteCard,
+            updateCard,
+            getCard,
+            associateFileWithCard,
+            unassociateFileWithCard,
+            getFilesAssociatedWithCard,
+            getFilesUnassociatedWithAnyCard
+        }}>
             {props.children}
         </PortfolioCardContext.Provider>
     )

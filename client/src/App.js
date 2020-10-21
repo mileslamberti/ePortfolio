@@ -9,10 +9,11 @@ import Register from "./components/registration.component";
 import MyProfile from "./components/myProfile.component";
 import UploadProject from './components/profileComponents/uploadProject.component';
 import EditProject from './components/profileComponents/editProject.component';
-import ProfilePage from "./components/profilepage.component";
+import ProfilesPage from "./components/profilespage.component";
 import AboutThem from "./components/profileComponents/AboutThem.component";
+import { PortfolioCardProvider } from "./cardComponents/portfolioCardContext";
+import { Projects, ViewProject } from "./components/profileComponents/projects.component";
 
-import {PortfolioCardProvider} from "./cardComponents/portfolioCardContext";
 import InitFirebase from  "./services/initFirebase";
 //import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
@@ -41,32 +42,44 @@ class App extends Component {
     super(props);
     this.state = { apiResponse: "" };
   }
-  
   callWelcome() {
-
       InitFirebase();
   }
-
+  componentDidMount() {
+    this.callWelcome();
+  }
   render() {
     return (
       <Router>
         <HomeNavbar/>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/profilepage" component={ProfilePage} />
-          <div className="container mt-3">
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/register" component={Register} />
-              <Route exact path="/profile" component={MyProfile} />
-              <Route exact path="/uploadPortfolio" component={UploadProject}/>
-              <Route exact path="/editPortfolio" render={() => <PortfolioCardProvider> <EditProject/> </PortfolioCardProvider>}/>
-              <Route 
-                path = "/:handle" 
-                render = {(props) => (
-                  <AboutThem {...props}/>
-                )}
-              />  
-          </div>
+          <Route exact path="/profilespage" component={ProfilesPage} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/profile" component={MyProfile} />
+          <Route exact path="/uploadProject" component={UploadProject}/>
+          <Route exact path="/projects" component={Projects} />
+          <Route exact 
+            path="/projects/:projectID" 
+            render = {(props) => (
+              <ViewProject {...props}/>
+            )}
+          />
+          <Route exact 
+            path="/projects/edit/:projectID" 
+            render = {(props) => (
+              <PortfolioCardProvider {...props}>
+                <EditProject {...props}/>
+              </PortfolioCardProvider>
+            )}
+          />
+          <Route 
+            path = "/:handle" 
+            render = {(props) => (
+              <AboutThem {...props}/>
+            )}
+          />   
         </Switch>
       </Router>
     );

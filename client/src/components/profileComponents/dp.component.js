@@ -3,7 +3,7 @@ import Axios from "axios";
 
 import UserService from "../../services/user.service";
 
-import {makeStyles, ButtonBase } from '@material-ui/core';
+import {makeStyles, ButtonBase, Tooltip } from '@material-ui/core';
 
 const useStyles = makeStyles({
     input: {
@@ -66,9 +66,11 @@ const DP = () => {
             <>
                 <input className={classes.input} ccept="image/*" id="icon-button-file" type="file" onChange={onChange}/>
                 <label htmlFor="icon-button-file">
+                    <Tooltip title="Change profile picture">
                     <ButtonBase className={classes.image} color="primary" aria-label="upload picture" component="span">
                         <img className={classes.img} src={DP} />
                     </ButtonBase> 
+                    </Tooltip>
                 </label>
             </>
             }

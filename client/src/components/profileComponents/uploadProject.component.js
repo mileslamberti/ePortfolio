@@ -10,8 +10,8 @@ import authHeader from "../../services/auth-header";
 import userService from "../../services/user.service";
 import axios from 'axios'
 
-import {Card, CardHeader, CardMedia, CardContent, CardActions, Collapse, IconButton, Typography} from '@material-ui/core';
-import {Favorite, Share, ExpandMore, Edit, Delete, Remove, ZoomOutMap, Folder, PictureAsPdfOutlined, Image} from '@material-ui/icons';
+import {IconButton} from '@material-ui/core';
+import { Delete, Folder, PictureAsPdfOutlined, Image} from '@material-ui/icons';
 import {List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar} from '@material-ui/core';
 
 const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
@@ -61,15 +61,14 @@ function UploadPortfolio (){
         setRejectedDNDFiles(rejectedFiles);
     }
 
-    const displayAcceptedFiles = AcceptedFiles.map(file => (
-        <li key={file.path}>
-        {file.path} - {file.size} bytes
-        </li>
-    ));
 
     // sumbits to the given path once it has recieved the number of files specified by numFiles
-    const submitToDatabase = (path, newLink, links, numFiles, projectID) => {
-        links.push(newLink);
+    const submitToDatabase = (path, filename, newLink, links, numFiles, projectID) => {
+        links.push({
+            file: newLink,
+            filename: filename,
+            cardID: ""
+        })
         if (links.length === numFiles){
             const project = {
                 projectID: projectID,
@@ -77,14 +76,14 @@ function UploadPortfolio (){
                 description: Description,
                 files: links
             }
-            console.log(project);
             axios.post(path, project, { headers: authHeader() })
             .then( res => {
+                console.log(project);
                 console.log(res.data);
-                // TODO HANDLE RESETTING BETTER
                 setProjectTitle('');
                 setDescription('');
-                window.location="/uploadProject";
+                // TODO HANDLE RESETTING BETTER
+                //window.location="/uploadProject";
             });
         }
     }
@@ -96,12 +95,12 @@ function UploadPortfolio (){
         console.log("Number of Files on submission: ", AcceptedFiles.length)
         var links = [];
         AcceptedFiles.forEach((file) => {
-            firebase.storage().ref(`/${userHandle}/projects/${projectID}/file${Math.round(Math.random()*100000000)}.jpg`).put(file, {contentType:`image/${file.path.split(".")[1]}`})
+            firebase.storage().ref(`/${userHandle}/projects/${projectID}/${file.name}`).put(file, {contentType:`image/${file.path.split(".")[1]}`})
                 .then( snapshot => {
-                    console.log("Succefully uploaded file");
+                    console.log(`Succefully uploaded ${file.name}`);
                     //console.log(snapshot.ref.getDownloadURL());
                     snapshot.ref.getDownloadURL().then( downloadLink => {
-                        submitToDatabase(`${API_URL}/projects`, downloadLink, links, AcceptedFiles.length, projectID);
+                        submitToDatabase(`${API_URL}/projects`, file.name, downloadLink, links, AcceptedFiles.length, projectID);
                     })
                 })
                 .catch(err => {
