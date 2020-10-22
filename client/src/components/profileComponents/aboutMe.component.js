@@ -82,10 +82,10 @@ const AboutMe = () => {
                     <DialogContent>
                         <FormControl>
                             <InputLabel htmlFor="component-helper">Display Name</InputLabel>
-                            <Input onChange={onChangeDisplayName}/></FormControl>
+                            <Input onChange={onChangeDisplayName} value={aboutMe.displayName}/></FormControl>
                         <FormControl>
                             <InputLabel htmlFor="component-helper">Profile description</InputLabel>
-                            <Input onChange={onChangeDescription}/></FormControl>
+                            <Input onChange={onChangeDescription} value={aboutMe.description}/></FormControl>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleCancel} color="primary">

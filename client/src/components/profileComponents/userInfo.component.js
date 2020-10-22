@@ -107,16 +107,16 @@ const UserInfo = () => {
                     <DialogContent className={classes.marginAutoItem}>
                         <FormControl className={classes.alignItemsAndJustifyContent}>
                             <InputLabel htmlFor="component-helper">Occupation</InputLabel>
-                            <Input onChange={onChangeOccupation}/></FormControl>
+                            <Input onChange={onChangeOccupation} value={userInfo.occupation}/></FormControl>
                         <FormControl className={classes.alignItemsAndJustifyContent}>
                             <InputLabel htmlFor="component-helper">Location</InputLabel>
-                            <Input onChange={onChangeLocation}/></FormControl>
+                            <Input onChange={onChangeLocation} value={userInfo.location}/></FormControl>
                         <FormControl className={classes.alignItemsAndJustifyContent}>
                             <InputLabel htmlFor="component-helper">Contact number</InputLabel>
-                            <Input onChange={onChangeNumber}/></FormControl>
+                            <Input onChange={onChangeNumber} value={userInfo.number}/></FormControl>
                         <FormControl className={classes.alignItemsAndJustifyContent}>
                             <InputLabel htmlFor="component-helper">Contact email address</InputLabel>
-                            <Input onChange={onChangeEmail}/></FormControl>    
+                            <Input onChange={onChangeEmail} value={userInfo.email}/></FormControl>    
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleCancel} color="primary">
