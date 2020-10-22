@@ -1,5 +1,8 @@
 import React, {useState, useEffect} from "react";
 import { Grid, Container } from "@material-ui/core";
+import Button from '@material-ui/core/Button';
+import {Add} from '@material-ui/icons';
+
 import ProjectPanelCard from "./projectPanelCard.component";
 import authHeader from "../services/auth-header";
 import axios from "axios";
@@ -19,13 +22,22 @@ function ProjectPanel(props){
             })
     }, []);
     return(
+        
         <Container>
+            <Button
+                variant="contained"
+                color="disabled"
+                startIcon={<Add />}
+                href="/uploadProject"
+            >
+                Upload Project
+            </Button>
             { projects.map((project, i) => (
                 <Grid item xs={12} lg={6}>
                     <ProjectPanelCard {...project}/>
                 </Grid>
             ))}
-    </Container>
+        </Container>
     )
 }
 
