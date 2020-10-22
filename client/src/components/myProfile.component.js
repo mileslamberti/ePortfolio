@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect }from 'react';
 //import { Grid, Nav, NavDropdown } from 'react-bootstrap';
 import './myprofile.component.css';
 import img from './random.jpg';
@@ -11,27 +11,39 @@ import Projects from "./profileComponents/projects.component";
 import Tags from "./profileComponents/tags.component";
 import Tabs from "../components/tabs.component";
 import FindUser from "./profileComponents/findUser.component";
+import UserService from "../services/user.service"
 
 import ProjectPanel from "../cardComponents/projectPanel.component"
-export default class MyProfile extends React.Component {
+export default function MyProfile (props) {
+    
+        const profileHandle = props.location.pathname.split("/")[1]
+        const [authorised, setAuthorised] = useState(false);
 
-    render() {
+        useEffect( () => {
+            UserService.isUser(profileHandle).then(
+                (res) => {
+                    setAuthorised(res);
+                    console.log(res);
+                }
+              )
+        }, []);
+
         return (
         <div>
             <div class="profile">
                 <div class="profile_left">
                     <div class="img_here">
-                        <DP/>
+                        <DP authorised={authorised} profileHandle={profileHandle}/>
                     </div>
                     <div class="profile_content">
                         <div class="profile_item profile_info">
-                            <UserInfo/>
+                            <UserInfo authorised={authorised} profileHandle={profileHandle}/>
                         </div>
                         <div class="profile_item profile_skills">
                             <div class="title">
                                 <p class="bold">skills</p>
                                 <div>
-                                    <Tags/>
+                                    <Tags authorised={authorised} profileHandle={profileHandle}/>
                                 </div>
                             </div>
                         </div>
@@ -39,7 +51,7 @@ export default class MyProfile extends React.Component {
                 </div>
                 <div class="profile_right">
                     <div class="profile_item profile_about">
-                        <AboutMe/>
+                        <AboutMe authorised={authorised} profileHandle={profileHandle}/>
                     </div>
                     <div class="profile_item profile_work">
                         <div class="title">
@@ -96,7 +108,7 @@ export default class MyProfile extends React.Component {
         </div>
 
         )
-    }
+    
 }
 
 
