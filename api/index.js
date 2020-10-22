@@ -1,8 +1,8 @@
 const functions = require('firebase-functions');
 const app = require('express')();
 const { createPost, getAllPosts } = require('./routes/Posts');
-const {signup, login, uploadImage, updateProfilePic, addUserDetails, getAuthorisedUser} = require('./routes/user');
-const { getAboutMe, createAboutMe, createUserInfo, getUserInfo, getUserTags, createUserTags } = require("./routes/aboutMe");
+const {signup, login, uploadImage, addUserDetails, getAuthorisedUser} = require('./routes/user');
+const { getAboutMe, createAboutMe, createUserInfo, getUserInfo, updateProfilePic, getProfilePic, getUserTags, createUserTags } = require("./routes/aboutMe");
 const { viewUser } = require("./routes/viewUser");
 
 const { saveProject, getProjects, getProjectInfo, getAllProjectCards, addProjectCard, deleteProjectCard, editFileCardAssociation, addFile, getProjectFiles } = require("./routes/projects");
@@ -22,16 +22,18 @@ app.post('/createPost',userAuth,createPost);
 app.post('/signup',signup);
 app.post('/login', login)
 app.post('/user/image',uploadImage)
-app.post('/user/updatepp',userAuth, updateProfilePic)
 app.post('/user',userAuth, addUserDetails)
 app.get('/user',userAuth,getAuthorisedUser)
 
+// Routes for setting and getting profile content
 app.post("/aboutme", userAuth, createAboutMe);
-app.get("/aboutme", userAuth, getAboutMe);
+app.post("/getaboutme", getAboutMe);
 app.post("/userinfo", userAuth, createUserInfo);
-app.get("/userinfo", userAuth, getUserInfo);
+app.post("/getuserinfo", getUserInfo);
+app.post('/updatedp',userAuth, updateProfilePic)
+app.post('/getdp', getProfilePic)
 app.post("/tags", userAuth, createUserTags);
-app.get("/tags", userAuth, getUserTags);
+app.post("/gettags", getUserTags);
 
 app.post("/saveproject", userAuth, saveProject)
 app.get("/projects", userAuth, getProjects);

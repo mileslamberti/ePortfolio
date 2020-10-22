@@ -16,17 +16,16 @@ async function getMe() {
   
 };
 
-async function updateProfilePic(req) {
-  let response = await axios.post(API_URL + "/user/updatepp", req, { headers: authHeader() })
-    
-  if (response.data.userData) {
-    console.log(response.data.userData.credentials);
-  }
+async function isUser(checkHandle) {
+  let response = await axios.get(API_URL + "/user", { headers: authHeader() })
   
-};
-
+  console.log(response.data.userData.credentials.handle == checkHandle);
+  
+  return (response.data.userData.credentials.handle == checkHandle);
+  
+}
 
 export default {
   getMe,
-  updateProfilePic,
+  isUser,
 };

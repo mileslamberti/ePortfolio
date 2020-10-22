@@ -9,21 +9,34 @@ import authHeader from "../../services/auth-header";
 const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
 
-const Tags = () => {
+const Tags = (props) => {
 
-  const [ tags, setTags ] = useState([]);
-
+  const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState("");
 
+  const [authorised, setAuthorised] = useState(props.authorised);
+  const [loading, setLoading] = useState(false);
+
   useEffect( () => {
-    axios.get(API_URL + "/tags", { headers: authHeader() })
-        .then( res => {
-            setTags(tags => tags.concat(res.data.tags));
-        })
-        .catch( err => {
-            console.log(err);
-        })
-  }, []);
+
+    setAuthorised(props.authorised);
+
+    // Only want to request data if it hasn't been loaded
+    if(tags.length == 0){
+      setLoading(true);
+
+      axios.post(API_URL + "/gettags", {handle : props.profileHandle})
+      .then( res => {
+          setTags(tags => tags.concat(res.data.tags));
+          setLoading(false);
+      })
+      .catch( err => {
+          console.log(err);
+          setLoading(false);
+      })
+    }
+
+  }, [props]);
 
   
   const removeTag = (i) => {
@@ -61,18 +74,28 @@ const Tags = () => {
   }
 
   return (
-    <div className="input-tag">
-      <ul className="input-tag__tags">
-        { tags.map((tag, i) => (
-          <li key={tag}>
-            {tag}
-            <button type="button" onClick={() => { removeTag(i); }}>+</button>
-          </li>
-        ))}
-        <li className="input-tag__tags__input">
-          <Input value={tagInput} onChange={onChangeTag} onKeyDown={inputKeyDown}/>   
-        </li>
-      </ul>
+    <div>
+      {loading ? <span className="spinner-border spinner-border-sm"></span> : 
+      <>
+        <div className="input-tag">
+          <ul className="input-tag__tags">
+            { tags.map((tag, i) => (
+              <li key={tag}>
+                {tag}
+                {authorised ? (<>
+                  <button type="button" onClick={() => { removeTag(i); }}>+</button>
+                </>) : (<></>)}
+              </li>
+            ))}
+            {authorised ? (<>
+              <li className="input-tag__tags__input">
+                <Input value={tagInput} onChange={onChangeTag} onKeyDown={inputKeyDown}/>   
+              </li>
+            </>) : (<></>)}
+          </ul>
+        </div>
+      </>
+      }
     </div>
   );
 }

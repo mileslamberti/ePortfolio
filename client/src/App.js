@@ -77,7 +77,7 @@ class App extends Component {
           <Route 
             path = "/:handle" 
             render = {(props) => (
-              <AboutThem {...props}/>
+              <MyProfile {...props}/>
             )}
           />   
         </Switch>
