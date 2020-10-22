@@ -48,7 +48,7 @@ const HomeNavbar = () => {
           <div className="navbar-nav ml-auto">
             <NavDropdown title="Account" id="basic-nav-dropdown">
             <h6>Welcome {me.handle}</h6>
-                <NavDropdown.Item href="/profile">My profile</NavDropdown.Item>
+                <NavDropdown.Item href={"/"+me.handle}>My profile</NavDropdown.Item>
                 <NavDropdown.Item href="/">Account Information</NavDropdown.Item>
                 <NavDropdown.Item href="/">Account Settings</NavDropdown.Item>
                 <NavDropdown.Divider />
