@@ -153,13 +153,23 @@ function EditProject(props) {
 
     /** Once adding a new card is confirmed */
     const handleDialogConfirm = (t, s, d, files) => {
-      console.log("dialog cofirming!!!!!");
+      // make sure t,s,d are defined
+      if (!t){
+        t=''
+      }
+      if (!s){
+        s=''
+      }
+      if (!d){
+        d=''
+      }
       const card = {
           id: `item-${new Date().getTime()}`,
           title: t,
           subtitle: s,
           description: d
       }
+      
       addCard(card);
       files.forEach(file => {
         associateFileWithCard(file.filename, card.id)
