@@ -22,7 +22,7 @@ const Tags = (props) => {
     setAuthorised(props.authorised);
 
     // Only want to request data if it hasn't been loaded
-    if(tags.length == 0){
+    if(tags.length === 0){
       setLoading(true);
 
       axios.post(API_URL + "/gettags", {handle : props.profileHandle})

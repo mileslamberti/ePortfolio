@@ -19,9 +19,9 @@ async function getMe() {
 async function isUser(checkHandle) {
   let response = await axios.get(API_URL + "/user", { headers: authHeader() })
   
-  console.log(response.data.userData.credentials.handle == checkHandle);
+  console.log(response.data.userData.credentials.handle === checkHandle);
   
-  return (response.data.userData.credentials.handle == checkHandle);
+  return (response.data.userData.credentials.handle === checkHandle);
   
 }
 

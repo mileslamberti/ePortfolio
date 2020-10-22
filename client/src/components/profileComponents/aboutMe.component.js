@@ -1,7 +1,7 @@
 import React, { useState, useEffect }from 'react';
 import axios from 'axios';
 
-import {CardHeader, CardContent, Typography, IconButton, Input, FormControl, InputLabel} from '@material-ui/core';
+import {CardContent, Typography, IconButton, Input, FormControl, InputLabel} from '@material-ui/core';
 import {Edit} from '@material-ui/icons';
 
 import Button from '@material-ui/core/Button';
@@ -69,8 +69,8 @@ const AboutMe = (props) => {
     const getDefaultVals = (vals) => {
         let defaultVals = Object.assign({}, vals);
         
-        if (defaultVals.displayName == "Display name"){ defaultVals.displayName = ""; }
-        if (defaultVals.description == "Profile description"){ defaultVals.description = ""; }
+        if (defaultVals.displayName === "Display name"){ defaultVals.displayName = ""; }
+        if (defaultVals.description === "Profile description"){ defaultVals.description = ""; }
         
         return defaultVals;
     }
