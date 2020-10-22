@@ -1,14 +1,24 @@
 import React, { useState, useEffect, useContext} from "react";
 import axios from 'axios';
-import authHeader from "../../services/auth-header";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {Button, Box} from '@material-ui/core/';
 import PortfolioCard from "../../cardComponents/portfolioCard.component";
 import PortfolioTitleCard from "../../cardComponents/portfolioTitleCard.component"
 import DialogPortfolioCard from "../../cardComponents/DialogPortfolioCard.component"
+import FileUpload from "../fileUpload.component"
 
 import {PortfolioCardContext} from "../../cardComponents/portfolioCardContext"; 
+
+import {IconButton} from '@material-ui/core';
+import { Delete, Folder, PictureAsPdfOutlined, Image} from '@material-ui/icons';
+import {List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar} from '@material-ui/core';
+
+import userService from "../../services/user.service";
+import firebase from "firebase";
+import InitFirebase from "../../services/initFirebase";
+
+import authHeader from "../../services/auth-header";
 
 const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
@@ -43,20 +53,98 @@ const getListStyle = isDraggingOver => ({
 function EditProject(props) {
     // TODO REMOVEEE BAD BAD BAD BAD
     const projectID = props.location.pathname.split("/")[3];
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
+    const [userHandle, setUserHandle] = useState('');
+
     const { cards } = useContext(PortfolioCardContext);
-    const { files } = useContext(PortfolioCardContext); //useContext(PortfolioCardContext);
-
-
     const { addCard } = useContext(PortfolioCardContext);
     const { deleteCard } = useContext(PortfolioCardContext);
     const { reorderCards } = useContext(PortfolioCardContext);
     const { associateFileWithCard } = useContext(PortfolioCardContext);
 
 
+    // Files that will be uploaded to the database on submit
+    const [AcceptedFiles, setAcceptedFiles] = useState([]);
     // Whether add card dialog is open
     const [open, setOpen] = React.useState(false);
+    // Whether file component visible
+    const [uploadOpen, setUploadOpen] = useState(false);
+
+    // Get user handle
+    useEffect(() => {
+      function getHandle(){
+          if (userHandle === ''){
+              userService.getMe().then(user =>{
+                  setUserHandle(user.handle);
+              });
+          }
+      }
+      getHandle()
+      InitFirebase();
+    },[]);
+
+    const updateAccepted = (acceptedFiles) => {
+      // Filter removes duplicate files by .name property; sorts by .name
+      let combineFiles = AcceptedFiles.concat(acceptedFiles).filter((file, index, self) =>
+          self.findIndex(f => f.name === file.name) === index
+      ).sort(
+          (f1, f2) => {
+              return f1.name < f2.name;
+          }
+      )
+        setAcceptedFiles(combineFiles);
+    }
+
+    const updateRejected = (rejectedFiles) => {
+      ;    
+    }
+
+    const handleFileUpload = () => {
+      if(uploadOpen){
+        setUploadOpen(false);
+        setAcceptedFiles([]); // Remove files staged for upload
+      }
+      else{
+        setUploadOpen(true);
+      }
+    }
+
+    function getListItemIcon(fileType){
+      switch(fileType){
+          case "application/pdf":
+              return <PictureAsPdfOutlined />;
+          case "image/png" || "image/jpeg":
+              return <Image />
+          default:
+              return <Folder />;
+      }
+  }
+
+    const onSubmitAddFiles = (event) => {
+      AcceptedFiles.forEach((file) => {
+        firebase.storage().ref(`/${userHandle}/projects/${projectID}/${file.name}`).put(file)
+          .then( snapshot => {
+              // add file to project's file collection
+              snapshot.ref.getDownloadURL().then( downloadLink => {
+                  const newFile = {
+                      file: downloadLink,
+                      filename: file.name,
+                      associatedWithCard: ""
+                  }
+                  axios.post(`${API_URL}/files/${projectID}`, newFile, { headers: authHeader() })
+                      .then(res =>{
+                          console.log(res.data);
+                      })
+              })
+              
+          })
+          .catch(err => {
+              console.log(err);
+          })
+        });   
+        
+    }
+
+
 
     /** Prompts a dialog which will allow user to populate details of new card */
     const handleClickAddCard = () =>{
@@ -124,10 +212,48 @@ function EditProject(props) {
           <Button
             variant="contained"
             color="primary"
+            onClick={handleFileUpload}
           >
-              Add Files to Project
+              {uploadOpen ? "Cancel adding Files to Project" : "Add Files to Project"}
           </Button>
       </Box>
+      {uploadOpen && 
+        <>
+          <FileUpload updateAccepted={updateAccepted} updateRejected={updateRejected}/>
+          <List>
+              {AcceptedFiles.map((file, index) => 
+              <ListItem key={index}>
+                  <ListItemAvatar>
+                  <Avatar>
+                      {getListItemIcon(file.type)}
+                  </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                  primary={file.name}
+                  />
+                  <ListItemSecondaryAction>
+                  <IconButton edge="end" aria-label="delete"
+                      onClick={() => {
+                          const newFiles = [...AcceptedFiles]
+                          newFiles.splice(index, 1);
+                          setAcceptedFiles(newFiles)
+                      }}
+                  >
+                      <Delete />
+                  </IconButton>
+                  </ListItemSecondaryAction>
+              </ListItem>,
+              )}
+          </List>
+
+          <Button
+              variant="contained"
+              color="primary"
+              onClick={onSubmitAddFiles}>
+              Confirm Add Files
+          </Button>
+        </>
+      }
       <DialogPortfolioCard 
           handleDialogConfirm={handleDialogConfirm}
           handleDialogCancel={handleDialogCancel}
