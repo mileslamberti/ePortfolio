@@ -52,7 +52,7 @@ const getListStyle = isDraggingOver => ({
 
 function EditProject(props) {
     // TODO REMOVEEE BAD BAD BAD BAD
-    const projectID = props.location.pathname.split("/")[3];
+    const projectID = props.location.pathname.split("/")[2];
     const [userHandle, setUserHandle] = useState('');
 
     const { cards } = useContext(PortfolioCardContext);

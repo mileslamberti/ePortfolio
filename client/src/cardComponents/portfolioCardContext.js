@@ -26,7 +26,7 @@ const initialFiles ={
 export const PortfolioCardContext = createContext();
 
 export const PortfolioCardProvider = props => {
-    const projectID = props.location.pathname.split("/")[3];
+    const projectID = props.location.pathname.split("/")[2];
     const [projectInfoState, dispatchProjectInfo] = useReducer(projectInfoReducer, initialProjectInfo);
     const [cardsState, dispatchCards] = useReducer(cardReducer, initialCards);
     const [filesState, dispatchFiles] = useReducer(fileReducer, initialFiles);
