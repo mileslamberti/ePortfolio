@@ -10,9 +10,8 @@ import MyProfile from "./components/myProfile.component";
 import UploadProject from './components/profileComponents/uploadProject.component';
 import EditProject from './components/profileComponents/editProject.component';
 import ProfilesPage from "./components/profilespage.component";
-import AboutThem from "./components/profileComponents/AboutThem.component";
 import { PortfolioCardProvider } from "./cardComponents/portfolioCardContext";
-import { Projects, ViewProject } from "./components/profileComponents/projects.component";
+import { Projects } from "./components/profileComponents/projects.component";
 
 import InitFirebase from  "./services/initFirebase";
 //import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
