@@ -46,7 +46,6 @@ function ProjectPanelCard(props){
     }
 
     const handleCardClick = () => {
-      console.log("clicked component");
       window.location=`/projects/${project.projectID}`;
     }
 

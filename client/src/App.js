@@ -63,12 +63,6 @@ class App extends Component {
           <Route exact 
             path="/projects/:projectID" 
             render = {(props) => (
-              <ViewProject {...props}/>
-            )}
-          />
-          <Route exact 
-            path="/projects/edit/:projectID" 
-            render = {(props) => (
               <PortfolioCardProvider {...props}>
                 <EditProject {...props}/>
               </PortfolioCardProvider>
