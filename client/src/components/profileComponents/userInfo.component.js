@@ -91,10 +91,10 @@ const UserInfo = (props) => {
     const getDefaultVals = (vals) => {
         let defaultVals = Object.assign({}, vals);
         
-        if (defaultVals.occupation == "Occupation"){ defaultVals.occupation = ""; }
-        if (defaultVals.location == "Location"){ defaultVals.location = ""; }
-        if (defaultVals.number == "Phone number"){ defaultVals.number = ""; }
-        if (defaultVals.email == "Contact email"){ defaultVals.email = ""; }
+        if (defaultVals.occupation === "Occupation"){ defaultVals.occupation = ""; }
+        if (defaultVals.location === "Location"){ defaultVals.location = ""; }
+        if (defaultVals.number === "Phone number"){ defaultVals.number = ""; }
+        if (defaultVals.email === "Contact email"){ defaultVals.email = ""; }
 
         return defaultVals;
     }
