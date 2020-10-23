@@ -5,7 +5,7 @@ import {makeStyles, ButtonBase, Tooltip } from '@material-ui/core';
 
 import authHeader from "../../services/auth-header";
 
-const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api/";
+const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
 const useStyles = makeStyles({
     input: {
@@ -36,9 +36,8 @@ const DP = (props) => {
         if(!DP){
             setLoading(true);
 
-            axios.get(API_URL + props.profileHandle + "/dp").then(
+            axios.get(API_URL + "/" + props.profileHandle + "/dp").then(
                 (res) => {
-                    console.log(res);
                     setDP(res.data.profilePic);
                     setLoading(false);
                 }

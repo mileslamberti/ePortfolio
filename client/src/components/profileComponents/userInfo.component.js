@@ -12,7 +12,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import authHeader from "../../services/auth-header";
 
-const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api/";
+const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
 const useStyles = makeStyles({
       marginAutoItem: {
@@ -44,9 +44,8 @@ const UserInfo = (props) => {
         if(!userInfo){
             setLoading(true);
 
-            axios.get(API_URL + props.profileHandle + "/userinfo")
+            axios.get(API_URL + "/" + props.profileHandle + "/userinfo")
                 .then( res => {
-                    console.log(res);
                     setUserInfo(res.data.userInfo);
                     setUpdatedUserInfo(res.data.userInfo);
                     setLoading(false);
@@ -102,7 +101,7 @@ const UserInfo = (props) => {
     const onSubmit = (e) => {
         e.preventDefault(); // allows us override the default html stuff
 
-        axios.post(API_URL+'/userinfo', updatedUserInfo, { headers: authHeader() })
+        axios.post(API_URL + '/userinfo', updatedUserInfo, { headers: authHeader() })
             .then( res => {
                 setUserInfo(updatedUserInfo);
                 console.log(res.data);
