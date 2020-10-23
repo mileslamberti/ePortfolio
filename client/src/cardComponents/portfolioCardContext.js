@@ -53,7 +53,8 @@ const stockPictures = {
 export const PortfolioCardContext = createContext();
 
 export const PortfolioCardProvider = props => {
-    const projectID = props.location.pathname.split("/")[3];
+    const projectID = props.location.pathname.split("/")[2];
+    const profileHandle = props.location.pathname.split("/")[1];
     const [projectInfoState, dispatchProjectInfo] = useReducer(projectInfoReducer, initialProjectInfo);
     const [cardsState, dispatchCards] = useReducer(cardReducer, initialCards);
     const [filesState, dispatchFiles] = useReducer(fileReducer, initialFiles);
@@ -205,7 +206,7 @@ export const PortfolioCardProvider = props => {
             projectID: projectInfoState.projectID
         }
         axios.post(`${API_URL}/assignfiletocard`,reqBody, { headers: authHeader() })
-            .then(res => console.log(res))
+            .then(res => console.log(res.data))
     }
 
     function unassociateFileWithCard(filename){
@@ -248,7 +249,7 @@ export const PortfolioCardProvider = props => {
     useEffect( () => {
 
         //fetch project
-         axios.get(API_URL + `/project/${projectID}`, { headers: authHeader() })
+         axios.get(API_URL + `/${profileHandle}/getprojects/${projectID}`)
              .then( res => {
                 const project = res.data.project;
                 loadProjectInfo(project);

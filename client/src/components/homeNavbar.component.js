@@ -49,8 +49,7 @@ const HomeNavbar = () => {
             <NavDropdown title="Account" id="basic-nav-dropdown">
             <h6>Welcome {me.handle}</h6>
                 <NavDropdown.Item href={"/"+me.handle}>My profile</NavDropdown.Item>
-                <NavDropdown.Item href="/">Account Information</NavDropdown.Item>
-                <NavDropdown.Item href="/">Account Settings</NavDropdown.Item>
+                <NavDropdown.Item href="/uploadProject">Upload project</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="/" onClick={logOut}>Log Out</NavDropdown.Item>
               </NavDropdown>

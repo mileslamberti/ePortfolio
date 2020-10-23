@@ -36,18 +36,18 @@ function ProjectPanelCard(props){
     // Whether the media element is showing (can be minimised)
     const [showMedia, setMedia] = useState(true);
 
-    const [project, setProject] = useState(props)
+    const project = props.project;
+    const profileHandle = props.profileHandle;
+
     // TODO IMPLEMENTE IMAGES
     const [Img, setImg] = useState(require("./images/programming.png"));
 
-    
     const handleMinimizeClick = () =>{
         setMedia(showMedia === false)
     }
 
     const handleCardClick = () => {
-      console.log("clicked component");
-      window.location=`/projects/${project.projectID}`;
+      window.location=`${profileHandle}/${project.projectID}`;
     }
 
     return(

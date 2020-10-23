@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { red } from '@material-ui/core/colors';
@@ -38,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
 
 function PortfolioCard(props) {
   const classes = useStyles();
-
   // Whether drop-down button is showing, ie "expanded"
   const [expanded, setExpanded] = React.useState(false);
   
@@ -63,7 +62,6 @@ function PortfolioCard(props) {
 
   // Whether edit dialog is open
   const [open, setOpen] = React.useState(false);
-
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -115,10 +113,10 @@ function PortfolioCard(props) {
     <Card className={classes.root}>
       <CardHeader
         action={
-          <IconButton aria-label="settings" onClick={handleMinimizeClick}>
-            {showMedia ? <Remove /> : <ZoomOutMap />}
-          </IconButton>
-        }
+                <IconButton aria-label="settings" onClick={handleMinimizeClick}>
+                  {showMedia ? <Remove /> : <ZoomOutMap />}
+                </IconButton>
+                }
         title={card.title}
       />
       {/* The media (example an image) of the card can be minimised*/}
