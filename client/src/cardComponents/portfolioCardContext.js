@@ -186,7 +186,7 @@ export const PortfolioCardProvider = props => {
             projectID: projectInfoState.projectID
         }
         axios.post(`${API_URL}/assignfiletocard`,reqBody, { headers: authHeader() })
-            .then(res => console.log(res))
+            .then(res => console.log(res.data))
     }
 
     function unassociateFileWithCard(filename){
