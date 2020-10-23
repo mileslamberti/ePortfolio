@@ -330,7 +330,16 @@ function Project(props) {
             )}
           </Droppable>
         </DragDropContext>) 
-        : (<></>)}
+        : (<>
+          {cards.map((item, index) => (
+            <PortfolioCard
+                id={item.id}
+                picture={item.picture}
+                editMode={authorised}
+                onDeleteClick={() => deleteCard(item.id)}
+            />
+          ))}
+        </>)}
       </div>
     );
   }
