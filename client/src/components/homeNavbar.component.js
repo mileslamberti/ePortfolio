@@ -83,7 +83,7 @@ const HomeNavbar = () => {
             <NavDropdown title="Account" id="basic-nav-dropdown">
             <div class="dropdown-header">Welcome {me.handle}</div>
                 <NavDropdown.Item href={"/"+me.handle}>My profile</NavDropdown.Item>
-                <NavDropdown.Item href="/uploadProject">Upload project</NavDropdown.Item>
+                <NavDropdown.Item href={"/"+me.handle+"/uploadProject"}>Upload project</NavDropdown.Item>
                 <NavDropdown.Divider/>
                 <NavDropdown.Item onClick={handleClickOpen}>Configure privacy</NavDropdown.Item>
 
