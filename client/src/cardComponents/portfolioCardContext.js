@@ -1,4 +1,4 @@
-import React, {useEffect, createContext, useReducer} from 'react';
+import React, {useState, useEffect, createContext, useReducer} from 'react';
 import axios from 'axios';
 import authHeader from "../services/auth-header";
 
@@ -22,6 +22,34 @@ const initialFiles ={
     files:[]
 }
 
+const stockPictures = {
+    tiles : [{
+        fileLink: "https://material-ui.com/static/images/grid-list/hats.jpg"
+    },
+    {
+        fileLink: "https://material-ui.com/static/images/grid-list/bike.jpg"
+    },
+    {
+        fileLink: "https://material-ui.com/static/images/grid-list/mushroom.jpg"
+    },
+    {
+        fileLink: "https://material-ui.com/static/images/grid-list/morning.jpg"
+    },
+    {
+        fileLink: "https://material-ui.com/static/images/grid-list/star.jpg"
+    },
+    {
+        fileLink: "https://material-ui.com/static/images/grid-list/olive.jpg"
+    },
+    {
+        fileLink: "https://material-ui.com/static/images/grid-list/honey.jpg"
+    },
+    {
+        fileLink: "https://material-ui.com/static/images/grid-list/plant.jpg"
+    }
+]}
+
+
 export const PortfolioCardContext = createContext();
 
 export const PortfolioCardProvider = props => {
@@ -29,7 +57,7 @@ export const PortfolioCardProvider = props => {
     const [projectInfoState, dispatchProjectInfo] = useReducer(projectInfoReducer, initialProjectInfo);
     const [cardsState, dispatchCards] = useReducer(cardReducer, initialCards);
     const [filesState, dispatchFiles] = useReducer(fileReducer, initialFiles);
-
+    const [stockPicturesState, setStockPicturesState] = useState(stockPictures)
     /** Functions that manage cardsState */
 
     function addCard(cardInfo){
@@ -205,6 +233,18 @@ export const PortfolioCardProvider = props => {
         return filesState.files.filter(file => file.associatedWithCard === "");
     }
 
+    function getStockPictures(){
+        return stockPicturesState;
+    }
+
+    function getCard(id){
+        for(let i=0; i<cardsState.cards.length; i++){
+            if(cardsState.cards[i].id === id){
+                return cardsState.cards[i];
+            }
+        }
+    }
+
     useEffect( () => {
 
         //fetch project
@@ -264,7 +304,8 @@ export const PortfolioCardProvider = props => {
             associateFileWithCard,
             unassociateFileWithCard,
             getFilesAssociatedWithCard,
-            getFilesUnassociatedWithAnyCard
+            getFilesUnassociatedWithAnyCard,
+            getStockPictures
             
         }}>
             {props.children}

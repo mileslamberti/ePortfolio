@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { Button, Grid, GridList, GridListTile, GridListTileBar, IconButton, Tooltip } from '@material-ui/core';
 import {Edit} from '@material-ui/icons';
+import {PortfolioCardContext} from "./portfolioCardContext";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -23,11 +24,13 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 function SelectPicture(props){
-    const imageDB = ["https://material-ui.com/static/images/grid-list/hats.jpg", "https://material-ui.com/static/images/grid-list/bike.jpg", "https://material-ui.com/static/images/grid-list/mushroom.jpg", "https://material-ui.com/static/images/grid-list/morning.jpg", "https://material-ui.com/static/images/grid-list/star.jpg", "https://material-ui.com/static/images/grid-list/olive.jpg", "https://material-ui.com/static/images/grid-list/honey.jpg", "https://material-ui.com/static/images/grid-list/plant.jpg"]
+    //const imageDB = ["https://material-ui.com/static/images/grid-list/hats.jpg", "https://material-ui.com/static/images/grid-list/bike.jpg", "https://material-ui.com/static/images/grid-list/mushroom.jpg", "https://material-ui.com/static/images/grid-list/morning.jpg", "https://material-ui.com/static/images/grid-list/star.jpg", "https://material-ui.com/static/images/grid-list/olive.jpg", "https://material-ui.com/static/images/grid-list/honey.jpg", "https://material-ui.com/static/images/grid-list/plant.jpg"]
     
     const [originalPic, setOriginalPic] = useState(props.currentDisplayPicture)
     const [currentPic, setCurrentPic] = useState(props.currentDisplayPicture)
-
+    const { getStockPictures } = useContext(PortfolioCardContext);
+    
+    const imageDB = getStockPictures().tiles
     
     const classes = useStyles();
     return (
@@ -58,8 +61,8 @@ function SelectPicture(props){
                     {"Click the picture you wish to be the new display picture"}
                 <GridList cellHeight={155} className={classes.gridList}>
                     {imageDB.map((item, index) =>
-                        <GridListTile onClick={() => setCurrentPic(imageDB[index])}key={index}  style={{width: "33%"}}>
-                            <img src={item} />
+                        <GridListTile onClick={() => setCurrentPic(imageDB[index].fileLink)}key={index}  style={{width: "33%"}}>
+                            <img src={item.fileLink} />
                         </GridListTile>
                         
                     )}
