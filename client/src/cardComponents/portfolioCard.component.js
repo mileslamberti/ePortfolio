@@ -15,7 +15,7 @@ import {PortfolioCardContext} from "./portfolioCardContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-      
+      width: "100%"
   },
   media: {
     height: 0,
@@ -41,7 +41,6 @@ function PortfolioCard(props) {
 
   // Whether drop-down button is showing, ie "expanded"
   const [expanded, setExpanded] = React.useState(false);
-  const [Picture, setPicture] = useState(require("./images/programming.png"))
   
   // Whether the media element is showing (can be minimised)
   const [showMedia, setMedia] = useState(true);
@@ -83,7 +82,8 @@ function PortfolioCard(props) {
     setOpen(true);
   };
 
-  const handleDialogConfirm = (t, s, d, fs) =>{
+  const handleDialogConfirm = (t, s, d, fs, newDP) =>{
+    console.log("new dp", newDP);
     const updatedCard = {
       id: props.id,
       title: t,
@@ -91,7 +91,7 @@ function PortfolioCard(props) {
       description: d,
       projectID: card.projectID,
       position: card.position,
-      img: card.img
+      img: newDP
     }
     updateCard(updatedCard);
     
@@ -129,7 +129,7 @@ function PortfolioCard(props) {
       {/* The media (example an image) of the card can be minimised*/}
       {showMedia && <CardMedia
         className={classes.media}
-        image={Picture}
+        image={card.img}
         title={card.title}
         onClick={() => console.log("Clicked Picture")}
       />}
@@ -143,11 +143,8 @@ function PortfolioCard(props) {
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites"> <Favorite /> </IconButton>
         <IconButton aria-label="share"> <Share /> </IconButton>
-        {authorised ? 
-          <>
-            <IconButton onClick={handleClickOpen}> <Edit /> </IconButton>
-            <IconButton onClick={props.onDeleteClick}> <Delete /> </IconButton>
-          </>: <></>}
+        {props.editMode && <IconButton onClick={handleClickOpen}> <Edit /> </IconButton>}
+        {props.editMode && <IconButton onClick={props.onDeleteClick}> <Delete /> </IconButton>}
         <IconButton
           className={clsx(classes.expand, {
             [classes.expandOpen]: expanded,
@@ -159,6 +156,8 @@ function PortfolioCard(props) {
           <ExpandMore />
         </IconButton>
       </CardActions>
+      {/** No Dialog or Collapse if not edit mode */}
+      {props.editMode && 
       <DialogPortfolioCard 
             handleDialogConfirm={handleDialogConfirm}
             handleDialogCancel={handleDialogCancel}
@@ -170,7 +169,8 @@ function PortfolioCard(props) {
             dialogInformation={getDialogDescription()}
             files={unassociatedFiles}
             authorised={authorised}
-      />
+            displayPicture={card.img}
+      />} 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography paragraph>
@@ -187,17 +187,16 @@ function PortfolioCard(props) {
                 <ListItemText
                   primary={file.filename}
                 />
-                {authorised ? 
-                  <>
-                    <ListItemSecondaryAction>
-                      <IconButton edge="end" aria-label="delete"
-                        onClick={() => {
-                          unassociateFileWithCard(file.filename);
-                        }}>
-                        <Delete />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </> : <></>}
+                {/** Can't delete associated files if not in edit mode */}
+                {props.editMode && <ListItemSecondaryAction>
+                  <IconButton edge="end" aria-label="delete"
+                    onClick={() => {
+                      unassociateFileWithCard(file.filename);
+                     }}>
+                    <Delete />
+                  </IconButton>
+                </ListItemSecondaryAction>
+                }
               </ListItem>,
             )}
             </List>

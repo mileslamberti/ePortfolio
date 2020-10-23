@@ -19,6 +19,7 @@ import firebase from "firebase";
 import InitFirebase from "../../services/initFirebase";
 
 import authHeader from "../../services/auth-header";
+import { makeStyles } from '@material-ui/core/styles';
 
 const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
@@ -30,13 +31,28 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width:"70%",
+    position: "absolute",
+    left: "50%",
+    transform: "translate(-50%)"
+  },
+
+
+}));
+
+
 const grid = 8;
 
+// Style for each droppable card
 const getItemStyle = (isDragging, draggableStyle) => ({
   // some basic styles to make the items look a bit nicer
   userSelect: "none",
   padding: grid * 2,
   margin: `0 0 ${grid}px 0`,
+
+  width: "100%",
 
   // change background colour if dragging
   background: isDragging ? "lightgreen" : "grey",
@@ -45,12 +61,15 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   ...draggableStyle
 });
 
+// Style for the entire list of cards
 const getListStyle = isDraggingOver => ({
   background: isDraggingOver ? "lightblue" : "lightgrey",
   padding: grid,
+  width: "70%"
 });
 
 function Project(props) {
+
     // TODO REMOVEEE BAD BAD BAD BAD
     const projectID = props.location.pathname.split("/")[2];
     const [userHandle, setUserHandle] = useState('');
@@ -71,7 +90,7 @@ function Project(props) {
     // Whether file component visible
     const [uploadOpen, setUploadOpen] = useState(false);
     const profileHandle = props.match.params.handle;
-
+    const classes = useStyles();
     // check user handle
     useEffect( () => {
       UserService.isUser(profileHandle).then(
@@ -210,64 +229,63 @@ function Project(props) {
     }
 
     return (
-      <>
-      <PortfolioTitleCard authorised={authorised}/>
-      {authorised ?
+      <div className={classes.root}>
+      <PortfolioTitleCard />
+      <Box mx="auto" m={1} mr={10}>
+          <Button 
+              variant="contained"
+              color="primary"
+              onClick={handleClickAddCard}
+          >
+              Add Card to Project
+          </Button>
+      
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleFileUpload}
+          >
+              {uploadOpen ? "Cancel adding Files to Project" : "Add Files to Project"}
+          </Button>
+      </Box>
+      {uploadOpen ?
         (<>
-        <Box mx="auto" m={1} mr={10}>
-            <Button 
-                variant="contained"
-                color="primary"
-                onClick={handleClickAddCard}
-            >
-                Add Card to Project
-            </Button>
-        
-            <Button
+          <FileUpload updateAccepted={updateAccepted} updateRejected={updateRejected}/>
+          <List>
+              {AcceptedFiles.map((file, index) => 
+              <ListItem key={index}>
+                  <ListItemAvatar>
+                  <Avatar>
+                      {getListItemIcon(file.type)}
+                  </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                  primary={file.name}
+                  />
+                  <ListItemSecondaryAction>
+                  <IconButton edge="end" aria-label="delete"
+                      onClick={() => {
+                          const newFiles = [...AcceptedFiles]
+                          newFiles.splice(index, 1);
+                          setAcceptedFiles(newFiles)
+                      }}
+                  >
+                      <Delete />
+                  </IconButton>
+                  </ListItemSecondaryAction>
+              </ListItem>,
+              )}
+          </List>
+
+          <Button
               variant="contained"
               color="primary"
               onClick={handleFileUpload}
             >
                 {uploadOpen ? "Cancel adding Files to Project" : "Add Files to Project"}
             </Button>
-        </Box>
-        {uploadOpen ?
-          (<>
-            <FileUpload updateAccepted={updateAccepted} updateRejected={updateRejected}/>
-            <List>
-                {AcceptedFiles.map((file, index) => 
-                <ListItem key={index}>
-                    <ListItemAvatar>
-                    <Avatar>
-                        {getListItemIcon(file.type)}
-                    </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                    primary={file.name}
-                    />
-                    <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete"
-                        onClick={() => {
-                            const newFiles = [...AcceptedFiles]
-                            newFiles.splice(index, 1);
-                            setAcceptedFiles(newFiles)
-                        }}
-                    >
-                        <Delete />
-                    </IconButton>
-                    </ListItemSecondaryAction>
-                </ListItem>,
-                )}
-            </List>
-
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={onSubmitAddFiles}>
-                Confirm Add Files
-            </Button>
+        
           </>) : (<></>)}
-        </>) : (<></>)}
       <DialogPortfolioCard 
           handleDialogConfirm={handleDialogConfirm}
           handleDialogCancel={handleDialogCancel}
@@ -275,10 +293,9 @@ function Project(props) {
           dialogInformation={getDialogDescription()}
           authorised={authorised}
       />
-      {authorised ?
-        (<>
-          <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="droppable">
+      {authorised ? (
+        <DragDropContext onDragEnd={onDragEnd} >
+          <Droppable droppableId="droppable" >
             {(provided, snapshot) => (
               <div
                 {...provided.droppableProps}
@@ -295,17 +312,14 @@ function Project(props) {
                         {...provided.dragHandleProps}
                         style={getItemStyle(
                           snapshot.isDragging,
-                          provided.draggableProps.style
+                          provided.draggableProps.style,
                         )}
                       >
                           <PortfolioCard
                               id={item.id}
-                              title={item.title}
-                              description={item.description}
-                              extendedDescription={item.extendedDescription}
                               picture={item.picture}
+                              editMode={true}
                               onDeleteClick={() => deleteCard(item.id)}
-                              authorised={authorised}
                           />
                       </div>
                     )}
@@ -315,23 +329,9 @@ function Project(props) {
               </div>
             )}
           </Droppable>
-        </DragDropContext>
-        </>) : (<>
-          {cards.map((item, index) => (
-            <PortfolioCard
-                id={item.id}
-                title={item.title}
-                description={item.description}
-                extendedDescription={item.extendedDescription}
-                picture={item.picture}
-                onDeleteClick={() => deleteCard(item.id)}
-                authorised={authorised}
-            />
-                ))}
-        </>)}
-    </>
-
+        </DragDropContext>) 
+        : (<></>)}
+      </div>
     );
   }
-
 export default Project;
