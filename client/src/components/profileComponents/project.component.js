@@ -141,6 +141,7 @@ function Project(props) {
   }
 
     const onSubmitAddFiles = (event) => {
+      setUploadOpen(false);
       AcceptedFiles.forEach((file) => {
         firebase.storage().ref(`/${userHandle}/projects/${projectID}/${file.name}`).put(file)
           .then( snapshot => {
@@ -230,24 +231,26 @@ function Project(props) {
 
     return (
       <div className={classes.root}>
-      <PortfolioTitleCard />
-      <Box mx="auto" m={1} mr={10}>
-          <Button 
+      <PortfolioTitleCard authorised={authorised}/>
+      { authorised ? 
+        <Box mx="auto" m={1} mr={10}>
+            <Button 
+                variant="contained"
+                color="primary"
+                onClick={handleClickAddCard}
+            >
+                Add Card to Project
+            </Button>
+        
+            <Button
               variant="contained"
               color="primary"
-              onClick={handleClickAddCard}
-          >
-              Add Card to Project
-          </Button>
-      
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleFileUpload}
-          >
-              {uploadOpen ? "Cancel adding Files to Project" : "Add Files to Project"}
-          </Button>
-      </Box>
+              onClick={handleFileUpload}
+            >
+                {uploadOpen ? "Cancel adding Files to Project" : "Add Files to Project"}
+            </Button>
+        </Box>
+        : <></>}
       {uploadOpen ?
         (<>
           <FileUpload updateAccepted={updateAccepted} updateRejected={updateRejected}/>
@@ -280,9 +283,9 @@ function Project(props) {
           <Button
               variant="contained"
               color="primary"
-              onClick={handleFileUpload}
+              onClick={onSubmitAddFiles}
             >
-                {uploadOpen ? "Cancel adding Files to Project" : "Add Files to Project"}
+                Upload files to Project
             </Button>
         
           </>) : (<></>)}
@@ -318,7 +321,7 @@ function Project(props) {
                           <PortfolioCard
                               id={item.id}
                               picture={item.picture}
-                              editMode={true}
+                              editMode={authorised}
                               onDeleteClick={() => deleteCard(item.id)}
                           />
                       </div>
