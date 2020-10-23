@@ -14,7 +14,7 @@ import {IconButton} from '@material-ui/core';
 import { Delete, Folder, PictureAsPdfOutlined, Image} from '@material-ui/icons';
 import {List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar} from '@material-ui/core';
 
-import userService from "../../services/user.service";
+import UserService from "../../services/user.service";
 import firebase from "firebase";
 import InitFirebase from "../../services/initFirebase";
 
