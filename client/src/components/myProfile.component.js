@@ -16,7 +16,7 @@ import UserService from "../services/user.service"
 import ProjectPanel from "../cardComponents/projectPanel.component"
 export default function MyProfile (props) {
     
-        const profileHandle = props.location.pathname.split("/")[1]
+        const profileHandle = props.match.params.handle;
         const [authorised, setAuthorised] = useState(false);
 
         useEffect( () => {
@@ -100,7 +100,7 @@ export default function MyProfile (props) {
                         </li>
                         </ul>
                     </div>
-                    <ProjectPanel/>   
+                    
                 </div>
                 
                 

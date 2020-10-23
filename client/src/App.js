@@ -57,17 +57,21 @@ class App extends Component {
           <Route exact path="/profilespage" component={ProfilesPage} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
-          <Route exact path="/profile" component={MyProfile} />
           <Route exact path="/uploadProject" component={UploadProject}/>
-          <Route exact path="/projects" component={Projects} />
           <Route exact 
-            path="/projects/:projectID" 
+            path="/:handle/projects/" 
+            render = {(props) => (
+              <Projects {...props}/>
+            )}
+          />
+          <Route exact 
+            path="/:handle/projects/:projectID" 
             render = {(props) => (
               <ViewProject {...props}/>
             )}
           />
           <Route exact 
-            path="/projects/edit/:projectID" 
+            path="/:handle/projects/:projectID/edit" 
             render = {(props) => (
               <PortfolioCardProvider {...props}>
                 <EditProject {...props}/>
@@ -75,7 +79,7 @@ class App extends Component {
             )}
           />
           <Route 
-            path = "/:handle" 
+            path = "/:handle/profile"
             render = {(props) => (
               <MyProfile {...props}/>
             )}
