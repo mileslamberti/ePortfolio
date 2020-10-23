@@ -38,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
 
 function PortfolioCard(props) {
   const classes = useStyles();
-
   // Whether drop-down button is showing, ie "expanded"
   const [expanded, setExpanded] = React.useState(false);
   
@@ -63,12 +62,6 @@ function PortfolioCard(props) {
 
   // Whether edit dialog is open
   const [open, setOpen] = React.useState(false);
-
-  // whether user is logged it
-  const [authorised, setAuthorised] = useState(false);
-  useEffect(() => {
-    setAuthorised(props.authorised)
-  },[props]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -168,7 +161,6 @@ function PortfolioCard(props) {
             cardID={props.id}
             dialogInformation={getDialogDescription()}
             files={unassociatedFiles}
-            authorised={authorised}
             displayPicture={card.img}
       />} 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
