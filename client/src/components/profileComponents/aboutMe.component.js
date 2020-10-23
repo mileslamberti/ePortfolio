@@ -12,7 +12,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import authHeader from "../../services/auth-header";
 
-const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api/";
+const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
 const AboutMe = (props) => {
 
@@ -28,9 +28,8 @@ const AboutMe = (props) => {
         if(!aboutMe){
             setLoading(true);
 
-            axios.get(API_URL + props.profileHandle + "/aboutme")
+            axios.get(API_URL + "/" + props.profileHandle + "/aboutme")
                 .then( res => {
-                    console.log(res);
                     setAboutMe(res.data.aboutMe);
                     setUpdatedAboutMe(res.data.aboutMe);
                     setLoading(false);

@@ -123,3 +123,27 @@ exports.getUserTags = (req,res) => {
         return res.status(500).json({error:err.code})
     })
 }
+
+exports.togglePrivacy = (req,res) => {
+    private = req.body.private;
+    console.log(private);//remove this
+    db.doc(`/users/${req.user.handle}`).update({"private": private}).then(() => {
+        return res.status(201).json({message: 'Success'})
+    }).catch( err => {
+        console.error(err)
+        return res.status(400).json({error:err.code})
+    })
+}
+
+exports.getPrivacy = (req,res) => {
+    let private = "";
+    db.doc(`/users/${req.params.handle}`).get().then(doc => {
+        if(doc.exists){
+            private = doc.data().private;
+            return res.status(200).json({private});
+        }
+    }).catch(err => {
+        console.error(err);
+        return res.status(500).json({error:err.code})
+    })
+}

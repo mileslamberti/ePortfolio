@@ -79,7 +79,7 @@ class App extends Component {
             )}
           />
           <Route 
-            path = "/:handle/profile"
+            path = "/:handle"
             render = {(props) => (
               <MyProfile {...props}/>
             )}
