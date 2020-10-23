@@ -10,7 +10,9 @@ const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
 function ProjectPanel(props){
     const [ projects, setProjects ] = useState([]);
+    const [authorised, setAuthorised] = useState(props.authorised);
 
+    const profileHandle = props.profileHandle;
     useEffect( () => {
         axios.get(API_URL + "/projects", { headers: authHeader() })
             .then( res => {
@@ -21,20 +23,27 @@ function ProjectPanel(props){
                 console.log(err);
             })
     }, []);
+    useEffect( () => {
+        setAuthorised(props.authorised);
+    }, [props]);
     return(
         
         <Container>
+            { authorised ?
             <Button
                 variant="contained"
                 color="disabled"
                 startIcon={<Add />}
-                href="/uploadProject"
+                href={`${profileHandle}/uploadProject`}
             >
                 Upload Project
             </Button>
+            : <></>}
             { projects.map((project, i) => (
                 <Grid item xs={12} lg={6}>
-                    <ProjectPanelCard {...project}/>
+                    <ProjectPanelCard
+                        project={project}
+                        profileHandle={profileHandle}/>
                 </Grid>
             ))}
         </Container>
