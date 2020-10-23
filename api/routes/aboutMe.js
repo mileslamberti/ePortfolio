@@ -20,13 +20,13 @@ exports.createAboutMe = (req, res) => {
 
 exports.getAboutMe = (req,res) => {
     let aboutMe = {};
-    db.doc(`/users/${req.body.handle}/data/aboutme`).get().then(doc => {
+    db.doc(`/users/${req.params.handle}/data/aboutme`).get().then(doc => {
         if(doc.exists){
             aboutMe = doc.data().aboutMe;
             return res.status(200).json({aboutMe});
         } else {
             aboutMe = { displayName : "Display name", description : "Profile description"};
-            db.doc(`/users/${req.body.handle}/data/aboutme`).set({aboutMe})
+            db.doc(`/users/${req.params.handle}/data/aboutme`).set({aboutMe})
             return res.status(200).json({aboutMe});
         }
     }).catch(err => {
@@ -57,13 +57,13 @@ exports.createUserInfo = (req, res) => {
 
 exports.getUserInfo = (req,res) => {
     let userInfo = {};
-    db.doc(`/users/${req.body.handle}/data/userinfo`).get().then(doc => {
+    db.doc(`/users/${req.params.handle}/data/userinfo`).get().then(doc => {
         if(doc.exists){
             userInfo = doc.data().userInfo;
             return res.status(200).json({userInfo});
         } else {
             userInfo = { occupation : "Occupation", location : "Location", number : "Phone number", email : "Contact email" };
-            db.doc(`/users/${req.body.handle}/data/userinfo`).set({userInfo})
+            db.doc(`/users/${req.params.handle}/data/userinfo`).set({userInfo})
             return res.status(200).json({userInfo});
         }
     }).catch(err => {
@@ -86,7 +86,7 @@ exports.updateProfilePic  = (req,res) => {
 exports.getProfilePic = (req,res) => {
     let profilePic = {};
 
-    db.doc(`/users/${req.body.handle}`).get().then(doc => {
+    db.doc(`/users/${req.params.handle}`).get().then(doc => {
         if(doc.exists){
             profilePic = doc.data().imageUrl;
             return res.status(200).json({profilePic});
@@ -113,7 +113,7 @@ exports.createUserTags = (req, res) => {
 
 exports.getUserTags = (req,res) => {
     let tags = [];
-    db.doc(`/users/${req.body.handle}/data/tags`).get().then(doc => {
+    db.doc(`/users/${req.params.handle}/data/tags`).get().then(doc => {
         if(doc.exists){
             tags = doc.data().tags;
         }

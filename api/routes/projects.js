@@ -19,7 +19,7 @@ exports.saveProject = (req, res) => {
 
 exports.getProjects = async (req, res) => {
   var projects = [];
-  const databaseSnapshot = await db.collection(`/users/${req.user.handle}/projects`).get();
+  const databaseSnapshot = await db.collection(`/users/${req.params.handle}/projects`).get();
   databaseSnapshot.forEach(project => {
       projects.push(project.data().project);
   });
@@ -27,7 +27,7 @@ exports.getProjects = async (req, res) => {
 }
 
 exports.getProjectInfo = (req, res) => {
-  const userHandle = req.user.handle;
+  const userHandle = req.params.handle;
   if (!userHandle){
     return res.status(206).json({ error: "no user given"});
   }

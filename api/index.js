@@ -27,17 +27,17 @@ app.get('/user',userAuth,getAuthorisedUser)
 
 // Routes for setting and getting profile content
 app.post("/aboutme", userAuth, createAboutMe);
-app.post("/getaboutme", getAboutMe);
+app.get("/:handle/aboutme", getAboutMe);
 app.post("/userinfo", userAuth, createUserInfo);
-app.post("/getuserinfo", getUserInfo);
-app.post('/updatedp',userAuth, updateProfilePic)
-app.post('/getdp', getProfilePic)
+app.get("/:handle/userinfo", getUserInfo);
+app.post('/dp', userAuth, updateProfilePic)
+app.get('/:handle/dp', getProfilePic)
 app.post("/tags", userAuth, createUserTags);
-app.post("/gettags", getUserTags);
+app.get("/:handle/tags", getUserTags);
 
-app.post("/saveproject", userAuth, saveProject)
-app.get("/projects", userAuth, getProjects);
-app.get("/project/:projectID", userAuth, getProjectInfo);
+app.post("/saveproject", userAuth, saveProject);
+app.get("/:handle/getprojects", getProjects);
+app.get("/:handle/getprojects/:projectID", getProjectInfo);
 
 app.post("/files/:projectID", userAuth, addFile)
 app.get("/files/:projectID", userAuth, getProjectFiles)

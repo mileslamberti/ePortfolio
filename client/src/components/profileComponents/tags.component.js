@@ -6,7 +6,7 @@ import { Input } from '@material-ui/core';
 import axios from 'axios';
 import authHeader from "../../services/auth-header";
 
-const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
+const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api/";
 
 
 const Tags = (props) => {
@@ -25,7 +25,7 @@ const Tags = (props) => {
     if(tags.length === 0){
       setLoading(true);
 
-      axios.post(API_URL + "/gettags", {handle : props.profileHandle})
+      axios.get(API_URL + props.profileHandle + "/tags")
       .then( res => {
           setTags(tags => tags.concat(res.data.tags));
           setLoading(false);
@@ -43,7 +43,7 @@ const Tags = (props) => {
     const newTags = [ ...tags ];
     newTags.splice(i, 1);
     setTags(newTags);
-    axios.post(API_URL+'/tags', {tags: newTags}, { headers: authHeader() })
+    axios.post(API_URL + '/tags', {tags: newTags}, { headers: authHeader() })
         .then( res => {
           console.log(res.data);
         }); 

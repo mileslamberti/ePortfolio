@@ -15,7 +15,7 @@ import UserService from "../services/user.service"
 import ProjectPanel from "../cardComponents/projectPanel.component"
 export default function Profile (props) {
     
-        const profileHandle = props.location.pathname.split("/")[1]
+        const profileHandle = props.match.params.handle;
         const [authorised, setAuthorised] = useState(false);
 
         useEffect( () => {
