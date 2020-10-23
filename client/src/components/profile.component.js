@@ -1,20 +1,19 @@
 import React, { useState, useEffect }from 'react';
 //import { Grid, Nav, NavDropdown } from 'react-bootstrap';
-import './myprofile.component.css';
+import './profile.component.css';
 import img from './random.jpg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import DP from "./profileComponents/dp.component";
 import AboutMe from "./profileComponents/aboutMe.component";
 import UserInfo from "./profileComponents/userInfo.component";
-import Projects from "./profileComponents/projects.component";
 import Tags from "./profileComponents/tags.component";
-import Tabs from "../components/tabs.component";
+import Tabs from "./tabs.component";
 import FindUser from "./profileComponents/findUser.component";
 import UserService from "../services/user.service"
 
 import ProjectPanel from "../cardComponents/projectPanel.component"
-export default function MyProfile (props) {
+export default function Profile (props) {
     
         const profileHandle = props.location.pathname.split("/")[1]
         const [authorised, setAuthorised] = useState(false);
@@ -100,7 +99,7 @@ export default function MyProfile (props) {
                         </li>
                         </ul>
                     </div>
-                    <ProjectPanel/>   
+                    <ProjectPanel authorised={authorised} profileHandle={profileHandle}/>   
                 </div>
                 
                 
