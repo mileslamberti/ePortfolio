@@ -49,7 +49,6 @@ function DialogPortfolioCard(props){
 
     return(
       <div>
-      {authorised ?
         <Dialog open={open} onClose={handleCancelClick} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">{dialogInformation.title}</DialogTitle>
         <DialogContent>
@@ -108,8 +107,8 @@ function DialogPortfolioCard(props){
           </Button>
           
         </DialogActions>
-        : <></>}
-      </Dialog> : <></>}
+       : <></>}
+       </Dialog>
       </div>
     )
 }
