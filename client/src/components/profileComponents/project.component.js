@@ -70,27 +70,19 @@ function Project(props) {
     const [open, setOpen] = React.useState(false);
     // Whether file component visible
     const [uploadOpen, setUploadOpen] = useState(false);
+    const profileHandle = props.match.params.handle;
 
-    // Get user handle
-    useEffect(() => {
-      function getHandle(){
-          if (userHandle === ''){
-              userService.getMe().then(user =>{
-                  setUserHandle();
-                  userService.isUser(user.handle).then(
-                    (res) => {
-                        setAuthorised(res);
-                        console.log(res);
-                    }
-                  )
-              });
+    // check user handle
+    useEffect( () => {
+      UserService.isUser(profileHandle).then(
+          (res) => {
+              setAuthorised(res);
+              console.log(res);
           }
-          
-      }
-      getHandle()
+        )
+        InitFirebase();
+    }, []);
       
-      InitFirebase();
-    },[]);
 
     const updateAccepted = (acceptedFiles) => {
       // Filter removes duplicate files by .name property; sorts by .name
