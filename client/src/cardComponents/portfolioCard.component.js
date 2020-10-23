@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { red } from '@material-ui/core/colors';
@@ -65,6 +65,11 @@ function PortfolioCard(props) {
   // Whether edit dialog is open
   const [open, setOpen] = React.useState(false);
 
+  // whether user is logged it
+  const [authorised, setAuthorised] = useState(false);
+  useEffect(() => {
+    setAuthorised(props.authorised)
+  },[props]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -115,10 +120,10 @@ function PortfolioCard(props) {
     <Card className={classes.root}>
       <CardHeader
         action={
-          <IconButton aria-label="settings" onClick={handleMinimizeClick}>
-            {showMedia ? <Remove /> : <ZoomOutMap />}
-          </IconButton>
-        }
+                <IconButton aria-label="settings" onClick={handleMinimizeClick}>
+                  {showMedia ? <Remove /> : <ZoomOutMap />}
+                </IconButton>
+                }
         title={card.title}
       />
       {/* The media (example an image) of the card can be minimised*/}
@@ -138,8 +143,11 @@ function PortfolioCard(props) {
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites"> <Favorite /> </IconButton>
         <IconButton aria-label="share"> <Share /> </IconButton>
-        <IconButton onClick={handleClickOpen}> <Edit /> </IconButton>
-        <IconButton onClick={props.onDeleteClick}> <Delete /> </IconButton>
+        {authorised ? 
+          <>
+            <IconButton onClick={handleClickOpen}> <Edit /> </IconButton>
+            <IconButton onClick={props.onDeleteClick}> <Delete /> </IconButton>
+          </>: <></>}
         <IconButton
           className={clsx(classes.expand, {
             [classes.expandOpen]: expanded,
@@ -161,7 +169,8 @@ function PortfolioCard(props) {
             cardID={props.id}
             dialogInformation={getDialogDescription()}
             files={unassociatedFiles}
-        />
+            authorised={authorised}
+      />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography paragraph>
@@ -178,14 +187,17 @@ function PortfolioCard(props) {
                 <ListItemText
                   primary={file.filename}
                 />
-                <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete"
-                    onClick={() => {
-                      unassociateFileWithCard(file.filename);
-                     }}>
-                    <Delete />
-                  </IconButton>
-                </ListItemSecondaryAction>
+                {authorised ? 
+                  <>
+                    <ListItemSecondaryAction>
+                      <IconButton edge="end" aria-label="delete"
+                        onClick={() => {
+                          unassociateFileWithCard(file.filename);
+                        }}>
+                        <Delete />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </> : <></>}
               </ListItem>,
             )}
             </List>
