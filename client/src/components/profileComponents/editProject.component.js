@@ -19,6 +19,7 @@ import firebase from "firebase";
 import InitFirebase from "../../services/initFirebase";
 
 import authHeader from "../../services/auth-header";
+import { makeStyles } from '@material-ui/core/styles';
 
 const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
@@ -30,13 +31,28 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width:"70%",
+    position: "absolute",
+    left: "50%",
+    transform: "translate(-50%)"
+  },
+
+
+}));
+
+
 const grid = 8;
 
+// Style for each droppable card
 const getItemStyle = (isDragging, draggableStyle) => ({
   // some basic styles to make the items look a bit nicer
   userSelect: "none",
   padding: grid * 2,
   margin: `0 0 ${grid}px 0`,
+
+  width: "100%",
 
   // change background colour if dragging
   background: isDragging ? "lightgreen" : "grey",
@@ -45,9 +61,11 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   ...draggableStyle
 });
 
+// Style for the entire list of cards
 const getListStyle = isDraggingOver => ({
   background: isDraggingOver ? "lightblue" : "lightgrey",
   padding: grid,
+  width: "70%"
 });
 
 function EditProject(props) {
@@ -68,6 +86,8 @@ function EditProject(props) {
     const [open, setOpen] = React.useState(false);
     // Whether file component visible
     const [uploadOpen, setUploadOpen] = useState(false);
+
+    const classes = useStyles();
 
     // Get user handle
     useEffect(() => {
@@ -199,6 +219,7 @@ function EditProject(props) {
 
     return (
       <>
+      <div className={classes.root}>
       <PortfolioTitleCard />
       <Box mx="auto" m={1} mr={10}>
           <Button 
@@ -261,8 +282,8 @@ function EditProject(props) {
           dialogInformation={getDialogDescription()}
       />
       
-      <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="droppable">
+      <DragDropContext onDragEnd={onDragEnd} >
+      <Droppable droppableId="droppable" >
         {(provided, snapshot) => (
           <div
             {...provided.droppableProps}
@@ -279,15 +300,13 @@ function EditProject(props) {
                     {...provided.dragHandleProps}
                     style={getItemStyle(
                       snapshot.isDragging,
-                      provided.draggableProps.style
+                      provided.draggableProps.style,
                     )}
                   >
                       <PortfolioCard
                           id={item.id}
-                          title={item.title}
-                          description={item.description}
-                          extendedDescription={item.extendedDescription}
                           picture={item.picture}
+                          editMode={true}
                           onDeleteClick={() => deleteCard(item.id)}
                       />
                   </div>
@@ -299,6 +318,7 @@ function EditProject(props) {
         )}
       </Droppable>
     </DragDropContext>
+    </div>
     </>
 
     );

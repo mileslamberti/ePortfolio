@@ -1,9 +1,8 @@
-import React, {useState, useEffect, createContext, useReducer} from 'react';
+import React, {useEffect, createContext, useReducer} from 'react';
 import axios from 'axios';
 import authHeader from "../services/auth-header";
 
 import {projectInfoReducer, cardReducer, fileReducer, ACTIONS} from './ProjectReducers';
-import { ScreenLockLandscapeRounded } from '@material-ui/icons';
 
 const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
@@ -43,7 +42,7 @@ export const PortfolioCardProvider = props => {
                 description: cardInfo.description,
                 projectID: projectID,
                 position: cardsState.cards.length,
-                img: "implementImgLink.com"
+                img: cardInfo.img
             }
         });
         const card = {
@@ -53,7 +52,7 @@ export const PortfolioCardProvider = props => {
             description: cardInfo.description,
             projectID: projectID,
             position: cardsState.cards.length,
-            img: "implementImgLink.com"
+            img: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ficdn2.digitaltrends.com%2Fimage%2Fschool-coding-1200x0.jpg%3Fver%3D1&f=1&nofb=1"
         }
         console.log(card);
         axios.post(`${API_URL}/projectcards/`, card, { headers: authHeader() })
@@ -106,7 +105,10 @@ export const PortfolioCardProvider = props => {
             }
         })
         axios.post(`${API_URL}/projectcards/`, cardInfo, { headers: authHeader() })
-            .then(res => console.log(res.data));
+            .then(res => {
+                console.log(res.data);
+            })
+            .catch(err => console.log(err));
     }
 
     function reorderCards(sourceIndex, destIndex){
@@ -150,17 +152,6 @@ export const PortfolioCardProvider = props => {
         });
     }
 
-    /** Functions that manage filesState */
-    function addFile(filename, downloadLink, cardid){
-        dispatchFiles({
-            type: ACTIONS.ADD_FILE,
-            payload: {
-                filename: filename,
-                downloadLink: downloadLink,
-                associatedWithCard: cardid
-            }
-        })
-    }
     function loadFile(file){
         dispatchFiles({
             type: ACTIONS.ADD_FILE,
@@ -240,6 +231,10 @@ export const PortfolioCardProvider = props => {
         axios.get(`${API_URL}/getprojectcards/${projectID}`,{ headers: authHeader() })
             .then( cardRes => {
                 cardRes.data.cards.forEach( card => {
+                    // Remove later.
+                    if(card.card.img === "implementImgLink.com"){
+                        card.card.img = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ficdn2.digitaltrends.com%2Fimage%2Fschool-coding-1200x0.jpg%3Fver%3D1&f=1&nofb=1"
+                    }
                     loadCard(card.card);
                 })
              }).catch( err => {
