@@ -6,11 +6,13 @@ import { Card, Button } from "react-bootstrap" ;
 
 const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
-const Projects = () => {
+const Projects = (props) => {
     const [search, setSearch] = useState('');
     const [projects, setProjects] = useState([]);
+    const userHandle = props.match.params.handle;
+
     useEffect( () => {
-        axios.get(API_URL + `/projects`, { headers: authHeader() })
+        axios.post(API_URL + "/getprojects", {handle : userHandle})
             .then( res => {
                 const projects = res.data.projects;
                 setProjects(projects);
@@ -40,14 +42,13 @@ const renderCard = (card, index) => {
             <Card.Body>
                 <Card.Title>{card.title}</Card.Title>
                 <Card.Text>{card.description}</Card.Text>
-                <Button href={`/projects/${card.projectID}`} variant="primary">View Project</Button>
+                <Button href={"/projects/${card.projectID}"} variant="primary">View Project</Button>
             </Card.Body>
             </Card>
         </div>
     
     );
 }
-
 
 const ViewProject = (props) => {
     // TODO REMOVEEE BAD BAD BAD BAD

@@ -12,7 +12,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import authHeader from "../../services/auth-header";
 
-const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
+const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api/";
 
 const useStyles = makeStyles({
       marginAutoItem: {
@@ -44,7 +44,7 @@ const UserInfo = (props) => {
         if(!userInfo){
             setLoading(true);
 
-            axios.post(API_URL + "/getuserinfo", {handle : props.profileHandle})
+            axios.get(API_URL + props.profileHandle + "/userinfo")
                 .then( res => {
                     console.log(res);
                     setUserInfo(res.data.userInfo);
