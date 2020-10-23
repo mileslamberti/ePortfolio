@@ -47,7 +47,7 @@ function ProjectPanelCard(props){
     }
 
     const handleCardClick = () => {
-      window.location=`${profileHandle}/${project.projectID}`;
+      window.location=`/${profileHandle}/${project.projectID}`;
     }
 
     return(

@@ -41,7 +41,7 @@ exports.getProjectInfo = (req, res) => {
   })
 }
 exports.getProjectFiles = async (req, res) => {
-  const userHandle = req.user.handle;
+  const userHandle = req.params.handle;
   if (!userHandle){
     return res.status(206).json({ error: "no user given"});
   }
@@ -93,7 +93,7 @@ exports.editFileCardAssociation = (req, res) => {
 exports.getAllProjectCards = async (req, res) => {
   //TODO CHANGE to use UserAuth
   //const userHandle = req.user.handle;
-  const userHandle = req.user.handle;
+  const userHandle = req.params.handle;
   if (!userHandle){
     return res.status(206).json({ error: "no user given"});
   }

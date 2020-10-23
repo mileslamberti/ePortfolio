@@ -40,11 +40,12 @@ app.get("/:handle/getprojects", getProjects);
 app.get("/:handle/getprojects/:projectID", getProjectInfo);
 
 app.post("/files/:projectID", userAuth, addFile)
-app.get("/files/:projectID", userAuth, getProjectFiles)
+app.get("/:handle/files/:projectID", getProjectFiles)
 
 app.get("/profiles", getAllUsers);
 
-app.get("/getprojectcards/:projectID", userAuth, getAllProjectCards);
+app.get("/:handle/getprojectcards/:projectID", getAllProjectCards);
+
 app.post("/projectcards", userAuth, addProjectCard);
 app.post("/deleteprojectcard", userAuth, deleteProjectCard);
 app.post("/assignfiletocard", userAuth, editFileCardAssociation);

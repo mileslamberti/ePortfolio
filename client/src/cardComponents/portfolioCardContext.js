@@ -247,7 +247,6 @@ export const PortfolioCardProvider = props => {
     }
 
     useEffect( () => {
-
         //fetch project
          axios.get(API_URL + `/${profileHandle}/getprojects/${projectID}`)
              .then( res => {
@@ -258,7 +257,7 @@ export const PortfolioCardProvider = props => {
                  console.log("Error", err);
              })
         // fetch project files
-        axios.get(API_URL + `/files/${projectID}`,{ headers: authHeader() })
+        axios.get(API_URL + `/${profileHandle}/files/${projectID}`,{ headers: authHeader() })
             .then( res => {
                 const files = res.data.files;
                 files.forEach(file => {
@@ -269,7 +268,7 @@ export const PortfolioCardProvider = props => {
                 console.log("Error", err);
             })
         // fetch project cards
-        axios.get(`${API_URL}/getprojectcards/${projectID}`,{ headers: authHeader() })
+        axios.get(`${API_URL}/${profileHandle}/getprojectcards/${projectID}`,{ headers: authHeader() })
             .then( cardRes => {
                 cardRes.data.cards.forEach( card => {
                     // Remove later.
