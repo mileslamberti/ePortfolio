@@ -6,13 +6,15 @@ import HomeNavbar from "./components/homeNavbar.component";
 import Home from "./components/home.component";
 import Login from "./components/login.component";
 import Register from "./components/registration.component";
-import MyProfile from "./components/myProfile.component";
+import Profile from "./components/profile.component";
 import UploadProject from './components/profileComponents/uploadProject.component';
 import Project from './components/profileComponents/project.component';
 import ProfilesPage from "./components/profilespage.component";
 import { PortfolioCardProvider } from "./cardComponents/portfolioCardContext";
 
 import InitFirebase from  "./services/initFirebase";
+
+
 //import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
 //import landing from './views/landing'
@@ -55,21 +57,21 @@ class App extends Component {
           <Route exact path="/profilespage" component={ProfilesPage} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
-          <Route exact path="/uploadProject" component={UploadProject}/>
+          <Route exact
+            path = "/:handle" 
+            render = {(props) => (
+              <Profile {...props}/>
+            )}
+          />
+          <Route exact path="/:handle/uploadProject" component={UploadProject}/>
           <Route exact 
-            path="/projects/:projectID" 
+            path="/:handle/:projectID" 
             render = {(props) => (
               <PortfolioCardProvider {...props}>
                 <Project {...props}/>
               </PortfolioCardProvider>
             )}
-          />
-          <Route 
-            path = "/:handle" 
-            render = {(props) => (
-              <MyProfile {...props}/>
-            )}
-          />   
+          />  
         </Switch>
       </Router>
     );
