@@ -1,6 +1,4 @@
 import React, {useState, useContext, useEffect} from 'react';
-import axios from 'axios';
-import {Link} from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { red } from '@material-ui/core/colors';
@@ -12,7 +10,6 @@ import DialogPortfolioCard from "./DialogPortfolioCard.component";
 
 import {PortfolioCardContext} from "./portfolioCardContext";
 
-import firebase from "firebase";
 
 
 
@@ -101,7 +98,6 @@ function PortfolioCard(props) {
     setOpen(false);
   }
   const getFile = (file) =>{
-    const myFile = firebase.storage().refFromURL(file)
     var link = document.createElement("a");
     if (link.download !== undefined) {
         link.setAttribute("href", file);
@@ -111,11 +107,6 @@ function PortfolioCard(props) {
         link.click();
         document.body.removeChild(link);
     }
-    return <a
-              to={file} 
-              target={file} 
-              download={myFile}
-            />;
   }
 
   // Returns Object of values to populate Dialog with
