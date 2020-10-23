@@ -2,14 +2,14 @@ import React, {useState, useContext, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { red } from '@material-ui/core/colors';
-
-import {Card, CardHeader, CardMedia, CardContent, CardActions, Collapse, IconButton, Typography} from '@material-ui/core';
-import {Favorite, Share, ExpandMore, Edit, Delete, Remove, ZoomOutMap, Folder} from '@material-ui/icons';
+import {Card, CardHeader, CardMedia, CardContent, CardActions, Collapse, IconButton, Typography, Button} from '@material-ui/core';
+import {Favorite, Share, ExpandMore, Edit, Delete, Remove, ZoomOutMap, Folder, GetApp} from '@material-ui/icons';
 import {List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar} from '@material-ui/core';
 
 import DialogPortfolioCard from "./DialogPortfolioCard.component";
 
 import {PortfolioCardContext} from "./portfolioCardContext";
+
 
 
 
@@ -97,6 +97,17 @@ function PortfolioCard(props) {
   const handleDialogCancel = () =>{
     setOpen(false);
   }
+  const getFile = (file) =>{
+    var link = document.createElement("a");
+    if (link.download !== undefined) {
+        link.setAttribute("href", file);
+        link.setAttribute("target", "_blank");
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+  }
 
   // Returns Object of values to populate Dialog with
   const getDialogDescription = () =>{
@@ -170,7 +181,7 @@ function PortfolioCard(props) {
           </Typography>
             <List>
             {associatedFiles.map((file, index) => 
-              <ListItem key={index}>
+              <ListItem key={index} >
                 <ListItemAvatar>
                   <Avatar>
                     <Folder />
@@ -179,6 +190,15 @@ function PortfolioCard(props) {
                 <ListItemText
                   primary={file.filename}
                 />
+                {/* onClick={() => {getFile(file.downloadLink)}} */}
+                {/* <Link 
+                  to={file.filename} 
+                  target={file.filename} 
+                  download={getFile(file.downloadLink)}
+                  > Download */}
+                  <IconButton onClick={() => {getFile(file.downloadLink)}}>
+                    <GetApp />
+                  </IconButton>
                 {/** Can't delete associated files if not in edit mode */}
                 {props.editMode && <ListItemSecondaryAction>
                   <IconButton edge="end" aria-label="delete"
