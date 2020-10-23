@@ -14,9 +14,9 @@ function ProjectPanel(props){
 
     const profileHandle = props.profileHandle;
     useEffect( () => {
-        axios.get(API_URL + "/projects", { headers: authHeader() })
+        axios.get(API_URL + `/${profileHandle}/getprojects`)
             .then( res => {
-                console.log(res.data.projects);
+                console.log(res.data);
                 setProjects(res.data.projects);
             })
             .catch( err => {
