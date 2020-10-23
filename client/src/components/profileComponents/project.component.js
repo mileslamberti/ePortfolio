@@ -14,7 +14,7 @@ import {IconButton} from '@material-ui/core';
 import { Delete, Folder, PictureAsPdfOutlined, Image} from '@material-ui/icons';
 import {List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar} from '@material-ui/core';
 
-import UserService from "../../services/user.service";
+import userService from "../../services/user.service";
 import firebase from "firebase";
 import InitFirebase from "../../services/initFirebase";
 
@@ -76,17 +76,19 @@ function Project(props) {
       function getHandle(){
           if (userHandle === ''){
               userService.getMe().then(user =>{
-                  setUserHandle(user.handle);
+                  setUserHandle();
+                  userService.isUser(user.handle).then(
+                    (res) => {
+                        setAuthorised(res);
+                        console.log(res);
+                    }
+                  )
               });
           }
+          
       }
-      UserService.isUser(profileHandle).then(
-        (res) => {
-            setAuthorised(res);
-            console.log(res);
-        }
-      )
       getHandle()
+      
       InitFirebase();
     },[]);
 
@@ -217,106 +219,124 @@ function Project(props) {
 
     return (
       <>
-      <PortfolioTitleCard />
-      <Box mx="auto" m={1} mr={10}>
-          <Button 
+      <PortfolioTitleCard authorised={authorised}/>
+      {authorised ?
+        (<>
+        <Box mx="auto" m={1} mr={10}>
+            <Button 
+                variant="contained"
+                color="primary"
+                onClick={handleClickAddCard}
+            >
+                Add Card to Project
+            </Button>
+        
+            <Button
               variant="contained"
               color="primary"
-              onClick={handleClickAddCard}
-          >
-              Add Card to Project
-          </Button>
-      
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleFileUpload}
-          >
-              {uploadOpen ? "Cancel adding Files to Project" : "Add Files to Project"}
-          </Button>
-      </Box>
-      {uploadOpen && 
-        <>
-          <FileUpload updateAccepted={updateAccepted} updateRejected={updateRejected}/>
-          <List>
-              {AcceptedFiles.map((file, index) => 
-              <ListItem key={index}>
-                  <ListItemAvatar>
-                  <Avatar>
-                      {getListItemIcon(file.type)}
-                  </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                  primary={file.name}
-                  />
-                  <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete"
-                      onClick={() => {
-                          const newFiles = [...AcceptedFiles]
-                          newFiles.splice(index, 1);
-                          setAcceptedFiles(newFiles)
-                      }}
-                  >
-                      <Delete />
-                  </IconButton>
-                  </ListItemSecondaryAction>
-              </ListItem>,
-              )}
-          </List>
+              onClick={handleFileUpload}
+            >
+                {uploadOpen ? "Cancel adding Files to Project" : "Add Files to Project"}
+            </Button>
+        </Box>
+        {uploadOpen ?
+          (<>
+            <FileUpload updateAccepted={updateAccepted} updateRejected={updateRejected}/>
+            <List>
+                {AcceptedFiles.map((file, index) => 
+                <ListItem key={index}>
+                    <ListItemAvatar>
+                    <Avatar>
+                        {getListItemIcon(file.type)}
+                    </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                    primary={file.name}
+                    />
+                    <ListItemSecondaryAction>
+                    <IconButton edge="end" aria-label="delete"
+                        onClick={() => {
+                            const newFiles = [...AcceptedFiles]
+                            newFiles.splice(index, 1);
+                            setAcceptedFiles(newFiles)
+                        }}
+                    >
+                        <Delete />
+                    </IconButton>
+                    </ListItemSecondaryAction>
+                </ListItem>,
+                )}
+            </List>
 
-          <Button
-              variant="contained"
-              color="primary"
-              onClick={onSubmitAddFiles}>
-              Confirm Add Files
-          </Button>
-        </>
-      }
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={onSubmitAddFiles}>
+                Confirm Add Files
+            </Button>
+          </>) : (<></>)}
+        </>) : (<></>)}
       <DialogPortfolioCard 
           handleDialogConfirm={handleDialogConfirm}
           handleDialogCancel={handleDialogCancel}
           open={open}
           dialogInformation={getDialogDescription()}
+          authorised={authorised}
       />
-      
-      <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="droppable">
-        {(provided, snapshot) => (
-          <div
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-            style={getListStyle(snapshot.isDraggingOver)}
-          >
-            {/*We map each card into a PortfolioCard*/}
-            {cards.map((item, index) => (
-              <Draggable key={item.id} draggableId={item.id} index={index}>
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    style={getItemStyle(
-                      snapshot.isDragging,
-                      provided.draggableProps.style
+      {authorised ?
+        (<>
+          <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="droppable">
+            {(provided, snapshot) => (
+              <div
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                style={getListStyle(snapshot.isDraggingOver)}
+              >
+                {/*We map each card into a PortfolioCard*/}
+                {cards.map((item, index) => (
+                  <Draggable key={item.id} draggableId={item.id} index={index}>
+                    {(provided, snapshot) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        style={getItemStyle(
+                          snapshot.isDragging,
+                          provided.draggableProps.style
+                        )}
+                      >
+                          <PortfolioCard
+                              id={item.id}
+                              title={item.title}
+                              description={item.description}
+                              extendedDescription={item.extendedDescription}
+                              picture={item.picture}
+                              onDeleteClick={() => deleteCard(item.id)}
+                              authorised={authorised}
+                          />
+                      </div>
                     )}
-                  >
-                      <PortfolioCard
-                          id={item.id}
-                          title={item.title}
-                          description={item.description}
-                          extendedDescription={item.extendedDescription}
-                          picture={item.picture}
-                          onDeleteClick={() => deleteCard(item.id)}
-                      />
-                  </div>
-                )}
-              </Draggable>
-            ))}
-          {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+                  </Draggable>
+                ))}
+              {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+        </>) : (<>
+          {cards.map((item, index) => (
+            <PortfolioCard
+                id={item.id}
+                title={item.title}
+                description={item.description}
+                extendedDescription={item.extendedDescription}
+                picture={item.picture}
+                onDeleteClick={() => deleteCard(item.id)}
+                authorised={authorised}
+            />
+                ))}
+        </>)}
     </>
 
     );
