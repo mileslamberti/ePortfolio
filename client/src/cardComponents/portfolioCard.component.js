@@ -2,7 +2,7 @@ import React, {useState, useContext, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { red } from '@material-ui/core/colors';
-import {Card, CardHeader, CardMedia, CardContent, CardActions, Collapse, IconButton, Typography, Button} from '@material-ui/core';
+import {Card, CardHeader, CardMedia, CardContent, CardActions, Collapse, IconButton, Typography, Button, Checkbox, FormLabel, FormControl, FormGroup, FormControlLabel} from '@material-ui/core';
 import {Favorite, Share, ExpandMore, Edit, Delete, Remove, ZoomOutMap, Folder, GetApp} from '@material-ui/icons';
 import {List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar} from '@material-ui/core';
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core';
@@ -67,6 +67,8 @@ function PortfolioCard(props) {
   
   // Whether delete warning dialog is open
   const [warningOpen, setWarningOpen] = useState(false);
+
+  const [checkbox, setCheckbox] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -153,9 +155,17 @@ function PortfolioCard(props) {
         <IconButton aria-label="add to favorites"> <Favorite /> </IconButton>
         <IconButton aria-label="share"> <Share /> </IconButton>
         {props.editMode && <IconButton onClick={handleClickOpen}> <Edit /> </IconButton>}
-        {props.editMode && <IconButton onClick={() => setWarningOpen(true)}> <Delete /> </IconButton>}
+        {props.editMode && <IconButton onClick={() => {
+          if(options.deleteCardWarning === false){
+            props.onDeleteClick();
+          }
+          else{
+            setWarningOpen(true)
+          }
+          
+        }}
+        > <Delete /> </IconButton>}
         {props.editMode && 
-         options.deleteCardWarning && 
           <Dialog open={warningOpen} onClose={() => setWarningOpen(false)}>
               <DialogTitle> Are you sure you want to delete?</DialogTitle>
               <DialogContentText>
@@ -163,6 +173,13 @@ function PortfolioCard(props) {
                   associated with this card. This option cannot be undone, although you can manually re-create the card.
                   Press confirm to delete.
               </DialogContentText>
+              <FormGroup row>
+                <FormControlLabel 
+                  control={<Checkbox checked={checkbox} onClick={() => setCheckbox(!checkbox)}
+                    />}
+                  label="Do not show again"
+                />
+              </FormGroup>
               <Button
                     variant="contained"
                     color="primary"
@@ -173,7 +190,12 @@ function PortfolioCard(props) {
               <Button
                   variant="contained"
                   color="primary"
-                  onClick={props.onDeleteClick}
+                  onClick={() => {
+                    if(checkbox === true){
+                      options.deleteCardWarning = false;
+                    }
+                    props.onDeleteClick();
+                  }}
                   startIcon={<Delete />}
               >
                   Confirm Delete
