@@ -5,6 +5,7 @@ import { red } from '@material-ui/core/colors';
 import {Card, CardHeader, CardMedia, CardContent, CardActions, Collapse, IconButton, Typography, Button} from '@material-ui/core';
 import {Favorite, Share, ExpandMore, Edit, Delete, Remove, ZoomOutMap, Folder, GetApp} from '@material-ui/icons';
 import {List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar} from '@material-ui/core';
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core';
 
 import DialogPortfolioCard from "./DialogPortfolioCard.component";
 
@@ -51,6 +52,7 @@ function PortfolioCard(props) {
   const { unassociateFileWithCard } = useContext(PortfolioCardContext);
   const { getFilesAssociatedWithCard } = useContext(PortfolioCardContext);
   const { getFilesUnassociatedWithAnyCard } = useContext(PortfolioCardContext);
+  const { options } = useContext(PortfolioCardContext);
 
   // Contents of this card in this varaible
   const card = getCard(props.id);
@@ -62,6 +64,9 @@ function PortfolioCard(props) {
 
   // Whether edit dialog is open
   const [open, setOpen] = React.useState(false);
+  
+  // Whether delete warning dialog is open
+  const [warningOpen, setWarningOpen] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -148,7 +153,33 @@ function PortfolioCard(props) {
         <IconButton aria-label="add to favorites"> <Favorite /> </IconButton>
         <IconButton aria-label="share"> <Share /> </IconButton>
         {props.editMode && <IconButton onClick={handleClickOpen}> <Edit /> </IconButton>}
-        {props.editMode && <IconButton onClick={props.onDeleteClick}> <Delete /> </IconButton>}
+        {props.editMode && <IconButton onClick={() => setWarningOpen(true)}> <Delete /> </IconButton>}
+        {props.editMode && 
+         options.deleteCardWarning && 
+          <Dialog open={warningOpen} onClose={() => setWarningOpen(false)}>
+              <DialogTitle> Are you sure you want to delete?</DialogTitle>
+              <DialogContentText>
+                  Deleting this card, will remove it from your portfolio, as well as removing all the files you have
+                  associated with this card. This option cannot be undone, although you can manually re-create the card.
+                  Press confirm to delete.
+              </DialogContentText>
+              <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => setWarningOpen(false)}
+              >
+                    Cancel
+              </Button>
+              <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={props.onDeleteClick}
+                  startIcon={<Delete />}
+              >
+                  Confirm Delete
+              </Button>
+          </Dialog>
+        }
         <IconButton
           className={clsx(classes.expand, {
             [classes.expandOpen]: expanded,
