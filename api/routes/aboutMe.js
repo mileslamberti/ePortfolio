@@ -118,9 +118,6 @@ exports.getUserTags = (req,res) => {
             tags = doc.data().tags;
         }
         return res.status(200).json({tags: tags});
-    }).catch(err => {
-        console.error(err);
-        return res.status(500).json({error:err.code})
     })
 }
 
@@ -142,8 +139,51 @@ exports.getPrivacy = (req,res) => {
             private = doc.data().private;
             return res.status(200).json({private});
         }
-    }).catch(err => {
-        console.error(err);
-        return res.status(500).json({error:err.code})
     })
+}
+exports.addEducation = (req,res) => {
+    const education = req.body.education;
+    db.collection(`/users/${req.user.handle}/data/education`).add(education)
+        .then(res => {
+            return res.status(200).json({message: 'education added'});
+        }).catch(err => {
+            console.error(err);
+            return res.status(500).json({error:err.code})
+        })
+}
+
+exports.getEducation = async (req,res) => {
+    var educations = [];
+    const snapshot = await db.collection(`/users/${req.params.handle}/data/education`).get()
+    snapshot.forEach(education => {
+        educations.push(education)
+    })
+    if(educations.length === 0){
+        return res.status(200).json({});
+    } else {
+        return res.status(200).json({educations});
+    }
+}
+exports.getExperience = async (req,res) => {
+    var experiences = [];
+    const snapshot = await db.collection(`/users/${req.params.handle}/data/experience`).get()
+    snapshot.forEach(experience => {
+        experiences.push(experience)
+    })
+    if(experiences.length === 0){
+        return res.status(200).json({});
+    } else {
+        return res.status(200).json({experiences});
+    }
+}
+
+exports.addExperience = (req,res) => {
+    const experience = req.body.experience;
+    db.collection(`/users/${req.user.handle}/data/experience`).add(experience)
+        .then(res => {
+            return res.status(200).json({message: 'experience added'});
+        }).catch(err => {
+            console.error(err);
+            return res.status(500).json({error:err.code})
+        })
 }
