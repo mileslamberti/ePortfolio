@@ -99,41 +99,42 @@ exports.getUserTags = (req,res) => {
     })
 }
 
-exports.createExperience = (req, res) => {
+exports.addExperience = (req, res) => {
 
     if(req.body.body ===''){
         return res.status(400).json({body: "Body must not be empty!"})
     }
-    const experiences = {
-        date : req.body.date,
-        companyName: req.body.companyName,
-        jobTitle: req.body.jobTitle,
-        jobDescription : req.body.jobDescription,
-    };
-    //db.collection(`/users/${req.user.handle}/data/`).doc("aboutme").set({aboutMe}).then(doc => {
-    db.doc(`/users/${req.user.handle}/data/experience`).set({experiences}).then(doc => {
-            return res.json({ message: `document ${doc.id} created` })
+    const experience = req.body.experience;
+    db.collection(`/users/${req.user.handle}/data/experiences`).add(experience)
+        .then(doc => {
+            return res.json({ message: `Experience Added` })
         }).catch(err => {
             console.error(err);
             return res.status(500).json({ error: `something went wrong` });
         });
 }
 
-exports.getExperience = (req,res) => {
-    let experiences = {};
-    db.doc(`/users/${req.user.handle}/data/experience`).get().then(doc => {
-        if(doc.exists){
-            experiences = doc.data().experiences;
-            return res.status(200).json({experiences});
-        } else {
-            experiences = { date : "working period", companyName : "Name of the organisation", jobTitle : "position in the company", jobDescription : "job description"};
-            db.doc(`/users/${req.user.handle}/data/experience`).set({experiences})
-            return res.status(200).json({experiences});
-        }
-    }).catch(err => {
-        console.error(err);
-        return res.status(500).json({error:err.code})
-    })
+exports.getExperiences = async (req,res) => {
+    let experiences = [];
+    const databaseSnapshot = await db.collection(`/user/${userHandle}/data/experiences`).get();
+    databaseSnapshot.forEach(experience => {
+        experiences.push(experience.data());
+    });
+    // if user has no experiences then add an empty experience to their experiences
+    if (experiences.length === 0){
+        const experience = { 
+            date : "working period", 
+            companyName : "Name of the organisation", 
+            jobTitle : "position in the company", 
+            jobDescription : "job description"
+        };
+        experiences.push(experience);
+        db.collection(`/users/${req.user.handle}/data/experiences`).add(experiences)
+        return res.status(200).json({experiences});
+    // if a user does have experiences return them
+    } else {
+        return res.status(200).json({experiences});
+    }
 }
 
 exports.createEducation = (req, res) => {
