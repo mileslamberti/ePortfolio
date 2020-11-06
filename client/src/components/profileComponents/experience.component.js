@@ -111,10 +111,10 @@ const Experience = () => {
                     <DialogTitle id="form-dialog-title">Edit details</DialogTitle>
                     <DialogContent className={classes.marginAutoItem}>
                         <FormControl className={classes.alignItemsAndJustifyContent}>
-                            <InputLabel htmlFor="component-helper">Start Date</InputLabel>
+                            <InputLabel htmlFor="component-helper">Year started</InputLabel>
                             <Input onChange={onChangeStartDate}/></FormControl>
                         <FormControl className={classes.alignItemsAndJustifyContent}>
-                            <InputLabel htmlFor="component-helper">End Date</InputLabel>
+                            <InputLabel htmlFor="component-helper">Year finished</InputLabel>
                             <Input onChange={onChangeEndDate}/></FormControl>
                         <FormControl className={classes.alignItemsAndJustifyContent}>
                             <InputLabel htmlFor="component-helper">Comapany Name</InputLabel>
