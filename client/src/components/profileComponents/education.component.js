@@ -102,14 +102,14 @@ const Education = () => {
                     <DialogTitle id="form-dialog-title">Edit details</DialogTitle>
                     <DialogContent className={classes.marginAutoItem}>
                         <FormControl className={classes.alignItemsAndJustifyContent}>
-                            <InputLabel htmlFor="component-helper">Date</InputLabel>
-                            <Input onChange={onChangeWhen}/></FormControl>
+                            <InputLabel htmlFor="component-helper">Date of completion</InputLabel>
+                            <Input onChange={onChangeWhen} defaultValue={educations.when}/></FormControl>
                         <FormControl className={classes.alignItemsAndJustifyContent}>
                             <InputLabel htmlFor="component-helper">Name of Institution</InputLabel>
-                            <Input onChange={onChangeWhere}/></FormControl>
+                            <Input onChange={onChangeWhere} defaultValue={educations.where}/></FormControl>
                         <FormControl className={classes.alignItemsAndJustifyContent}>
                             <InputLabel htmlFor="component-helper">Degree</InputLabel>
-                            <Input onChange={onChangeWhat}/></FormControl>  
+                            <Input onChange={onChangeWhat} defaultValue={educations.what}/></FormControl>  
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleCancel} color="primary">
