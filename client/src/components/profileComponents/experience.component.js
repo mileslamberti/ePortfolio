@@ -64,8 +64,11 @@ const Experience = () => {
         setOpen(false);
     };
 
-    const onChangeDate = (e) => {
-        setUpdatedExperience({...updatedExperience, date: e.target.value});
+    const onChangeStartDate = (e) => {
+        setUpdatedExperience({...updatedExperience, startDate: e.target.value});
+    }
+    const onChangeEndDate = (e) => {
+        setUpdatedExperience({...updatedExperience, endDate: e.target.value});
     }
     const onChangeCompanyName = (e) => {
         setUpdatedExperience({...updatedExperience, companyName: e.target.value});
@@ -95,10 +98,12 @@ const Experience = () => {
             <>
             <Card>
             <CardContent>
-                    <Typography className={classes.typography} color="textSecondary" component="p">{experiences.date}</Typography>
+                    <Typography className={classes.typography} color="textSecondary" component="p">{experiences.startDate}</Typography>
                     <Typography className={classes.typography} color="textSecondary" component="p">{experiences.companyName}</Typography>
                     <Typography className={classes.typography} color="textSecondary" component="p">{experiences.jobTitle}</Typography>
                     <Typography className={classes.typography} color="textSecondary" component="p">{experiences.jobDescription}</Typography>
+                    <Typography className={classes.typography} color="textSecondary" component="p">{experiences.endDate}</Typography>
+
             </CardContent>
             </Card>
             <IconButton> <Edit onClick={handleClickOpen} /> </IconButton>
@@ -106,8 +111,11 @@ const Experience = () => {
                     <DialogTitle id="form-dialog-title">Edit details</DialogTitle>
                     <DialogContent className={classes.marginAutoItem}>
                         <FormControl className={classes.alignItemsAndJustifyContent}>
-                            <InputLabel htmlFor="component-helper">date</InputLabel>
-                            <Input onChange={onChangeDate}/></FormControl>
+                            <InputLabel htmlFor="component-helper">Start Date</InputLabel>
+                            <Input onChange={onChangeStartDate}/></FormControl>
+                        <FormControl className={classes.alignItemsAndJustifyContent}>
+                            <InputLabel htmlFor="component-helper">End Date</InputLabel>
+                            <Input onChange={onChangeEndDate}/></FormControl>
                         <FormControl className={classes.alignItemsAndJustifyContent}>
                             <InputLabel htmlFor="component-helper">Comapany Name</InputLabel>
                             <Input onChange={onChangeCompanyName}/></FormControl>
