@@ -2,7 +2,7 @@ import React, { useState, useEffect }from 'react';
 import axios from 'axios';
 
 import {makeStyles, Card, CardContent, Typography, IconButton, Input, FormControl, InputLabel} from '@material-ui/core';
-import {Edit} from '@material-ui/icons';
+import {Edit, Add} from '@material-ui/icons';
 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -34,15 +34,15 @@ const Experience = () => {
 
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
-    const [experiences, setExperience] = useState("");
+    const [experiences, setExperience] = useState([]);
     const [updatedExperience, setUpdatedExperience] = useState("");
 
     useEffect( () => {
         setLoading(true);
-        axios.get(API_URL + "/experience", { headers: authHeader() })
+        axios.get(API_URL + "/experiences", { headers: authHeader() })
             .then( res => {
                 console.log(res);
-                setExperience(res.data.experiences);
+                setExperiences(res.data.experiences);
                 setUpdatedExperience(res.data.experiences);
                 setLoading(false);
             })
@@ -91,40 +91,38 @@ const Experience = () => {
                 handleClose();
             });
     }
-    
-    return (
-            <div>
-            {loading ? <span className="spinner-border spinner-border-sm"></span> : 
+    const renderExperience = (experience) => {
+        return (
             <>
-            <Card>
-            <CardContent>
-                    <Typography className={classes.typography} color="textSecondary" component="p">{experiences.startDate}</Typography>
-                    <Typography className={classes.typography} color="textSecondary" component="p">{experiences.companyName}</Typography>
-                    <Typography className={classes.typography} color="textSecondary" component="p">{experiences.jobTitle}</Typography>
-                    <Typography className={classes.typography} color="textSecondary" component="p">{experiences.jobDescription}</Typography>
-                    <Typography className={classes.typography} color="textSecondary" component="p">{experiences.endDate}</Typography>
+                <Card>
+                    <CardContent>
+                            <Typography className={classes.typography} color="textSecondary" component="p">{experience.startDate}</Typography>
+                            <Typography className={classes.typography} color="textSecondary" component="p">{experience.companyName}</Typography>
+                            <Typography className={classes.typography} color="textSecondary" component="p">{experience.jobTitle}</Typography>
+                            <Typography className={classes.typography} color="textSecondary" component="p">{experience.jobDescription}</Typography>
+                            <Typography className={classes.typography} color="textSecondary" component="p">{experience.endDate}</Typography>
 
-            </CardContent>
-            </Card>
-            <IconButton> <Edit onClick={handleClickOpen} /> </IconButton>
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                    </CardContent>
+                </Card>
+                <IconButton> <Edit onClick={handleClickOpen} /> </IconButton>
+                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                     <DialogTitle id="form-dialog-title">Edit details</DialogTitle>
                     <DialogContent className={classes.marginAutoItem}>
                         <FormControl className={classes.alignItemsAndJustifyContent}>
                             <InputLabel htmlFor="component-helper">Year started</InputLabel>
-                            <Input onChange={onChangeStartDate}/></FormControl>
+                            <Input onChange={onChangeStartDate} defaultValue={experience.startDate}/></FormControl>
                         <FormControl className={classes.alignItemsAndJustifyContent}>
                             <InputLabel htmlFor="component-helper">Year finished</InputLabel>
-                            <Input onChange={onChangeEndDate}/></FormControl>
+                            <Input onChange={onChangeEndDate} defaultValue={experience.endDate}/></FormControl>
                         <FormControl className={classes.alignItemsAndJustifyContent}>
                             <InputLabel htmlFor="component-helper">Comapany Name</InputLabel>
-                            <Input onChange={onChangeCompanyName}/></FormControl>
+                            <Input onChange={onChangeCompanyName} defaultValue={experience.companyName}/></FormControl>
                         <FormControl className={classes.alignItemsAndJustifyContent}>
                             <InputLabel htmlFor="component-helper">Job Title</InputLabel>
-                            <Input onChange={onChangeJobTitle}/></FormControl>
+                            <Input onChange={onChangeJobTitle} defaultValue={experience.jobTitle}/></FormControl>
                         <FormControl className={classes.alignItemsAndJustifyContent}>
                             <InputLabel htmlFor="component-helper">Job Description</InputLabel>
-                            <Input onChange={onChangeJobDescription}/></FormControl>    
+                            <Input onChange={onChangeJobDescription} defaultValue={experience.jobDescription}/></FormControl>    
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleCancel} color="primary">
@@ -134,8 +132,16 @@ const Experience = () => {
                             Confirm
                         </Button>
                     </DialogActions>
-                </Dialog>        
+                </Dialog>
             </>
+        )    
+    }
+    return (
+            <div>
+            {loading ? <span className="spinner-border spinner-border-sm"></span> :
+            <div className="row">
+                {experiences.map(renderExperience)}
+            </div>
             }
         </div>
     )
