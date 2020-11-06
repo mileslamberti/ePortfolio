@@ -27,6 +27,7 @@
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.1.0",
     "react-firebase-file-uploader": "^2.4.3",
+    "react-grid-gallery": "^0.5.5",
     "react-redux-firebase": "^3.7.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",

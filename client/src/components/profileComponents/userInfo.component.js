@@ -24,20 +24,33 @@ const useStyles = makeStyles({
         display: 'flex',
       },
       typography: {
+<<<<<<< HEAD
           fontSize: "1rem"
       }
 });
 
 const UserInfo = () => {
+=======
+          fontSize: "0.7rem"
+      }
+});
+
+const UserInfo = (props) => {
+>>>>>>> master
 
     const classes = useStyles();
 
     const [loading, setLoading] = useState(false);
+<<<<<<< HEAD
+=======
+    const [authorised, setAuthorised] = useState(props.authorised);
+>>>>>>> master
     const [open, setOpen] = useState(false);
     const [userInfo, setUserInfo] = useState("");
     const [updatedUserInfo, setUpdatedUserInfo] = useState("");
 
     useEffect( () => {
+<<<<<<< HEAD
         setLoading(true);
         axios.get(API_URL + "/userinfo", { headers: authHeader() })
             .then( res => {
@@ -50,6 +63,26 @@ const UserInfo = () => {
                 console.log(err);
             })
     }, []);
+=======
+        setAuthorised(props.authorised);
+
+        if(!userInfo){
+            setLoading(true);
+
+            axios.get(API_URL + "/" + props.profileHandle + "/userinfo")
+                .then( res => {
+                    setUserInfo(res.data.userInfo);
+                    setUpdatedUserInfo(res.data.userInfo);
+                    setLoading(false);
+                })
+                .catch( err => {
+                    console.log(err);
+                    setLoading(false);
+                })
+        } 
+
+    }, [props]);
+>>>>>>> master
     
     const handleClickOpen = () => {
         setOpen(true);
@@ -77,11 +110,31 @@ const UserInfo = () => {
         setUpdatedUserInfo({...updatedUserInfo, email: e.target.value});
     }
 
+<<<<<<< HEAD
+=======
+    // This function handles the case for freshly registered users, whose content is set to the default...
+    // which acts as a placeholder on the page. This default placeholder is clunky to act as a defaultValue...
+    // in the input fields
+    const getDefaultVals = (vals) => {
+        let defaultVals = Object.assign({}, vals);
+        
+        if (defaultVals.occupation === "Occupation"){ defaultVals.occupation = ""; }
+        if (defaultVals.location === "Location"){ defaultVals.location = ""; }
+        if (defaultVals.number === "Phone number"){ defaultVals.number = ""; }
+        if (defaultVals.email === "Contact email"){ defaultVals.email = ""; }
+
+        return defaultVals;
+    }
+>>>>>>> master
 
     const onSubmit = (e) => {
         e.preventDefault(); // allows us override the default html stuff
 
+<<<<<<< HEAD
         axios.post(API_URL+'/userinfo', updatedUserInfo, { headers: authHeader() })
+=======
+        axios.post(API_URL + '/userinfo', updatedUserInfo, { headers: authHeader() })
+>>>>>>> master
             .then( res => {
                 setUserInfo(updatedUserInfo);
                 console.log(res.data);
@@ -90,6 +143,7 @@ const UserInfo = () => {
     }
     
     return (
+<<<<<<< HEAD
             <div>
             {loading ? <span className="spinner-border spinner-border-sm"></span> : 
             <>
@@ -127,6 +181,47 @@ const UserInfo = () => {
                         </Button>
                     </DialogActions>
                 </Dialog>        
+=======
+        <div>
+            {loading ? <span className="spinner-border spinner-border-sm"></span> : 
+            <>
+                <Card>
+                <CardContent>
+                        <Typography className={classes.typography} color="textSecondary" component="p">{userInfo.occupation}</Typography>
+                        <Typography className={classes.typography} color="textSecondary" component="p">{userInfo.location}</Typography>
+                        <Typography className={classes.typography} color="textSecondary" component="p">{userInfo.number}</Typography>
+                        <Typography className={classes.typography} color="textSecondary" component="p">{userInfo.email}</Typography>
+                </CardContent>
+                </Card>
+                {authorised ? (<>
+                    <IconButton> <Edit onClick={handleClickOpen} /> </IconButton>
+                    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                        <DialogTitle id="form-dialog-title">Edit details</DialogTitle>
+                        <DialogContent className={classes.marginAutoItem}>
+                            <FormControl className={classes.alignItemsAndJustifyContent}>
+                                <InputLabel htmlFor="component-helper">Occupation</InputLabel>
+                                <Input onChange={onChangeOccupation} defaultValue={getDefaultVals(userInfo).occupation}/></FormControl>
+                            <FormControl className={classes.alignItemsAndJustifyContent}>
+                                <InputLabel htmlFor="component-helper">Location</InputLabel>
+                                <Input onChange={onChangeLocation} defaultValue={getDefaultVals(userInfo).location}/></FormControl>
+                            <FormControl className={classes.alignItemsAndJustifyContent}>
+                                <InputLabel htmlFor="component-helper">Contact number</InputLabel>
+                                <Input onChange={onChangeNumber} defaultValue={getDefaultVals(userInfo).number}/></FormControl>
+                            <FormControl className={classes.alignItemsAndJustifyContent}>
+                                <InputLabel htmlFor="component-helper">Contact email address</InputLabel>
+                                <Input onChange={onChangeEmail} defaultValue={getDefaultVals(userInfo).email}/></FormControl>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCancel} color="primary">
+                                Cancel
+                            </Button>
+                            <Button onClick={onSubmit} color="primary">
+                                Confirm
+                            </Button>
+                        </DialogActions>       
+                    </Dialog>
+                </>) : (<></>)}
+>>>>>>> master
             </>
             }
         </div>

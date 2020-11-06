@@ -92,15 +92,42 @@ function UploadPortfolio (){
         const projectID = `project${Math.round(Math.random()*100000000)}`
         event.preventDefault();
         
-        console.log("Number of Files on submission: ", AcceptedFiles.length)
-        var links = [];
+        console.log("Number of Files on submission: ", AcceptedFiles.length);
+        const project = {
+            projectID : projectID,
+            title : ProjectTitle,
+            description: Description
+        }
+        //save project info to database
+        axios.post(`${API_URL}/saveproject`, project, { headers: authHeader() })
+            .then (res => {
+                console.log(res.data);
+            })
         AcceptedFiles.forEach((file) => {
+<<<<<<< HEAD
             firebase.storage().ref(`/${userHandle}/projects/${projectID}/${file.name}`).put(file, {contentType:`image/${file.path.split(".")[1]}`})
                 .then( snapshot => {
                     console.log(`Succefully uploaded ${file.name}`);
                     //console.log(snapshot.ref.getDownloadURL());
                     snapshot.ref.getDownloadURL().then( downloadLink => {
                         submitToDatabase(`${API_URL}/projects`, file.name, downloadLink, links, AcceptedFiles.length, projectID);
+=======
+            // upload file to storage
+            firebase.storage().ref(`/${userHandle}/projects/${projectID}/${file.name}`).put(file)
+                .then( snapshot => {
+                    console.log(`Succefully uploaded ${file.name}`);          
+                    // add file to project's file collection
+                    snapshot.ref.getDownloadURL().then( downloadLink => {
+                        const newFile = {
+                            file: downloadLink,
+                            filename: file.name,
+                            associatedWithCard: ""
+                        }
+                        axios.post(`${API_URL}/files/${projectID}`, newFile, { headers: authHeader() })
+                            .then(res =>{
+                                console.log(res.data);
+                            })
+>>>>>>> master
                     })
                 })
                 .catch(err => {

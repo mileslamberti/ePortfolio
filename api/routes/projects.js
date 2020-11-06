@@ -1,17 +1,23 @@
 const { json } = require('express');
 const {db} = require('../utility/admin')
+const admin = require('firebase-admin');
 
 exports.saveProject = (req, res) => {
   const project = {
     projectID :req.body.projectID,
     title : req.body.title,
     description : req.body.description,
-    files : req.body.files,
   };
+<<<<<<< HEAD
 
   //db.collection(`/users/${req.user.handle}/data/projects/`).doc(projectID).set({aboutMe}).then(doc => {
     db.doc(`/users/${req.user.handle}/projects/${project.projectID}`).set({project}).then(doc => {
       return res.json({ message: `${project.projectID} updated` })
+=======
+  // add the project
+  db.doc(`/users/${req.user.handle}/projects/${project.projectID}`).set({project}).then(doc => {
+    return res.json({ message: `${project.projectID} updated` })
+>>>>>>> master
   }).catch(err => {
       console.error(err);
       return res.status(500).json({ error: `something went wrong` });
@@ -20,31 +26,101 @@ exports.saveProject = (req, res) => {
 
 exports.getProjects = async (req, res) => {
   var projects = [];
+<<<<<<< HEAD
   const databaseSnapshot = await db.collection(`/users/${req.user.handle}/projects`).get();
+=======
+  const databaseSnapshot = await db.collection(`/users/${req.params.handle}/projects`).get();
+>>>>>>> master
   databaseSnapshot.forEach(project => {
       projects.push(project.data().project);
   });
   return res.status(200).json({ projects });
 }
 
+<<<<<<< HEAD
 exports.getProject = (req, res) => {
   const userHandle = req.user.handle;
+=======
+exports.getProjectInfo = (req, res) => {
+  const userHandle = req.params.handle;
+>>>>>>> master
   if (!userHandle){
     return res.status(206).json({ error: "no user given"});
   }
   db.doc(`/users/${userHandle}/projects/${req.params.projectID}`).get().then(doc => {
     if (doc.exists){
+<<<<<<< HEAD
       project=doc.data().project;
+=======
+      const project = doc.data().project;
+>>>>>>> master
       return res.status(200).json({ project });
     } else {
       return res.status(206).json({error: `${req.params.projectID} does not exist under this user`})
     }
   })
 }
+<<<<<<< HEAD
 exports.getAllProjectCards = async (req, res) => {
   //TODO CHANGE to use UserAuth
   //const userHandle = req.user.handle;
   const userHandle = req.user.handle;
+=======
+exports.getProjectFiles = async (req, res) => {
+  const userHandle = req.params.handle;
+  if (!userHandle){
+    return res.status(206).json({ error: "no user given"});
+  }
+  var files=[];
+  const databaseSnapshot = await db.collection(`/users/${userHandle}/projects/${req.params.projectID}/files`).get();
+    databaseSnapshot.forEach(file => {
+      files.push(file.data().file);
+    });
+    return res.status(200).json({ files });
+}
+exports.addFile = (req, res) => {
+  const userHandle = req.user.handle;
+  const projectID = req.params.projectID
+  const file = req.body;
+  db.doc(`/users/${userHandle}/projects/${projectID}/files/${file.filename}`).set({file})
+    .then( doc => {
+      return res.status(200).json({ message: `${file.filename} added to ${projectID}` });
+    }).catch( err => {
+      return res.status(206).json({error: `problem adding file to database`});
+    })
+}
+exports.editFileCardAssociation = (req, res) => {
+  if (! req.body.hasOwnProperty("projectID")){
+    return res.status(206).json({error: `request missing projectID`});
+  } else if (! req.body.hasOwnProperty("id")){
+    return res.status(206).json({error: `request missing id (cardID)`});
+  } else if (! req.body.hasOwnProperty("filename")){
+    return res.status(206).json({error: `request missing filename`});
+  } else if (! req.user.handle){
+    return res.status(206).json({error: `request missing user handle (in authHeader)`});
+  }
+  const userHandle = req.user.handle;
+  const projectID = req.body.projectID;
+  const filename = req.body.filename;
+  const cardID = req.body.id;
+  db.doc(`/users/${userHandle}/projects/${projectID}/files/${filename}`)
+    .update({
+        "file.associatedWithCard": cardID
+      })
+    .then( doc => {
+      return res.status(200).json({message: "file associations updated"});
+    }).catch(err => {
+      console.error(err);
+      return res.status(500).json({ error: `something went wrong` });
+    });
+  }
+ 
+
+exports.getAllProjectCards = async (req, res) => {
+  //TODO CHANGE to use UserAuth
+  //const userHandle = req.user.handle;
+  const userHandle = req.params.handle;
+>>>>>>> master
   if (!userHandle){
     return res.status(206).json({ error: "no user given"});
   }
@@ -63,7 +139,14 @@ exports.deleteProjectCard = (req, res) => {
   db.doc(`/users/${userHandle}/projects/${projectID}/cards/${cardID}`).delete()
     .then(doc => {
       return res.json({ message: `card ${cardID} created` })
+<<<<<<< HEAD
     })
+=======
+    }).catch(err => {
+      console.error(err);
+      return res.status(500).json({ error: `something went wrong` });
+  });
+>>>>>>> master
 }
 exports.addProjectCard = (req, res) => {
   const userHandle = req.user.handle;

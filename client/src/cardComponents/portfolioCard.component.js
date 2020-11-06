@@ -1,10 +1,9 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { red } from '@material-ui/core/colors';
-
-import {Card, CardHeader, CardMedia, CardContent, CardActions, Collapse, IconButton, Typography} from '@material-ui/core';
-import {Favorite, Share, ExpandMore, Edit, Delete, Remove, ZoomOutMap, Folder} from '@material-ui/icons';
+import {Card, CardHeader, CardMedia, CardContent, CardActions, Collapse, IconButton, Typography, Button} from '@material-ui/core';
+import {Favorite, Share, ExpandMore, Edit, Delete, Remove, ZoomOutMap, Folder, GetApp} from '@material-ui/icons';
 import {List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar} from '@material-ui/core';
 
 import DialogPortfolioCard from "./DialogPortfolioCard.component";
@@ -13,9 +12,10 @@ import {PortfolioCardContext} from "./portfolioCardContext";
 
 
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
-      
+      width: "100%"
   },
   media: {
     height: 0,
@@ -38,10 +38,15 @@ const useStyles = makeStyles((theme) => ({
 
 function PortfolioCard(props) {
   const classes = useStyles();
+<<<<<<< HEAD
 
   // Whether drop-down button is showing, ie "expanded"
   const [expanded, setExpanded] = React.useState(false);
   const [Picture, setPicture] = useState(require("./images/programming.png"))
+=======
+  // Whether drop-down button is showing, ie "expanded"
+  const [expanded, setExpanded] = React.useState(false);
+>>>>>>> master
   
   // Whether the media element is showing (can be minimised)
   const [showMedia, setMedia] = useState(true);
@@ -78,7 +83,12 @@ function PortfolioCard(props) {
     setOpen(true);
   };
 
+<<<<<<< HEAD
   const handleDialogConfirm = (t, s, d, fs) =>{
+=======
+  const handleDialogConfirm = (t, s, d, fs, newDP) =>{
+    console.log("new dp", newDP);
+>>>>>>> master
     const updatedCard = {
       id: props.id,
       title: t,
@@ -86,6 +96,7 @@ function PortfolioCard(props) {
       description: d,
       projectID: card.projectID,
       position: card.position,
+<<<<<<< HEAD
       img: card.img
     }
     updateCard(updatedCard);
@@ -93,11 +104,31 @@ function PortfolioCard(props) {
     fs.forEach(file => {
       associateFileWithCard(file.fname, card.id);
     });
+=======
+      img: newDP
+    }
+    updateCard(updatedCard);
+    
+    fs.forEach(file =>{
+      associateFileWithCard(file.filename, updatedCard.id);
+    })
+>>>>>>> master
     setOpen(false);
   }
 
   const handleDialogCancel = () =>{
     setOpen(false);
+  }
+  const getFile = (file) =>{
+    var link = document.createElement("a");
+    if (link.download !== undefined) {
+        link.setAttribute("href", file);
+        link.setAttribute("target", "_blank");
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
   }
 
   // Returns Object of values to populate Dialog with
@@ -115,16 +146,27 @@ function PortfolioCard(props) {
     <Card className={classes.root}>
       <CardHeader
         action={
+<<<<<<< HEAD
           <IconButton aria-label="settings" onClick={handleMinimizeClick}>
             {showMedia ? <Remove /> : <ZoomOutMap />}
           </IconButton>
         }
+=======
+                <IconButton aria-label="settings" onClick={handleMinimizeClick}>
+                  {showMedia ? <Remove /> : <ZoomOutMap />}
+                </IconButton>
+                }
+>>>>>>> master
         title={card.title}
       />
       {/* The media (example an image) of the card can be minimised*/}
       {showMedia && <CardMedia
         className={classes.media}
+<<<<<<< HEAD
         image={Picture}
+=======
+        image={card.img}
+>>>>>>> master
         title={card.title}
         onClick={() => console.log("Clicked Picture")}
       />}
@@ -138,8 +180,8 @@ function PortfolioCard(props) {
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites"> <Favorite /> </IconButton>
         <IconButton aria-label="share"> <Share /> </IconButton>
-        <IconButton onClick={handleClickOpen}> <Edit /> </IconButton>
-        <IconButton onClick={props.onDeleteClick}> <Delete /> </IconButton>
+        {props.editMode && <IconButton onClick={handleClickOpen}> <Edit /> </IconButton>}
+        {props.editMode && <IconButton onClick={props.onDeleteClick}> <Delete /> </IconButton>}
         <IconButton
           className={clsx(classes.expand, {
             [classes.expandOpen]: expanded,
@@ -151,6 +193,11 @@ function PortfolioCard(props) {
           <ExpandMore />
         </IconButton>
       </CardActions>
+<<<<<<< HEAD
+=======
+      {/** No Dialog or Collapse if not edit mode */}
+      {props.editMode && 
+>>>>>>> master
       <DialogPortfolioCard 
             handleDialogConfirm={handleDialogConfirm}
             handleDialogCancel={handleDialogCancel}
@@ -161,7 +208,12 @@ function PortfolioCard(props) {
             cardID={props.id}
             dialogInformation={getDialogDescription()}
             files={unassociatedFiles}
+<<<<<<< HEAD
         />
+=======
+            displayPicture={card.img}
+      />} 
+>>>>>>> master
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography paragraph>
@@ -169,23 +221,34 @@ function PortfolioCard(props) {
           </Typography>
             <List>
             {associatedFiles.map((file, index) => 
-              <ListItem key={index}>
+              <ListItem key={index} >
                 <ListItemAvatar>
                   <Avatar>
                     <Folder />
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={file.fname}
+                  primary={file.filename}
                 />
-                <ListItemSecondaryAction>
+                {/* onClick={() => {getFile(file.downloadLink)}} */}
+                {/* <Link 
+                  to={file.filename} 
+                  target={file.filename} 
+                  download={getFile(file.downloadLink)}
+                  > Download */}
+                  <IconButton onClick={() => {getFile(file.downloadLink)}}>
+                    <GetApp />
+                  </IconButton>
+                {/** Can't delete associated files if not in edit mode */}
+                {props.editMode && <ListItemSecondaryAction>
                   <IconButton edge="end" aria-label="delete"
                     onClick={() => {
-                      unassociateFileWithCard(file.fname);
+                      unassociateFileWithCard(file.filename);
                      }}>
                     <Delete />
                   </IconButton>
                 </ListItemSecondaryAction>
+                }
               </ListItem>,
             )}
             </List>

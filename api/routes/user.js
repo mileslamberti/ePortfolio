@@ -38,6 +38,7 @@ exports.signup = (req, res) => {
             email: newUser.email,
             handle: newUser.handle,
             createdAt: new Date().toISOString(),
+            private: false,
             imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${profilePic}?alt=media`,
             userId
         }
@@ -135,18 +136,6 @@ exports.addUserDetails  = (req,res) => {
         console.error(err)
         return res.status(400).json({error:err.code})
         })
-}
-
-exports.updateProfilePic  = (req,res) => {
-    let url = Object.keys(req.body)[0] + '=media';
-    console.log(url);
-    db.doc(`/users/${req.user.handle}`).update({"imageUrl": url}).then(() => {
-        return res.status(201).json({message: 'Success'})
-    }).catch( err => {
-        console.error(err)
-        return res.status(400).json({error:err.code})
-    })
-
 }
 
 exports.getAuthorisedUser = (req,res) => {
