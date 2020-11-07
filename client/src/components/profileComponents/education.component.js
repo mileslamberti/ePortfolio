@@ -38,9 +38,11 @@ const Education = (props) => {
     const [updatedEducation, setUpdatedEducation] = useState('');
     const [selectedEducation, setSelectedEducation] = useState('');
     const [addingNew, setAddingNew] = useState(false);
+    const [authorised, setAuthorised] = useState(props.authorised);
 
     useEffect( () => {
         setLoading(true);
+        
         axios.get(API_URL +`/${props.profileHandle}/education`)
             .then( res => {
                 console.log(res);
@@ -51,7 +53,9 @@ const Education = (props) => {
                 console.log(err);
             })
     }, []);
-    
+    useEffect( () => {
+        setAuthorised(props.authorised);
+    }, [props]);
     const handleClickOpen = (index) => {
         setAddingNew(false);
         setSelectedEducation(index);
@@ -131,8 +135,11 @@ const Education = (props) => {
                         <Typography className={classes.typography} color="textSecondary" component="p">{education.what}</Typography>
                     </CardContent>
                 </Card>
-                <IconButton> <Edit onClick={() => handleClickOpen(index)} /> </IconButton>
-                <IconButton> <Delete onClick={() => handleClickDelete(index)} /> </IconButton>
+                { authorised ? 
+                <>
+                    <IconButton> <Edit onClick={() => handleClickOpen(index)} /> </IconButton>
+                    <IconButton> <Delete onClick={() => handleClickDelete(index)} /> </IconButton>
+                </>: <></>}
             </>
         )
     }
@@ -142,29 +149,33 @@ const Education = (props) => {
             <> 
             {educations.map(renderEducation)}
             <br/>
-            <IconButton> <Add onClick={handleAddEducation} /> </IconButton>
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Edit details</DialogTitle>
-                <DialogContent className={classes.marginAutoItem}>
-                    <FormControl className={classes.alignItemsAndJustifyContent}>
-                        <InputLabel htmlFor="component-helper">Date of completion</InputLabel>
-                        <Input onChange={onChangeWhen} defaultValue={getDefaultVals().when}/></FormControl>
-                    <FormControl className={classes.alignItemsAndJustifyContent}>
-                        <InputLabel htmlFor="component-helper">Name of Institution</InputLabel>
-                        <Input onChange={onChangeWhere} defaultValue={getDefaultVals().where}/></FormControl>
-                    <FormControl className={classes.alignItemsAndJustifyContent}>
-                        <InputLabel htmlFor="component-helper">Degree</InputLabel>
-                        <Input onChange={onChangeWhat} defaultValue={getDefaultVals().what}/></FormControl>  
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCancel} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={onSubmit} color="primary">
-                        Confirm
-                    </Button>
-                </DialogActions>
-            </Dialog>        
+            { authorised ? 
+                <>
+                    <IconButton> <Add onClick={handleAddEducation} /> </IconButton>
+                    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                        <DialogTitle id="form-dialog-title">Edit details</DialogTitle>
+                        <DialogContent className={classes.marginAutoItem}>
+                            <FormControl className={classes.alignItemsAndJustifyContent}>
+                                <InputLabel htmlFor="component-helper">Date of completion</InputLabel>
+                                <Input onChange={onChangeWhen} defaultValue={getDefaultVals().when}/></FormControl>
+                            <FormControl className={classes.alignItemsAndJustifyContent}>
+                                <InputLabel htmlFor="component-helper">Name of Institution</InputLabel>
+                                <Input onChange={onChangeWhere} defaultValue={getDefaultVals().where}/></FormControl>
+                            <FormControl className={classes.alignItemsAndJustifyContent}>
+                                <InputLabel htmlFor="component-helper">Degree</InputLabel>
+                                <Input onChange={onChangeWhat} defaultValue={getDefaultVals().what}/></FormControl>  
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCancel} color="primary">
+                                Cancel
+                            </Button>
+                            <Button onClick={onSubmit} color="primary">
+                                Confirm
+                            </Button>
+                        </DialogActions>
+                    </Dialog>  
+                </>: <></>}
+                 
             </>}
         </div>
     )

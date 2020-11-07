@@ -38,6 +38,7 @@ const Experience = (props) => {
     const [updatedExperience, setUpdatedExperience] = useState("");
     const [selectedExperience, setSelectedExperience] = useState('');
     const [addingNew, setAddingNew] = useState(false);
+    const [authorised, setAuthorised] = useState(props.authorised);
 
     useEffect( () => {
         setLoading(true);
@@ -52,7 +53,9 @@ const Experience = (props) => {
                 console.log(err);
             })
     }, []);
-    
+    useEffect( () => {
+        setAuthorised(props.authorised);
+    }, [props]);
     const handleClickOpen = (index) => {
         setAddingNew(false);
         setSelectedExperience(index);
@@ -138,8 +141,11 @@ const Experience = (props) => {
                         <Typography className={classes.typography} color="textSecondary" component="p">{experience.jobDescription}</Typography>
                     </CardContent>
                 </Card>
-                <IconButton> <Edit onClick={() => handleClickOpen(index)} /> </IconButton>
-                <IconButton> <Delete onClick={() => handleClickDelete(index)} /> </IconButton>
+                { authorised ? 
+                <>
+                    <IconButton> <Edit onClick={() => handleClickOpen(index)} /> </IconButton>
+                    <IconButton> <Delete onClick={() => handleClickDelete(index)} /> </IconButton>
+                </> : <></>}
             </>
         )
     }
@@ -149,32 +155,35 @@ const Experience = (props) => {
             <>
             {experiences.map(renderExperience)}
             <br/>
-            <IconButton> <Add onClick={handleAddExperience} /> </IconButton>
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                    <DialogTitle id="form-dialog-title">Edit details</DialogTitle>
-                    <DialogContent className={classes.marginAutoItem}>
-                        <FormControl className={classes.alignItemsAndJustifyContent}>
-                            <InputLabel htmlFor="component-helper">date</InputLabel>
-                            <Input onChange={onChangeDate} defaultValue={getDefaultVals().date}/></FormControl>
-                        <FormControl className={classes.alignItemsAndJustifyContent}>
-                            <InputLabel htmlFor="component-helper">Comapany Name</InputLabel>
-                            <Input onChange={onChangeCompanyName} defaultValue={getDefaultVals().companyName}/></FormControl>
-                        <FormControl className={classes.alignItemsAndJustifyContent}>
-                            <InputLabel htmlFor="component-helper">Job Title</InputLabel>
-                            <Input onChange={onChangeJobTitle} defaultValue={getDefaultVals().jobTitle}/></FormControl>
-                        <FormControl className={classes.alignItemsAndJustifyContent}>
-                            <InputLabel htmlFor="component-helper">Job Description</InputLabel>
-                            <Input onChange={onChangeJobDescription} defaultValue={getDefaultVals().jobDescription}/></FormControl>    
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleCancel} color="primary">
-                            Cancel
-                        </Button>
-                        <Button onClick={onSubmit} color="primary">
-                            Confirm
-                        </Button>
-                    </DialogActions>
-                </Dialog>        
+            { authorised ? 
+                <>
+                    <IconButton> <Add onClick={handleAddExperience} /> </IconButton>
+                    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                            <DialogTitle id="form-dialog-title">Edit details</DialogTitle>
+                            <DialogContent className={classes.marginAutoItem}>
+                                <FormControl className={classes.alignItemsAndJustifyContent}>
+                                    <InputLabel htmlFor="component-helper">date</InputLabel>
+                                    <Input onChange={onChangeDate} defaultValue={getDefaultVals().date}/></FormControl>
+                                <FormControl className={classes.alignItemsAndJustifyContent}>
+                                    <InputLabel htmlFor="component-helper">Comapany Name</InputLabel>
+                                    <Input onChange={onChangeCompanyName} defaultValue={getDefaultVals().companyName}/></FormControl>
+                                <FormControl className={classes.alignItemsAndJustifyContent}>
+                                    <InputLabel htmlFor="component-helper">Job Title</InputLabel>
+                                    <Input onChange={onChangeJobTitle} defaultValue={getDefaultVals().jobTitle}/></FormControl>
+                                <FormControl className={classes.alignItemsAndJustifyContent}>
+                                    <InputLabel htmlFor="component-helper">Job Description</InputLabel>
+                                    <Input onChange={onChangeJobDescription} defaultValue={getDefaultVals().jobDescription}/></FormControl>    
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleCancel} color="primary">
+                                    Cancel
+                                </Button>
+                                <Button onClick={onSubmit} color="primary">
+                                    Confirm
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
+                </> : <></>}
             </>
             }
         </div>
