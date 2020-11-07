@@ -10,6 +10,11 @@ const initialCards = {
     cards: []
 }
 
+const options = {
+    deleteCardWarning: true,
+    deleteFileAssociationWarning: true
+}
+
 const initialProjectInfo = {
     title: "",
     description: "",
@@ -58,7 +63,7 @@ export const PortfolioCardProvider = props => {
     const [projectInfoState, dispatchProjectInfo] = useReducer(projectInfoReducer, initialProjectInfo);
     const [cardsState, dispatchCards] = useReducer(cardReducer, initialCards);
     const [filesState, dispatchFiles] = useReducer(fileReducer, initialFiles);
-    const [stockPicturesState, setStockPicturesState] = useState(stockPictures)
+    const [stockPicturesState, setStockPicturesState] = useState(stockPictures);
     /** Functions that manage cardsState */
 
     function addCard(cardInfo){
@@ -272,6 +277,7 @@ export const PortfolioCardProvider = props => {
             .then( cardRes => {
                 cardRes.data.cards.forEach( card => {
                     // Remove later.
+                    console.log(card);
                     if(card.card.img === "implementImgLink.com"){
                         card.card.img = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ficdn2.digitaltrends.com%2Fimage%2Fschool-coding-1200x0.jpg%3Fver%3D1&f=1&nofb=1"
                     }
@@ -292,6 +298,7 @@ export const PortfolioCardProvider = props => {
             projectInfo: projectInfoState,
             cards: cardsState.cards,
             files: filesState.files,
+            options: options,
 
             // functions that can be accessed within the context
             editProjectInfo,
