@@ -77,7 +77,7 @@ export default function MyProfile (props) {
                         </div>
                         <ul>
                             <li>
-                            <Experience/>
+                            <Experience authorised={authorised} profileHandle={profileHandle}/>
                             
                         {/* <div class="date">Example date: 2013 - 2015</div> 
                             <div class="info">
@@ -103,7 +103,7 @@ export default function MyProfile (props) {
                         </div>
                         <ul>
                         <li>
-                            <Education/>
+                            <Education authorised={authorised} profileHandle={profileHandle}/>
                         {/* <div class="date">2018 - present</div> 
                         <div class="info">
                             <p class="semi-bold">Unimelb</p> 
