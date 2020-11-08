@@ -118,9 +118,6 @@ exports.getUserTags = (req,res) => {
             tags = doc.data().tags;
         }
         return res.status(200).json({tags: tags});
-    }).catch(err => {
-        console.error(err);
-        return res.status(500).json({error:err.code})
     })
 }
 
@@ -142,8 +139,94 @@ exports.getPrivacy = (req,res) => {
             private = doc.data().private;
             return res.status(200).json({private});
         }
-    }).catch(err => {
-        console.error(err);
-        return res.status(500).json({error:err.code})
     })
+}
+
+
+
+exports.getEducation = async (req,res) => {
+    // BETTER HANDLING OF MULITPLE EDUCATIONS
+    // var educations = [];
+    // const snapshot = await db.collection(`/users/${req.params.handle}/data/education`).get()
+    // snapshot.forEach(education => {
+    //     educations.push(education)
+    // })
+    // if(educations.length === 0){
+    //     return res.status(200).json({});
+    // } else {
+    //     return res.status(200).json({educations});
+    // }
+    let educations = [];
+    db.doc(`/users/${req.params.handle}/data/education`).get().then(doc => {
+        if(doc.exists){
+            educations=doc.data().education;
+        }
+        return res.status(200).json({educations: educations});
+    })
+}
+exports.getExperience = async (req,res) => {
+    // better handling of multiple experiences
+    // var experiences = [];
+    // const snapshot = await db.collection(`/users/${req.params.handle}/data/experience`).get()
+    // snapshot.forEach(experience => {
+    //     experiences.push(experience)
+    // })
+    // if(experiences.length === 0){
+    //     return res.status(200).json({});
+    // } else {
+    //     return res.status(200).json({experiences});
+    // }
+    let experiences = [];
+    db.doc(`/users/${req.params.handle}/data/experience`).get().then(doc => {
+        if(doc.exists){
+            experiences = doc.data().experiences;
+        }
+        console.log("getting experiences: ", experiences);
+        return res.status(200).json({experiences: experiences});
+    })
+}
+
+exports.setExperience = (req, res) => {
+    const experiences = req.body.experiences;
+    console.log("setting experiences: ",experiences);
+    db.doc(`/users/${req.user.handle}/data/experience`).set({experiences}).then(doc => {
+            return res.json({ message: `experiences updated` })
+        }).catch(err => {
+            console.error(err);
+            return res.status(500).json({ error: `something went wrong` });
+        });
+}
+exports.setEducation = (req, res) => {
+    const education = req.body.education;
+
+    db.doc(`/users/${req.user.handle}/data/education`).set({education}).then(doc => {
+            return res.json({ message: `education updated` })
+        }).catch(err => {
+            console.error(err);
+            return res.status(500).json({ error: `something went wrong` });
+        });
+}
+
+// better method of multiple educations
+exports.addEducation = (req,res) => {
+    const education = req.body.education;
+    db.collection(`/users/${req.user.handle}/data/education`).add(education)
+        .then(res => {
+            return res.status(200).json({message: 'education added'});
+        }).catch(err => {
+            console.error(err);
+            return res.status(500).json({error:err.code})
+        })
+}
+
+// better multiple experience method
+exports.addExperience = (req,res) => {
+    const experiences = req.body.experience;
+    db.collection(`/users/${req.user.handle}/data/experience`).add(experiences)
+        .then(res => {
+            return res.status(200).json({message: 'experience added'});
+        }).catch(err => {
+            console.error(err);
+            return res.status(500).json({error:err.code})
+        })
 }

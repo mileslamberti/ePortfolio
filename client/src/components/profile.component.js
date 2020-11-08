@@ -8,6 +8,9 @@ import axios from 'axios';
 import DP from "./profileComponents/dp.component";
 import AboutMe from "./profileComponents/aboutMe.component";
 import UserInfo from "./profileComponents/userInfo.component";
+import Experience from "./profileComponents/experience.component";
+import Education from "./profileComponents/education.component";
+
 import Tags from "./profileComponents/tags.component";
 import Tabs from "./tabs.component";
 import FindUser from "./profileComponents/findUser.component";
@@ -74,9 +77,9 @@ export default function MyProfile (props) {
                         </div>
                         <ul>
                             <li>
-
+                            <Experience authorised={authorised} profileHandle={profileHandle}/>
                             
-                        <div class="date">Example date: 2013 - 2015</div> 
+                        {/* <div class="date">Example date: 2013 - 2015</div> 
                             <div class="info">
                                 <p class="semi-bold">Company name</p> 
                                 <p>job title</p>
@@ -90,7 +93,7 @@ export default function MyProfile (props) {
                                 <p class="semi-bold">Company name</p> 
                                 <p>job title</p>
                                 <p>job description</p>
-                            </div>
+                            </div> */}
                             </li>
                         </ul>
                     </div>
@@ -100,7 +103,8 @@ export default function MyProfile (props) {
                         </div>
                         <ul>
                         <li>
-                        <div class="date">2018 - present</div> 
+                            <Education authorised={authorised} profileHandle={profileHandle}/>
+                        {/* <div class="date">2018 - present</div> 
                         <div class="info">
                             <p class="semi-bold">Unimelb</p> 
                             <p>N/A</p>
@@ -111,7 +115,7 @@ export default function MyProfile (props) {
                         <div class="info">
                             <p class="semi-bold">BRS</p> 
                             <p>High School</p>
-                        </div>
+                        </div> */}
                         </li>
                         </ul>
                     </div>
