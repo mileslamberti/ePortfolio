@@ -30,7 +30,6 @@ function PortfolioTitleCard(props){
     const { editProjectInfo } = useContext(PortfolioCardContext);
     const { projectInfo } = useContext(PortfolioCardContext);
 
-
     const handleClickOpen = () =>{
         setOpen(true);
     };
@@ -55,10 +54,11 @@ function PortfolioTitleCard(props){
       <>
         <Card className={classes.root}>
             <CardHeader
-                action={
+                action={ props.authorised ?
                     <IconButton onClick={handleClickOpen}>
                         <EditIcon />
                     </IconButton>
+                    :<></>
                 }
                 title={projectInfo.title}
                 subheader={projectInfo.description}

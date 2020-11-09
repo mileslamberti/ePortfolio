@@ -24,32 +24,39 @@ const useStyles = makeStyles({
         display: 'flex',
       },
       typography: {
-          fontSize: "1rem"
+          fontSize: "0.7rem"
       }
 });
 
-const UserInfo = () => {
+const UserInfo = (props) => {
 
     const classes = useStyles();
 
     const [loading, setLoading] = useState(false);
+    const [authorised, setAuthorised] = useState(props.authorised);
     const [open, setOpen] = useState(false);
     const [userInfo, setUserInfo] = useState("");
     const [updatedUserInfo, setUpdatedUserInfo] = useState("");
 
     useEffect( () => {
-        setLoading(true);
-        axios.get(API_URL + "/userinfo", { headers: authHeader() })
-            .then( res => {
-                console.log(res);
-                setUserInfo(res.data.userInfo);
-                setUpdatedUserInfo(res.data.userInfo);
-                setLoading(false);
-            })
-            .catch( err => {
-                console.log(err);
-            })
-    }, []);
+        setAuthorised(props.authorised);
+
+        if(!userInfo){
+            setLoading(true);
+
+            axios.get(API_URL + "/" + props.profileHandle + "/userinfo")
+                .then( res => {
+                    setUserInfo(res.data.userInfo);
+                    setUpdatedUserInfo(res.data.userInfo);
+                    setLoading(false);
+                })
+                .catch( err => {
+                    console.log(err);
+                    setLoading(false);
+                })
+        } 
+
+    }, [props]);
     
     const handleClickOpen = () => {
         setOpen(true);
@@ -77,11 +84,24 @@ const UserInfo = () => {
         setUpdatedUserInfo({...updatedUserInfo, email: e.target.value});
     }
 
+    // This function handles the case for freshly registered users, whose content is set to the default...
+    // which acts as a placeholder on the page. This default placeholder is clunky to act as a defaultValue...
+    // in the input fields
+    const getDefaultVals = (vals) => {
+        let defaultVals = Object.assign({}, vals);
+        
+        if (defaultVals.occupation === "Occupation"){ defaultVals.occupation = ""; }
+        if (defaultVals.location === "Location"){ defaultVals.location = ""; }
+        if (defaultVals.number === "Phone number"){ defaultVals.number = ""; }
+        if (defaultVals.email === "Contact email"){ defaultVals.email = ""; }
+
+        return defaultVals;
+    }
 
     const onSubmit = (e) => {
         e.preventDefault(); // allows us override the default html stuff
 
-        axios.post(API_URL+'/userinfo', updatedUserInfo, { headers: authHeader() })
+        axios.post(API_URL + '/userinfo', updatedUserInfo, { headers: authHeader() })
             .then( res => {
                 setUserInfo(updatedUserInfo);
                 console.log(res.data);
@@ -90,43 +110,45 @@ const UserInfo = () => {
     }
     
     return (
-            <div>
+        <div>
             {loading ? <span className="spinner-border spinner-border-sm"></span> : 
             <>
-            <Card>
-            <CardContent>
-                    <Typography className={classes.typography} color="textSecondary" component="p">{userInfo.occupation}</Typography>
-                    <Typography className={classes.typography} color="textSecondary" component="p">{userInfo.location}</Typography>
-                    <Typography className={classes.typography} color="textSecondary" component="p">{userInfo.number}</Typography>
-                    <Typography className={classes.typography} color="textSecondary" component="p">{userInfo.email}</Typography>
-            </CardContent>
-            </Card>
-            <IconButton> <Edit onClick={handleClickOpen} /> </IconButton>
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                    <DialogTitle id="form-dialog-title">Edit details</DialogTitle>
-                    <DialogContent className={classes.marginAutoItem}>
-                        <FormControl className={classes.alignItemsAndJustifyContent}>
-                            <InputLabel htmlFor="component-helper">Occupation</InputLabel>
-                            <Input onChange={onChangeOccupation}/></FormControl>
-                        <FormControl className={classes.alignItemsAndJustifyContent}>
-                            <InputLabel htmlFor="component-helper">Location</InputLabel>
-                            <Input onChange={onChangeLocation}/></FormControl>
-                        <FormControl className={classes.alignItemsAndJustifyContent}>
-                            <InputLabel htmlFor="component-helper">Contact number</InputLabel>
-                            <Input onChange={onChangeNumber}/></FormControl>
-                        <FormControl className={classes.alignItemsAndJustifyContent}>
-                            <InputLabel htmlFor="component-helper">Contact email address</InputLabel>
-                            <Input onChange={onChangeEmail}/></FormControl>    
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleCancel} color="primary">
-                            Cancel
-                        </Button>
-                        <Button onClick={onSubmit} color="primary">
-                            Confirm
-                        </Button>
-                    </DialogActions>
-                </Dialog>        
+                <Card>
+                <CardContent>
+                        <Typography className={classes.typography} color="textSecondary" component="p">{userInfo.occupation}</Typography>
+                        <Typography className={classes.typography} color="textSecondary" component="p">{userInfo.location}</Typography>
+                        <Typography className={classes.typography} color="textSecondary" component="p">{userInfo.number}</Typography>
+                        <Typography className={classes.typography} color="textSecondary" component="p">{userInfo.email}</Typography>
+                </CardContent>
+                </Card>
+                {authorised ? (<>
+                    <IconButton> <Edit onClick={handleClickOpen} /> </IconButton>
+                    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                        <DialogTitle id="form-dialog-title">Edit details</DialogTitle>
+                        <DialogContent className={classes.marginAutoItem}>
+                            <FormControl className={classes.alignItemsAndJustifyContent}>
+                                <InputLabel htmlFor="component-helper">Occupation</InputLabel>
+                                <Input onChange={onChangeOccupation} defaultValue={getDefaultVals(userInfo).occupation}/></FormControl>
+                            <FormControl className={classes.alignItemsAndJustifyContent}>
+                                <InputLabel htmlFor="component-helper">Location</InputLabel>
+                                <Input onChange={onChangeLocation} defaultValue={getDefaultVals(userInfo).location}/></FormControl>
+                            <FormControl className={classes.alignItemsAndJustifyContent}>
+                                <InputLabel htmlFor="component-helper">Contact number</InputLabel>
+                                <Input onChange={onChangeNumber} defaultValue={getDefaultVals(userInfo).number}/></FormControl>
+                            <FormControl className={classes.alignItemsAndJustifyContent}>
+                                <InputLabel htmlFor="component-helper">Contact email address</InputLabel>
+                                <Input onChange={onChangeEmail} defaultValue={getDefaultVals(userInfo).email}/></FormControl>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCancel} color="primary">
+                                Cancel
+                            </Button>
+                            <Button onClick={onSubmit} color="primary">
+                                Confirm
+                            </Button>
+                        </DialogActions>       
+                    </Dialog>
+                </>) : (<></>)}
             </>
             }
         </div>

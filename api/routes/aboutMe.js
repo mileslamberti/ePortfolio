@@ -20,13 +20,13 @@ exports.createAboutMe = (req, res) => {
 
 exports.getAboutMe = (req,res) => {
     let aboutMe = {};
-    db.doc(`/users/${req.user.handle}/data/aboutme`).get().then(doc => {
+    db.doc(`/users/${req.params.handle}/data/aboutme`).get().then(doc => {
         if(doc.exists){
             aboutMe = doc.data().aboutMe;
             return res.status(200).json({aboutMe});
         } else {
             aboutMe = { displayName : "Display name", description : "Profile description"};
-            db.doc(`/users/${req.user.handle}/data/aboutme`).set({aboutMe})
+            db.doc(`/users/${req.params.handle}/data/aboutme`).set({aboutMe})
             return res.status(200).json({aboutMe});
         }
     }).catch(err => {
@@ -57,14 +57,39 @@ exports.createUserInfo = (req, res) => {
 
 exports.getUserInfo = (req,res) => {
     let userInfo = {};
-    db.doc(`/users/${req.user.handle}/data/userinfo`).get().then(doc => {
+    db.doc(`/users/${req.params.handle}/data/userinfo`).get().then(doc => {
         if(doc.exists){
             userInfo = doc.data().userInfo;
             return res.status(200).json({userInfo});
         } else {
             userInfo = { occupation : "Occupation", location : "Location", number : "Phone number", email : "Contact email" };
-            db.doc(`/users/${req.user.handle}/data/userInfo`).set({userInfo})
+            db.doc(`/users/${req.params.handle}/data/userinfo`).set({userInfo})
             return res.status(200).json({userInfo});
+        }
+    }).catch(err => {
+        console.error(err);
+        return res.status(500).json({error:err.code})
+    })
+}
+
+exports.updateProfilePic  = (req,res) => {
+    let url = Object.keys(req.body)[0] + '=media';
+    console.log(url);
+    db.doc(`/users/${req.user.handle}`).update({"imageUrl": url}).then(() => {
+        return res.status(201).json({message: 'Success'})
+    }).catch( err => {
+        console.error(err)
+        return res.status(400).json({error:err.code})
+    })
+}
+
+exports.getProfilePic = (req,res) => {
+    let profilePic = {};
+
+    db.doc(`/users/${req.params.handle}`).get().then(doc => {
+        if(doc.exists){
+            profilePic = doc.data().imageUrl;
+            return res.status(200).json({profilePic});
         }
     }).catch(err => {
         console.error(err);
@@ -88,86 +113,120 @@ exports.createUserTags = (req, res) => {
 
 exports.getUserTags = (req,res) => {
     let tags = [];
-    db.doc(`/users/${req.user.handle}/data/tags`).get().then(doc => {
+    db.doc(`/users/${req.params.handle}/data/tags`).get().then(doc => {
         if(doc.exists){
             tags = doc.data().tags;
         }
         return res.status(200).json({tags: tags});
-    }).catch(err => {
-        console.error(err);
-        return res.status(500).json({error:err.code})
     })
 }
 
-exports.createExperience = (req, res) => {
-
-    if(req.body.body ===''){
-        return res.status(400).json({body: "Body must not be empty!"})
-    }
-    const experiences = {
-        date : req.body.date,
-        companyName: req.body.companyName,
-        jobTitle: req.body.jobTitle,
-        jobDescription : req.body.jobDescription,
-    };
-    //db.collection(`/users/${req.user.handle}/data/`).doc("aboutme").set({aboutMe}).then(doc => {
-    db.doc(`/users/${req.user.handle}/data/experience`).set({experiences}).then(doc => {
-            return res.json({ message: `document ${doc.id} created` })
-        }).catch(err => {
-            console.error(err);
-            return res.status(500).json({ error: `something went wrong` });
-        });
+exports.togglePrivacy = (req,res) => {
+    private = req.body.private;
+    console.log(private);//remove this
+    db.doc(`/users/${req.user.handle}`).update({"private": private}).then(() => {
+        return res.status(201).json({message: 'Success'})
+    }).catch( err => {
+        console.error(err)
+        return res.status(400).json({error:err.code})
+    })
 }
 
-exports.getExperience = (req,res) => {
-    let experiences = {};
-    db.doc(`/users/${req.user.handle}/data/experience`).get().then(doc => {
+exports.getPrivacy = (req,res) => {
+    let private = "";
+    db.doc(`/users/${req.params.handle}`).get().then(doc => {
+        if(doc.exists){
+            private = doc.data().private;
+            return res.status(200).json({private});
+        }
+    })
+}
+
+
+
+exports.getEducation = async (req,res) => {
+    // BETTER HANDLING OF MULITPLE EDUCATIONS
+    // var educations = [];
+    // const snapshot = await db.collection(`/users/${req.params.handle}/data/education`).get()
+    // snapshot.forEach(education => {
+    //     educations.push(education)
+    // })
+    // if(educations.length === 0){
+    //     return res.status(200).json({});
+    // } else {
+    //     return res.status(200).json({educations});
+    // }
+    let educations = [];
+    db.doc(`/users/${req.params.handle}/data/education`).get().then(doc => {
+        if(doc.exists){
+            educations=doc.data().education;
+        }
+        return res.status(200).json({educations: educations});
+    })
+}
+exports.getExperience = async (req,res) => {
+    // better handling of multiple experiences
+    // var experiences = [];
+    // const snapshot = await db.collection(`/users/${req.params.handle}/data/experience`).get()
+    // snapshot.forEach(experience => {
+    //     experiences.push(experience)
+    // })
+    // if(experiences.length === 0){
+    //     return res.status(200).json({});
+    // } else {
+    //     return res.status(200).json({experiences});
+    // }
+    let experiences = [];
+    db.doc(`/users/${req.params.handle}/data/experience`).get().then(doc => {
         if(doc.exists){
             experiences = doc.data().experiences;
-            return res.status(200).json({experiences});
-        } else {
-            experiences = { date : "working period", companyName : "Name of the organisation", jobTitle : "position in the company", jobDescription : "job description"};
-            db.doc(`/users/${req.user.handle}/data/experience`).set({experiences})
-            return res.status(200).json({experiences});
         }
-    }).catch(err => {
-        console.error(err);
-        return res.status(500).json({error:err.code})
+        console.log("getting experiences: ", experiences);
+        return res.status(200).json({experiences: experiences});
     })
 }
 
-exports.createEducation = (req, res) => {
+exports.setExperience = (req, res) => {
+    const experiences = req.body.experiences;
+    console.log("setting experiences: ",experiences);
+    db.doc(`/users/${req.user.handle}/data/experience`).set({experiences}).then(doc => {
+            return res.json({ message: `experiences updated` })
+        }).catch(err => {
+            console.error(err);
+            return res.status(500).json({ error: `something went wrong` });
+        });
+}
+exports.setEducation = (req, res) => {
+    const education = req.body.education;
 
-    if(req.body.body ===''){
-        return res.status(400).json({body: "Body must not be empty!"})
-    }
-    const educations = {
-        when : req.body.when,
-        where: req.body.where,
-        what: req.body.what,
-    };
-    //db.collection(`/users/${req.user.handle}/data/`).doc("aboutme").set({aboutMe}).then(doc => {
-    db.doc(`/users/${req.user.handle}/data/education`).set({educations}).then(doc => {
-            return res.json({ message: `document ${doc.id} created` })
+    db.doc(`/users/${req.user.handle}/data/education`).set({education}).then(doc => {
+            return res.json({ message: `education updated` })
         }).catch(err => {
             console.error(err);
             return res.status(500).json({ error: `something went wrong` });
         });
 }
 
-exports.getEducation = (req,res) => {
-    let educations = {};
-    db.doc(`/users/${req.user.handle}/data/education`).get().then(doc => {
-        if(doc.exists){
-            educations = doc.data().educations;
-            return res.status(200).json({educations});
-        } else {
-            educations = { when : "date", where : "Name of Institution", what : "degree"};
-            db.doc(`/users/${req.user.handle}/data/education`).set({educations})
-            return res.status(200).json({educations});
-        }
-    }).catch(err => {
-        console.error(err);
-        return res.status(500).json({error:err.code})
-    })
+// better method of multiple educations
+exports.addEducation = (req,res) => {
+    const education = req.body.education;
+    db.collection(`/users/${req.user.handle}/data/education`).add(education)
+        .then(res => {
+            return res.status(200).json({message: 'education added'});
+        }).catch(err => {
+            console.error(err);
+            return res.status(500).json({error:err.code})
+        })
+}
+
+// better multiple experience method
+exports.addExperience = (req,res) => {
+    const experiences = req.body.experience;
+    db.collection(`/users/${req.user.handle}/data/experience`).add(experiences)
+        .then(res => {
+            return res.status(200).json({message: 'experience added'});
+        }).catch(err => {
+            console.error(err);
+            return res.status(500).json({error:err.code})
+        })
 }

@@ -43,14 +43,10 @@ function FileUpload(props){
                      outline: 'none'
                      }} {...getRootProps({className: 'dropzone'})}>
           <input {...getInputProps()} />
-          <p>Drag and drop the files relevant to your portfolio here.</p>
+          <p>Drag and drop the files relevant to your project here.</p>
           
         </div>
         <br/>
-        <aside>
-          <h4>Rejected files</h4>
-          <ul>{fileRejectionItems}</ul>
-        </aside>
       </>
     );
 }

@@ -57,7 +57,7 @@ const Register = (props) => {
     if (checkBtn.current.context._errors.length === 0) {
       AuthService.register(email, password, cPassword, handle).then(
         () => {
-          props.history.push("/profile");
+          props.history.push("/" + handle);
           window.location.reload();
         },
         (error) => {
