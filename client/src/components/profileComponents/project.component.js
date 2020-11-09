@@ -267,10 +267,10 @@ function Project(props) {
           <DialogTitle id="form-dialog-title">How to showcase your projectID</DialogTitle>
           <DialogContentText>
             <Typography gutterBottom>
-              To help you showcase your project, you may create cards my pressing the "Add Card to Project" button.
+              To help you showcase your project, you may create cards by pressing the "Add Card to Project" button.
             </Typography>
             <Typography gutterBottom>
-              Each card has a <i>title</i>, <i>subtitle</i> and <i>description</i> you can use to describe the a particular aspect of your project. Furthermore,
+              Each card has a <i>title</i>, <i>subtitle</i> and <i>description</i> you can use to describe a particular aspect of your project. Furthermore,
               you may associate files you have uploaded with your card, and select the picture displayed with your card. To <b>edit</b> the contents
               of a card, press the <i>pencil button</i> in the bottom-left of each card.
             </Typography>
