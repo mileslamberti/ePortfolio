@@ -152,8 +152,6 @@ function PortfolioCard(props) {
       </CardContent>
 
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites"> <Favorite /> </IconButton>
-        <IconButton aria-label="share"> <Share /> </IconButton>
         {props.editMode && <IconButton onClick={handleClickOpen}> <Edit /> </IconButton>}
         {props.editMode && <IconButton onClick={() => {
           if(options.deleteCardWarning === false){
