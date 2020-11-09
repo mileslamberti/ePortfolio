@@ -1,5 +1,6 @@
 import axios from "axios";
 import authHeader from "./auth-header";
+import authService from "./auth.service";
 
 const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
@@ -27,6 +28,11 @@ async function isUser(checkHandle) {
     return (response.data.userData.credentials.handle === checkHandle);
   }
   catch (err) {
+    console.log(err.response.status);
+    if (err.response.status === 410){
+      authService.logout();
+      window.location=`/login`;
+    }
     return false;
   }
   
