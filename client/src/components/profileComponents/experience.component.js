@@ -46,7 +46,6 @@ const Experience = (props) => {
             .then( res => {
                 console.log(res);
                 setExperiences(res.data.experiences);
-                console.log(res.data.experiences);
                 setLoading(false);
             })
             .catch( err => {
