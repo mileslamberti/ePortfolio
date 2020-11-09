@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext} from "react";
 import axios from 'axios';
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import {Button, Box} from '@material-ui/core/';
+import {Button, Box, Icon} from '@material-ui/core/';
 import PortfolioCard from "../../cardComponents/portfolioCard.component";
 import PortfolioTitleCard from "../../cardComponents/portfolioTitleCard.component"
 import DialogPortfolioCard from "../../cardComponents/DialogPortfolioCard.component"
@@ -11,7 +11,7 @@ import FileUpload from "../fileUpload.component"
 import {PortfolioCardContext} from "../../cardComponents/portfolioCardContext"; 
 
 import {IconButton} from '@material-ui/core';
-import { Delete, Folder, PictureAsPdfOutlined, Image} from '@material-ui/icons';
+import { Delete, Folder, PictureAsPdfOutlined, Image, ArrowBack} from '@material-ui/icons';
 import {List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar, Typography} from '@material-ui/core';
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core';
 
@@ -232,7 +232,13 @@ function Project(props) {
         //setCards(items);
     }
 
+    const backClick = () => {
+      window.history.back();
+    };
+
     return (
+      <div>
+      <IconButton> <ArrowBack onClick={backClick}/> </IconButton>
       <div className={classes.root}>
       <PortfolioTitleCard authorised={authorised}/>
       { authorised ? 
@@ -376,6 +382,7 @@ function Project(props) {
             />
           ))}
         </>)}
+      </div>
       </div>
     );
   }
