@@ -19,7 +19,7 @@ function ProfilesPage(){
             .then( res => {
                 res.data.users.forEach(user => {
                     getProfileInfo(user);
-                    //getTagsInfo(user);
+                    getTagsInfo(user);
                 })
             })
             .catch( err => {
@@ -51,7 +51,7 @@ function ProfilesPage(){
             description: aboutMe.description,
         }
         console.log(newProfile);
-        //setProfiles(profiles => profiles.concat([newProfile]));
+        setProfiles(profiles => profiles.concat([newProfile]));
     }
 
     const saveTagsCard = (tags) => {
