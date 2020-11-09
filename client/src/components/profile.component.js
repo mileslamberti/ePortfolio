@@ -30,7 +30,6 @@ export default function MyProfile (props) {
 
     useEffect( () => {
         const fetchData = async () => {
-            console.log("HERE MILES");
             const authRes = await UserService.isUser(profileHandle);
             const privRes = await axios.get(API_URL + "/" + profileHandle + "/private");
             setAuthorised(authRes);

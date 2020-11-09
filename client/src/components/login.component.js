@@ -54,15 +54,26 @@ const Login = (props) => {
           )
         },
         (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-
           setLoading(false);
-          setMessage(resMessage);
+          const err = error.response;
+          console.log(err);
+          if (err.status === 403 && err.statusText === "Forbidden"){
+            setMessage("Incorrect password, please try again");
+          }
+          else if (err.status === 500 && err.data.error === "auth/user-not-found"){
+            setMessage("Incorrect email address, please try again");
+          }
+          else if (err.status === 500 && err.data.error === "auth/invalid-email"){
+            setMessage("Invalid email address, please try again");
+          }
+          else if (err.status === 500 && err.data.error === "auth/too-many-requests"){
+            setMessage("Too many login attempts, please try again later");
+          }
+          else{
+            setMessage("Internal error.");
+          }  
+          
+          //setMessage(resMessage);
         }
       );
     } else {
