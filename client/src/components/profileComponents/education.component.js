@@ -156,7 +156,7 @@ const Education = (props) => {
                         <DialogTitle id="form-dialog-title">Edit details</DialogTitle>
                         <DialogContent className={classes.marginAutoItem}>
                             <FormControl className={classes.alignItemsAndJustifyContent}>
-                                <InputLabel htmlFor="component-helper">Date of completion</InputLabel>
+                                <InputLabel htmlFor="component-helper">Year of Completion</InputLabel>
                                 <Input onChange={onChangeWhen} defaultValue={getDefaultVals().when}/></FormControl>
                             <FormControl className={classes.alignItemsAndJustifyContent}>
                                 <InputLabel htmlFor="component-helper">Name of Institution</InputLabel>

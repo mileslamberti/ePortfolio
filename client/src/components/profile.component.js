@@ -119,7 +119,12 @@ export default function MyProfile (props) {
                         </li>
                         </ul>
                     </div>
-                    <ProjectPanel authorised={authorised} profileHandle={profileHandle}/>   
+                    <div class="profile_item profile_education">
+                        <div class="title">
+                            <p class="bold">Projects</p>
+                        </div>
+                        <ProjectPanel authorised={authorised} profileHandle={profileHandle}/>
+                    </div>
                 </div>
                 
                 

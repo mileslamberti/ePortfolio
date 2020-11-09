@@ -162,7 +162,7 @@ const Experience = (props) => {
                             <DialogTitle id="form-dialog-title">Edit details</DialogTitle>
                             <DialogContent className={classes.marginAutoItem}>
                                 <FormControl className={classes.alignItemsAndJustifyContent}>
-                                    <InputLabel htmlFor="component-helper">date</InputLabel>
+                                    <InputLabel htmlFor="component-helper">Date</InputLabel>
                                     <Input onChange={onChangeDate} defaultValue={getDefaultVals().date}/></FormControl>
                                 <FormControl className={classes.alignItemsAndJustifyContent}>
                                     <InputLabel htmlFor="component-helper">Comapany Name</InputLabel>
