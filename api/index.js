@@ -56,14 +56,6 @@ app.post("/projectcards", userAuth, addProjectCard);
 app.post("/deleteprojectcard", userAuth, deleteProjectCard);
 app.post("/assignfiletocard", userAuth, editFileCardAssociation);
 
-app.get("/profiles", getAllUsers);
-
-app.get("/project/:projectID", userAuth, getProject);
-
-app.get("/getprojectcards/:projectID", userAuth, getAllProjectCards);
-app.post("/projectcards", userAuth, addProjectCard);
-app.post("/deleteprojectcard", userAuth, deleteProjectCard);
-
 // TODO, NEED TO ENSURE NO USERS ARE NAMED THE OTHER API ROUTES
 app.get("/:handle", viewUser);
 
