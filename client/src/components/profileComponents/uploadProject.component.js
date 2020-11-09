@@ -16,7 +16,7 @@ import {List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, A
 
 const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
-function UploadPortfolio (){
+function UploadPortfolio (props){
     const [ProjectTitle, setProjectTitle] = useState('');
     const [Description, setDescription] = useState('');
     const [userHandle, setUserHandle] = useState('');
@@ -26,7 +26,7 @@ function UploadPortfolio (){
 
     // Files that will be uploaded to the database on submit
     const [AcceptedFiles, setAcceptedFiles] = useState([]);
-
+    const profileHandle = props.profileHandle;
     useEffect(() => {
         function getHandle(){
             if (userHandle === ''){
@@ -120,6 +120,8 @@ function UploadPortfolio (){
                                 console.log(res.data);
                             })
                     })
+                    window.location=`/${userHandle}/${projectID}`;
+
                 })
                 .catch(err => {
                     console.log(err);

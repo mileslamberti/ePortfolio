@@ -152,8 +152,6 @@ function PortfolioCard(props) {
       </CardContent>
 
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites"> <Favorite /> </IconButton>
-        <IconButton aria-label="share"> <Share /> </IconButton>
         {props.editMode && <IconButton onClick={handleClickOpen}> <Edit /> </IconButton>}
         {props.editMode && <IconButton onClick={() => {
           if(options.deleteCardWarning === false){
@@ -167,11 +165,14 @@ function PortfolioCard(props) {
         > <Delete /> </IconButton>}
         {props.editMode && 
           <Dialog open={warningOpen} onClose={() => setWarningOpen(false)}>
-              <DialogTitle> Are you sure you want to delete?</DialogTitle>
+              <DialogTitle id="form-dialog-title"> Are you sure you want to delete?</DialogTitle>
               <DialogContentText>
-                  Deleting this card, will remove it from your portfolio, as well as removing all the files you have
-                  associated with this card. This option cannot be undone, although you can manually re-create the card.
-                  Press confirm to delete.
+                  <Typography>
+                    Deleting this card, will remove it from your portfolio, as well as removing all the files you have
+                    associated with this card. This option cannot be undone, although you can manually re-create the card.
+                    Press confirm to delete.
+                  </Typography>
+                  
               </DialogContentText>
               <FormGroup row>
                 <FormControlLabel 

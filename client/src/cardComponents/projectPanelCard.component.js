@@ -39,34 +39,16 @@ function ProjectPanelCard(props){
     const project = props.project;
     const profileHandle = props.profileHandle;
 
-    // TODO IMPLEMENTE IMAGES
-    const [Img, setImg] = useState(require("./images/programming.png"));
-
-    const handleMinimizeClick = () =>{
-        setMedia(showMedia === false)
-    }
-
     const handleCardClick = () => {
       window.location=`/${profileHandle}/${project.projectID}`;
     }
 
     return(
-        <Card className={classes.root} >
+        <Card className={classes.root}  onClick={handleCardClick}>
             <CardHeader
-                action={
-                    <IconButton areia-label="settings" onClick={handleMinimizeClick}>
-                        {showMedia ? <Remove /> : <ZoomOutMap />}
-                    </IconButton>
-                }
                 title={project.title}
             />
 
-            {showMedia && <CardMedia
-                className={classes.media}
-                image={Img}
-                title={Img}
-                onClick={handleCardClick}
-            />}
 
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">
