@@ -12,7 +12,8 @@ import {PortfolioCardContext} from "../../cardComponents/portfolioCardContext";
 
 import {IconButton} from '@material-ui/core';
 import { Delete, Folder, PictureAsPdfOutlined, Image} from '@material-ui/icons';
-import {List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar} from '@material-ui/core';
+import {List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar, Typography} from '@material-ui/core';
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core';
 
 import UserService from "../../services/user.service";
 import firebase from "firebase";
@@ -89,6 +90,8 @@ function Project(props) {
     const [open, setOpen] = React.useState(false);
     // Whether file component visible
     const [uploadOpen, setUploadOpen] = useState(false);
+
+    const [helpOpen, setHelpOpen] = useState(false);
     const profileHandle = props.match.params.handle;
     const classes = useStyles();
     // check user handle
@@ -249,8 +252,38 @@ function Project(props) {
             >
                 {uploadOpen ? "Cancel adding Files to Project" : "Add Files to Project"}
             </Button>
+
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setHelpOpen(true)}
+            >
+              Help
+            </Button>
         </Box>
         : <></>}
+      <Dialog open={helpOpen} onClose={() => setHelpOpen(false)}>
+        <DialogContent>
+          <DialogTitle id="form-dialog-title">How to showcase your projectID</DialogTitle>
+          <DialogContentText>
+            <Typography gutterBottom>
+              To help you showcase your project, you may create cards my pressing the "Add Card to Project" button.
+            </Typography>
+            <Typography gutterBottom>
+              Each card has a <i>title</i>, <i>subtitle</i> and <i>description</i> you can use to describe the a particular aspect of your project. Furthermore,
+              you may associate files you have uploaded with your card, and select the picture displayed with your card. To <b>edit</b> the contents
+              of a card, press the <i>pencil button</i> in the bottom-left of each card.
+            </Typography>
+            <Typography gutterBottom>
+              You may drag and drop the cards into the location/order you want them to be displayed.
+            </Typography>
+            <Typography gutterBottom>
+              To <b>delete</b> a card, press the <i>bin button</i> in the bottom-left of each card.
+            </Typography>
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
+
       {uploadOpen ?
         (<>
           <FileUpload updateAccepted={updateAccepted} updateRejected={updateRejected}/>
