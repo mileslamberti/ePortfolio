@@ -115,11 +115,11 @@ function ProfilesPage(){
     }
 
     const filteredProfiles = profiles.filter ( profile => {
-       return profile.displayName.includes( search )
+       return profile.displayName.toLowerCase().includes( search.toLowerCase() )
     })
 
     const displayTags = Tags.filter( tag =>{
-        return tag.tags
+        return tag.tags.includes( search.toLowerCase() )
     })
 
     const displayDp = Dp.filter( dp =>{
@@ -149,7 +149,7 @@ function ProfilesPage(){
 
     return (
         <div >
-            <input type="text" placeholder= "Search" onChange= { e => setSearch(e.target.value) }/>
+            <input type="text" placeholder= "Search by Name or Skill" onChange= { e => setSearch(e.target.value) }/>
             <div className="row">
                 {filteredProfiles.map(renderCard)}
                 {displayTags.map(renderCard)}

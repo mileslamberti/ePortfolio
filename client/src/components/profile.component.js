@@ -47,7 +47,7 @@ export default function MyProfile (props) {
         <>
             {(priv && !authorised) ? (<body>Oops! It looks like this user doesn't exist, or their profile is hidden.</body>) : (
             <>
-                <div class="profile">
+            <div class="profile">
                 <div class="profile_left">
                     <div class="img_here">
                         <DP authorised={authorised} profileHandle={profileHandle}/>
@@ -66,62 +66,72 @@ export default function MyProfile (props) {
                         </div>
                     </div>
                 </div>
-                <div class="profile_right">
-                    <div class="profile_item profile_about">
-                        <AboutMe authorised={authorised} profileHandle={profileHandle}/>
-                    </div>
-                    <div class="profile_item profile_work">
-                        <div class="title">
-                        <p class="bold">Work Experience</p>
-                        </div>
-                        <ul>
-                            <li>
-                            <Experience authorised={authorised} profileHandle={profileHandle}/>
-                            
-                        {/* <div class="date">Example date: 2013 - 2015</div> 
-                            <div class="info">
-                                <p class="semi-bold">Company name</p> 
-                                <p>job title</p>
-                                <p>job description</p>
+                <div>
+                    <Tabs> 
+                        <div label="Profile"> 
+                            <div class="profile">
+                                <div class="profile_right">
+                                    <div class="profile_item profile_about">
+                                        <AboutMe authorised={authorised} profileHandle={profileHandle}/>
+                                    </div>
+                                    <div class="profile_item profile_work">
+                                        <div class="title">
+                                        <p class="bold">Work Experience</p>
+                                        </div>
+                                        <ul>
+                                            <li>
+                                            <Experience authorised={authorised} profileHandle={profileHandle}/>
+                                            
+                                        {/* <div class="date">Example date: 2013 - 2015</div> 
+                                            <div class="info">
+                                                <p class="semi-bold">Company name</p> 
+                                                <p>job title</p>
+                                                <p>job description</p>
+                                            </div>
+                                            </li>
+                                            <li>
+                                            <div class="date">Example date: 2015 - present</div> 
+                                            
+                                            <div class="info">
+                                                <p class="semi-bold">Company name</p> 
+                                                <p>job title</p>
+                                                <p>job description</p>
+                                            </div> */}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="profile_item profile_education">
+                                        <div class="title">
+                                            <p class="bold">Education</p>
+                                        </div>
+                                        <ul>
+                                        <li>
+                                            <Education authorised={authorised} profileHandle={profileHandle}/>
+                                        {/* <div class="date">2018 - present</div> 
+                                        <div class="info">
+                                            <p class="semi-bold">Unimelb</p> 
+                                            <p>N/A</p>
+                                        </div>
+                                        </li>
+                                        <li>
+                                        <div class="date">2005-2015</div>
+                                        <div class="info">
+                                            <p class="semi-bold">BRS</p> 
+                                            <p>High School</p>
+                                        </div> */}
+                                        </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
-                            </li>
-                            <li>
-                            <div class="date">Example date: 2015 - present</div> 
-                            
-                            <div class="info">
-                                <p class="semi-bold">Company name</p> 
-                                <p>job title</p>
-                                <p>job description</p>
-                            </div> */}
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="profile_item profile_education">
-                        <div class="title">
-                            <p class="bold">Education</p>
                         </div>
-                        <ul>
-                        <li>
-                            <Education authorised={authorised} profileHandle={profileHandle}/>
-                        {/* <div class="date">2018 - present</div> 
-                        <div class="info">
-                            <p class="semi-bold">Unimelb</p> 
-                            <p>N/A</p>
-                        </div>
-                        </li>
-                        <li>
-                        <div class="date">2005-2015</div>
-                        <div class="info">
-                            <p class="semi-bold">BRS</p> 
-                            <p>High School</p>
-                        </div> */}
-                        </li>
-                        </ul>
-                    </div>
-                    <ProjectPanel authorised={authorised} profileHandle={profileHandle}/>   
+                        <div label="Project"> 
+                            <div class="project">
+                                <ProjectPanel authorised={authorised} profileHandle={profileHandle}/>   
+                            </div>
+                        </div> 
+                    </Tabs>
                 </div>
-                
-                
             </div>
             </>)}
         </>

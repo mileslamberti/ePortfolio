@@ -64,7 +64,7 @@ const Tags = (props) => {
     // Check for tagInput value and make sure the same card does not exist
     if (tagInput !== "" && ! (tags.find(tag => tag.toLowerCase() === tagInput.toLowerCase())) ){
       setTags(tags => tags.concat([tagInput]));
-      const updatedTags = tags.concat([tagInput]);
+      const updatedTags = tags.concat([tagInput.toLowerCase()]);
       setTagInput("");
       axios.post(API_URL+'/tags', {tags: updatedTags}, { headers: authHeader() })
         .then( res => {
