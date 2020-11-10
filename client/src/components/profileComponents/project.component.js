@@ -223,11 +223,14 @@ function Project(props) {
         if (!result.destination) {
             return;
         }
+        console.log(cards)
         const items = reorder(
             cards,
             result.source.index,
             result.destination.index
         );
+        console.log(cards)
+
         reorderCards(result.source.index, result.destination.index);
         //setCards(items);
     }

@@ -88,7 +88,6 @@ export const PortfolioCardProvider = props => {
             position: cardsState.cards.length,
             img: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ficdn2.digitaltrends.com%2Fimage%2Fschool-coding-1200x0.jpg%3Fver%3D1&f=1&nofb=1"
         }
-        console.log(card);
         axios.post(`${API_URL}/projectcards/`, card, { headers: authHeader() })
             .then(res => console.log(res.data));
     }
@@ -146,11 +145,31 @@ export const PortfolioCardProvider = props => {
     }
 
     function reorderCards(sourceIndex, destIndex){
+        //console.log(cardsState.cards);
+        cardsState.cards.forEach(card => {
+            console.log(card)
+        })
         dispatchCards({
             type: ACTIONS.REORDER_CARD,
             payload: {sourceIndex: sourceIndex, destIndex: destIndex}
         })
+        cardsState.cards.forEach(card => {
+            console.log(card)
+            updateCard(card);
+        })
+        //console.log(cardsState.cards);
     }
+
+    // update the positions of the cards based on their order in the array
+    function refreshCardPositions(){
+        var updatedPos = 0;
+        cardsState.cards.forEach(card => {
+            card.position = updatedPos
+            updatedPos=updatedPos+1;
+            updateCard(card);
+        })
+    }
+
 
     function getCard(id){
         for(let i=0; i<cardsState.cards.length; i++){
@@ -275,9 +294,9 @@ export const PortfolioCardProvider = props => {
         // fetch project cards
         axios.get(`${API_URL}/${profileHandle}/getprojectcards/${projectID}`,{ headers: authHeader() })
             .then( cardRes => {
-                cardRes.data.cards.forEach( card => {
+                const sortedCards = cardRes.data.cards.sort((a,b) => (a.card.position > b.card.position) ? 1 : -1);
+                sortedCards.forEach( card => {
                     // Remove later.
-                    console.log(card);
                     if(card.card.img === "implementImgLink.com"){
                         card.card.img = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ficdn2.digitaltrends.com%2Fimage%2Fschool-coding-1200x0.jpg%3Fver%3D1&f=1&nofb=1"
                     }

@@ -55,17 +55,23 @@ export function cardReducer(state, action){
             }
         case ACTIONS.REORDER_CARD:
             // Swaps the source and destination index
+            console.log(action.payload);
             const result = Array.from(state.cards);
+            console.log(result);
             const [removed] = result.splice(action.payload.sourceIndex, 1);
             result.splice(action.payload.destIndex, 0, removed);
+
             const fixed = result.map((card, index) => {
                 return{...card, ...{position: index}}
             })
             const reorderedCards = state.cards.map((card, index) => {
                 return{...card, ...fixed[index]}
             })
+            console.log(reorderedCards);
+
             return {
                 ...state,
+
                 cards: reorderedCards
             }
         default:
