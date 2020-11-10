@@ -275,7 +275,9 @@ export const PortfolioCardProvider = props => {
         // fetch project cards
         axios.get(`${API_URL}/${profileHandle}/getprojectcards/${projectID}`,{ headers: authHeader() })
             .then( cardRes => {
-                cardRes.data.cards.forEach( card => {
+                const sortedCards = cardRes.data.cards.sort((a, b) => (a.card.position > b.card.position) ? 1 : -1);
+                sortedCards.forEach(card => {
+
                     // Remove later.
                     console.log(card);
                     if(card.card.img === "implementImgLink.com"){

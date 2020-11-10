@@ -73,9 +73,7 @@ function Project(props) {
 
     // TODO REMOVEEE BAD BAD BAD BAD
     const projectID = props.location.pathname.split("/")[2];
-    const [userHandle, setUserHandle] = useState('');
     const [authorised, setAuthorised] = useState(false);
-
 
     const { cards } = useContext(PortfolioCardContext);
     const { addCard } = useContext(PortfolioCardContext);
@@ -146,7 +144,7 @@ function Project(props) {
     const onSubmitAddFiles = (event) => {
       setUploadOpen(false);
       AcceptedFiles.forEach((file) => {
-        firebase.storage().ref(`/${userHandle}/projects/${projectID}/${file.name}`).put(file)
+        firebase.storage().ref(`/${profileHandle}/projects/${projectID}/${file.name}`).put(file)
           .then( snapshot => {
               // add file to project's file collection
               snapshot.ref.getDownloadURL().then( downloadLink => {
@@ -169,7 +167,13 @@ function Project(props) {
         
     }
 
-
+    const handleDeleteProject = () => {
+      axios.post(`${API_URL}/deleteproject/${projectID}`,{}, { headers: authHeader() })
+        .then(res => {
+          console.log(res);
+          window.location = `/${profileHandle}`
+        })
+    }
 
     /** Prompts a dialog which will allow user to populate details of new card */
     const handleClickAddCard = () =>{
@@ -239,9 +243,11 @@ function Project(props) {
     return (
     <div>
       <IconButton color="secondary"> <ArrowBack onClick={backClick}/> </IconButton>
-      <Button variant="contained" color="secondary" onClick={() => setHelpOpen(true)}>
-        Help
-      </Button>
+      { authorised ? 
+        <Button variant="contained" color="secondary" onClick={() => setHelpOpen(true)}>
+          Help
+        </Button>
+      : <></>}
       <div className={classes.root}>
       <Grid container spacing={1} direction="row">
         <Grid item xs={12}>
@@ -250,7 +256,7 @@ function Project(props) {
 
         <Grid item direction="row" xs={6}>
           { authorised ? 
-            <Grid container mx="auto" m={1} mr={10} spacing={1}>
+            <Grid container mx="auto" m={1} mr={10} spacing={1} direction="row">
               <Grid item>
                   <Button 
                     variant="contained"
@@ -266,7 +272,16 @@ function Project(props) {
                   color="primary"
                   onClick={handleFileUpload}
                 >
-                    {uploadOpen ? "Cancel adding Files to Project" : "Add Files to Project"}
+                  {uploadOpen ? "Cancel adding Files to Project" : "Add Files to Project"}
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  color= "secondary"
+                  onClick={ () => handleDeleteProject()}
+                >
+                  Delete Project
                 </Button>
               </Grid>
             </Grid>

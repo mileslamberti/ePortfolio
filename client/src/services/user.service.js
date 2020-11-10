@@ -28,7 +28,6 @@ async function isUser(checkHandle) {
   catch (err) {
     try {
       if (err.response.status === 410){
-        console.log('aaa');
         authService.logout();
   
         // This isn't an ideal solution - better alternative is to...
