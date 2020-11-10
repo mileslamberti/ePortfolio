@@ -118,9 +118,10 @@ function UploadPortfolio (props){
                         axios.post(`${API_URL}/files/${projectID}`, newFile, { headers: authHeader() })
                             .then(res =>{
                                 console.log(res.data);
+                                window.location=`/${userHandle}/${projectID}`;
+
                             })
                     })
-                    window.location=`/${userHandle}/${projectID}`;
 
                 })
                 .catch(err => {
