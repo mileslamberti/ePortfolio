@@ -1,4 +1,8 @@
 
+import axios from 'axios';
+import authHeader from "../services/auth-header";
+const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
+
 export const ACTIONS = {
     UPDATE_PROJECT_INFO: "update-project-info",
     ADD_CARD: "add-card",
@@ -64,8 +68,16 @@ export function cardReducer(state, action){
             const reorderedCards = state.cards.map((card, index) => {
                 return{...card, ...fixed[index]}
             })
+            reorderedCards.forEach(card => {
+                axios.post(`${API_URL}/projectcards/`, card, { headers: authHeader() })
+                .then(res => {
+                    console.log(res.data);
+                })
+                .catch(err => console.log(err));
+            })
+
             return {
-                ...state,
+                ...state.cards,
                 cards: reorderedCards
             }
         default:
