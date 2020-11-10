@@ -147,7 +147,7 @@ function UploadPortfolio (props){
 
     return(
         <div>
-        <IconButton> <ArrowBack onClick={backClick}/> </IconButton>
+        <IconButton color="secondary"> <ArrowBack onClick={backClick}/> </IconButton>
         <div style={{ maxWidth: '700px', margin: '2rem auto' }}>
             <Form id="uploadForm" onSubmit={onSubmit}>
                 <Form.Group controlId="ProjectTitle">

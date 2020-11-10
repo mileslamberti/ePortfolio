@@ -28,12 +28,14 @@ async function isUser(checkHandle) {
   catch (err) {
     try {
       if (err.response.status === 410){
+        console.log('aaa');
         authService.logout();
   
         // This isn't an ideal solution - better alternative is to...
         // ...switch to async local storage, but that requires many changes.
         setTimeout(function() {
-          window.location = `/login`;
+          window.location.href = "/login";
+          window.location.reload();
         }, 1000);
       }
       else{
