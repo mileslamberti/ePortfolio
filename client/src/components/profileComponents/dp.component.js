@@ -52,7 +52,6 @@ const DP = (props) => {
 
     const onChange = (e) => {
         e.preventDefault();
-        console.log(e.target.files);
         const image = e.target.files[0];
         const formData = new FormData();
         formData.append("file", image, image.name);

@@ -44,9 +44,7 @@ const Experience = (props) => {
         setLoading(true);
         axios.get(API_URL + `/${props.profileHandle}/experience`)
             .then( res => {
-                console.log(res);
                 setExperiences(res.data.experiences);
-                console.log(res.data.experiences);
                 setLoading(false);
             })
             .catch( err => {
@@ -68,7 +66,6 @@ const Experience = (props) => {
         axios.post(API_URL+'/experience', {experiences: updatedExperiences}, { headers: authHeader() })
             .then( res => {
                 setExperiences(updatedExperiences);
-                console.log(res.data);
             });
     };
     const handleClose = () => {
@@ -126,7 +123,6 @@ const Experience = (props) => {
         axios.post(API_URL+'/experience', {experiences: updatedExperiences}, { headers: authHeader() })
             .then( res => {
                 setExperiences(updatedExperiences);
-                console.log(res.data);
                 handleClose();
             });
     }

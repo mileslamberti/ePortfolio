@@ -45,7 +45,6 @@ const Education = (props) => {
         
         axios.get(API_URL +`/${props.profileHandle}/education`)
             .then( res => {
-                console.log(res);
                 setEducations(res.data.educations);
                 setLoading(false);
             })
@@ -68,7 +67,6 @@ const Education = (props) => {
         axios.post(API_URL+'/education', {education: updatedEducations}, { headers: authHeader() })
             .then( res => {
                 setEducations(updatedEducations);
-                console.log(res.data);
             });
     };
     
@@ -121,7 +119,6 @@ const Education = (props) => {
         axios.post(API_URL+'/education', {education: updatedEducations}, { headers: authHeader() })
             .then( res => {
                 setEducations(updatedEducations);
-                console.log(res.data);
                 handleClose();
             });
     }

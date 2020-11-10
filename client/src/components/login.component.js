@@ -55,7 +55,6 @@ const Login = (props) => {
         (error) => {
           setLoading(false);
           const err = error.response;
-          console.log(err);
           if (err.status === 403 && err.statusText === "Forbidden"){
             setMessage("Incorrect password, please try again");
           }

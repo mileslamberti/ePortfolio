@@ -12,7 +12,6 @@ async function getMe() {
   try{
     response = await axios.get(API_URL + "/user", { headers: authHeader() })
     if (response.data.userData) {
-      console.log(response.data.userData.credentials);
       return response.data.userData.credentials;
     }
   }
@@ -24,11 +23,9 @@ async function getMe() {
 async function isUser(checkHandle) {
   try{
     let response = await axios.get(API_URL + "/user", { headers: authHeader() })
-    console.log(response.data.userData.credentials.handle === checkHandle);
     return (response.data.userData.credentials.handle === checkHandle);
   }
   catch (err) {
-    console.log(err.response.status);
     if (err.response.status === 410){
       authService.logout();
       window.location = `/login`;
