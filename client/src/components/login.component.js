@@ -48,8 +48,7 @@ const Login = (props) => {
         () => {
           UserService.getMe().then(
             (me) => {
-              props.history.push("/" + me.handle);
-              window.location.reload();
+              window.location = "/" + me.handle;
             }
           )
         },

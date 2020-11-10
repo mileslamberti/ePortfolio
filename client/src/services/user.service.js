@@ -31,7 +31,7 @@ async function isUser(checkHandle) {
     console.log(err.response.status);
     if (err.response.status === 410){
       authService.logout();
-      window.location=`/login`;
+      window.location = `/login`;
     }
     return false;
   }
