@@ -150,13 +150,13 @@ const Education = (props) => {
                 <>
                     <IconButton> <Add onClick={handleAddEducation} /> </IconButton>
                     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                        <DialogTitle id="form-dialog-title">Edit details</DialogTitle>
+                        <DialogTitle id="form-dialog-title">Edit education history</DialogTitle>
                         <DialogContent className={classes.marginAutoItem}>
                             <FormControl className={classes.alignItemsAndJustifyContent}>
-                                <InputLabel htmlFor="component-helper">Year of Completion</InputLabel>
+                                <InputLabel htmlFor="component-helper">Year of completion</InputLabel>
                                 <Input onChange={onChangeWhen} defaultValue={getDefaultVals().when}/></FormControl>
                             <FormControl className={classes.alignItemsAndJustifyContent}>
-                                <InputLabel htmlFor="component-helper">Name of Institution</InputLabel>
+                                <InputLabel htmlFor="component-helper">Name of institution</InputLabel>
                                 <Input onChange={onChangeWhere} defaultValue={getDefaultVals().where}/></FormControl>
                             <FormControl className={classes.alignItemsAndJustifyContent}>
                                 <InputLabel htmlFor="component-helper">Degree</InputLabel>

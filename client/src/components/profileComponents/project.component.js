@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext} from "react";
 import axios from 'axios';
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import {Button, Box, Icon} from '@material-ui/core/';
+import {Button, Grid, Icon} from '@material-ui/core/';
 import PortfolioCard from "../../cardComponents/portfolioCard.component";
 import PortfolioTitleCard from "../../cardComponents/portfolioTitleCard.component"
 import DialogPortfolioCard from "../../cardComponents/DialogPortfolioCard.component"
@@ -237,153 +237,161 @@ function Project(props) {
     };
 
     return (
-      <div>
-      <IconButton> <ArrowBack onClick={backClick}/> </IconButton>
+    <div>
+      <IconButton color="secondary"> <ArrowBack onClick={backClick}/> </IconButton>
+      <Button variant="contained" color="secondary" onClick={() => setHelpOpen(true)}>
+        Help
+      </Button>
       <div className={classes.root}>
-      <PortfolioTitleCard authorised={authorised}/>
-      { authorised ? 
-        <Box mx="auto" m={1} mr={10}>
-            <Button 
-                variant="contained"
-                color="primary"
-                onClick={handleClickAddCard}
-            >
-                Add Card to Project
-            </Button>
-        
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleFileUpload}
-            >
-                {uploadOpen ? "Cancel adding Files to Project" : "Add Files to Project"}
-            </Button>
+      <Grid container spacing={1} direction="row">
+        <Grid item xs={12}>
+          <PortfolioTitleCard authorised={authorised}/>
+        </Grid>
 
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => setHelpOpen(true)}
-            >
-              Help
-            </Button>
-        </Box>
-        : <></>}
-      <Dialog open={helpOpen} onClose={() => setHelpOpen(false)}>
-        <DialogContent>
-          <DialogTitle id="form-dialog-title">How to showcase your projectID</DialogTitle>
-          <DialogContentText>
-            <Typography gutterBottom>
-              To help you showcase your project, you may create cards by pressing the "Add Card to Project" button.
-            </Typography>
-            <Typography gutterBottom>
-              Each card has a <i>title</i>, <i>subtitle</i> and <i>description</i> you can use to describe a particular aspect of your project. Furthermore,
-              you may associate files you have uploaded with your card, and select the picture displayed with your card. To <b>edit</b> the contents
-              of a card, press the <i>pencil button</i> in the bottom-left of each card.
-            </Typography>
-            <Typography gutterBottom>
-              You may drag and drop the cards into the location/order you want them to be displayed.
-            </Typography>
-            <Typography gutterBottom>
-              To <b>delete</b> a card, press the <i>bin button</i> in the bottom-left of each card.
-            </Typography>
-          </DialogContentText>
-        </DialogContent>
-      </Dialog>
-
-      {uploadOpen ?
-        (<>
-          <FileUpload updateAccepted={updateAccepted} updateRejected={updateRejected}/>
-          <List>
-              {AcceptedFiles.map((file, index) => 
-              <ListItem key={index}>
-                  <ListItemAvatar>
-                  <Avatar>
-                      {getListItemIcon(file.type)}
-                  </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                  primary={file.name}
-                  />
-                  <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete"
-                      onClick={() => {
-                          const newFiles = [...AcceptedFiles]
-                          newFiles.splice(index, 1);
-                          setAcceptedFiles(newFiles)
-                      }}
+        <Grid item direction="row" xs={6}>
+          { authorised ? 
+            <Grid container mx="auto" m={1} mr={10} spacing={1}>
+              <Grid item>
+                  <Button 
+                    variant="contained"
+                    color="primary"
+                    onClick={handleClickAddCard}
                   >
-                      <Delete />
-                  </IconButton>
-                  </ListItemSecondaryAction>
-              </ListItem>,
-              )}
-          </List>
-
-          <Button
-              variant="contained"
-              color="primary"
-              onClick={onSubmitAddFiles}
-            >
-                Upload files to Project
-            </Button>
+                    Add Card to Project
+                  </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleFileUpload}
+                >
+                    {uploadOpen ? "Cancel adding Files to Project" : "Add Files to Project"}
+                </Button>
+              </Grid>
+            </Grid>
+          : <></>}
+        </Grid>
         
-          </>) : (<></>)}
-      <DialogPortfolioCard 
-          handleDialogConfirm={handleDialogConfirm}
-          handleDialogCancel={handleDialogCancel}
-          open={open}
-          dialogInformation={getDialogDescription()}
-          authorised={authorised}
-      />
-      {authorised ? (
-        <DragDropContext onDragEnd={onDragEnd} >
-          <Droppable droppableId="droppable" >
-            {(provided, snapshot) => (
-              <div
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                style={getListStyle(snapshot.isDraggingOver)}
-              >
-                {/*We map each card into a PortfolioCard*/}
-                {cards.map((item, index) => (
-                  <Draggable key={item.id} draggableId={item.id} index={index}>
-                    {(provided, snapshot) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        style={getItemStyle(
-                          snapshot.isDragging,
-                          provided.draggableProps.style,
-                        )}
+        <Grid item>
+          <Dialog open={helpOpen} onClose={() => setHelpOpen(false)}>
+            <DialogContent>
+              <DialogTitle id="form-dialog-title">How to showcase your projectID</DialogTitle>
+              <DialogContentText>
+                <Typography gutterBottom>
+                  To help you showcase your project, you may create cards by pressing the "Add Card to Project" button.
+                </Typography>
+                <Typography gutterBottom>
+                  Each card has a <i>title</i>, <i>subtitle</i> and <i>description</i> you can use to describe a particular aspect of your project. Furthermore,
+                  you may associate files you have uploaded with your card, and select the picture displayed with your card. To <b>edit</b> the contents
+                  of a card, press the <i>pencil button</i> in the bottom-left of each card.
+                </Typography>
+                <Typography gutterBottom>
+                  You may drag and drop the cards into the location/order you want them to be displayed.
+                </Typography>
+                <Typography gutterBottom>
+                  To <b>delete</b> a card, press the <i>bin button</i> in the bottom-left of each card.
+                </Typography>
+              </DialogContentText>
+            </DialogContent>
+          </Dialog>
+
+          {uploadOpen ?
+            (<>
+              <FileUpload updateAccepted={updateAccepted} updateRejected={updateRejected}/>
+              <List>
+                  {AcceptedFiles.map((file, index) => 
+                  <ListItem key={index}>
+                      <ListItemAvatar>
+                      <Avatar>
+                          {getListItemIcon(file.type)}
+                      </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                      primary={file.name}
+                      />
+                      <ListItemSecondaryAction>
+                      <IconButton edge="end" aria-label="delete"
+                          onClick={() => {
+                              const newFiles = [...AcceptedFiles]
+                              newFiles.splice(index, 1);
+                              setAcceptedFiles(newFiles)
+                          }}
                       >
-                          <PortfolioCard
-                              id={item.id}
-                              picture={item.picture}
-                              editMode={authorised}
-                              onDeleteClick={() => deleteCard(item.id)}
-                          />
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-              {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>) 
-        : (<>
-          {cards.map((item, index) => (
-            <PortfolioCard
-                id={item.id}
-                picture={item.picture}
-                editMode={authorised}
-                onDeleteClick={() => deleteCard(item.id)}
-            />
-          ))}
-        </>)}
+                          <Delete />
+                      </IconButton>
+                      </ListItemSecondaryAction>
+                  </ListItem>,
+                  )}
+              </List>
+
+              <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={onSubmitAddFiles}
+                >
+                    Upload files to Project
+                </Button>
+            
+              </>) : (<></>)}
+          <DialogPortfolioCard 
+              handleDialogConfirm={handleDialogConfirm}
+              handleDialogCancel={handleDialogCancel}
+              open={open}
+              dialogInformation={getDialogDescription()}
+              authorised={authorised}
+          />
+          {authorised ? (
+            <DragDropContext onDragEnd={onDragEnd} >
+              <Droppable droppableId="droppable" >
+                {(provided, snapshot) => (
+                  <div
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    style={getListStyle(snapshot.isDraggingOver)}
+                  >
+                    {/*We map each card into a PortfolioCard*/}
+                    {cards.map((item, index) => (
+                      <Draggable key={item.id} draggableId={item.id} index={index}>
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={getItemStyle(
+                              snapshot.isDragging,
+                              provided.draggableProps.style,
+                            )}
+                          >
+                              <PortfolioCard
+                                  id={item.id}
+                                  picture={item.picture}
+                                  editMode={authorised}
+                                  onDeleteClick={() => deleteCard(item.id)}
+                              />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                  {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>) 
+            : (<>
+              {cards.map((item, index) => (
+                <PortfolioCard
+                    id={item.id}
+                    picture={item.picture}
+                    editMode={authorised}
+                    onDeleteClick={() => deleteCard(item.id)}
+                />
+              ))}
+            </>)}
+        </Grid>
+      </Grid>
       </div>
-      </div>
+    </div>
     );
   }
 export default Project;
