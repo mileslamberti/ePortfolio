@@ -23,16 +23,25 @@ async function getMe() {
 async function isUser(checkHandle) {
   try{
     let response = await axios.get(API_URL + "/user", { headers: authHeader() })
-    return (response.data.userData.credentials.handle === checkHandle);
-  }
-  catch (err) {
-    if (err.response.status === 410){
-      authService.logout();
-      window.location = `/login`;
+    if (response.data.userData.credentials.handle === checkHandle){
+      return true
     }
+    else if (response.status === 410){
+      authService.logout();
+  
+      // This isn't an ideal solution - better alternative is to...
+      // ...switch to async local storage, but that requires many changes.
+      setTimeout(function() {
+        window.location = `/login`;
+      }, 1000);
+    }
+
     return false;
   }
-  
+  catch (error){
+    console.log(error);
+  }
+
 }
 
 export default {
