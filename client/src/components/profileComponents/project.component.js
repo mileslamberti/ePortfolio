@@ -73,7 +73,6 @@ function Project(props) {
 
     // TODO REMOVEEE BAD BAD BAD BAD
     const projectID = props.location.pathname.split("/")[2];
-    const [userHandle, setUserHandle] = useState('');
     const [authorised, setAuthorised] = useState(false);
 
 
@@ -146,7 +145,7 @@ function Project(props) {
     const onSubmitAddFiles = (event) => {
       setUploadOpen(false);
       AcceptedFiles.forEach((file) => {
-        firebase.storage().ref(`/${userHandle}/projects/${projectID}/${file.name}`).put(file)
+        firebase.storage().ref(`/${profileHandle}/projects/${projectID}/${file.name}`).put(file)
           .then( snapshot => {
               // add file to project's file collection
               snapshot.ref.getDownloadURL().then( downloadLink => {
@@ -168,7 +167,13 @@ function Project(props) {
         });   
         
     }
-
+    const handleDeleteProject = () => {
+      axios.post(`${API_URL}/deleteproject/${projectID}`,{}, { headers: authHeader() })
+        .then(res => {
+          console.log(res);
+          window.location = `/${profileHandle}`
+        })
+    }
 
 
     /** Prompts a dialog which will allow user to populate details of new card */
@@ -259,6 +264,13 @@ function Project(props) {
               onClick={() => setHelpOpen(true)}
             >
               Help
+            </Button>
+            <Button
+              variant="contained"
+              color= "primary"
+              onClick={ () => handleDeleteProject()}
+            >
+              Delete Project
             </Button>
         </Box>
         : <></>}
