@@ -19,34 +19,37 @@ const HomeNavbar = () => {
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
-      const user = AuthService.getCurrentUser();
-      
-      if (user) {
-        setCurrentUser(user);
-        if (!me){
-          UserService.getMe().then(
-            (me) => {
-              setMe(me);
-              setPriv(me.private);
-              // This is for when a user doesn't have the private field in credentials (old users)
-              if (!me.private){
-                axios.post(API_URL + '/private', {private: false}, { headers: authHeader() })
-                setPriv(false);
-              }
+
+      const fetchData = async () => {
+        let user = await AuthService.getCurrentUser();
+        if (user) {
+          setCurrentUser(user);
+          if (!me){
+            let me = await UserService.getMe();
+            setMe(me);
+            setPriv(me.private);
+            // This is for when a user doesn't have the private field in credentials (old users)
+            if (!me.private){
+              let header = await authHeader();
+              console.log(header);
+              await axios.post(API_URL + '/private', {private: false}, { headers: header });
+              setPriv(false);
             }
-          )
+          }
         }
       }
 
+      fetchData();
     }, []);
   
-    const logOut = () => {
-      AuthService.logout();
+    const logOut = async () => {
+      await AuthService.logout();
     };
 
-    const togglePriv = () => {
+    const togglePriv = async () => {
       setPriv(!priv);
-      axios.post(API_URL + '/private', {private: !priv}, { headers: authHeader() })
+      let header = await authHeader();
+      await axios.post(API_URL + '/private', {private: !priv}, { headers: header });
     }
 
     const handleClickOpen = () => {

@@ -9,8 +9,11 @@ const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
 async function getMe() {
   let response = {}
+
   try{
-    response = await axios.get(API_URL + "/user", { headers: authHeader() })
+    let header = await authHeader();
+    response = await axios.get(API_URL + "/user", { headers: header })
+
     if (response.data.userData) {
       return response.data.userData.credentials;
     }
@@ -22,13 +25,19 @@ async function getMe() {
 
 async function isUser(checkHandle) {
   try{
-    let response = await axios.get(API_URL + "/user", { headers: authHeader() })
+    let header = await authHeader();
+    let response = await axios.get(API_URL + "/user", { headers: header })
     return (response.data.userData.credentials.handle === checkHandle);
   }
   catch (err) {
     if (err.response.status === 410){
-      authService.logout();
-      window.location = `/login`;
+
+      // Need to wait for local storage to clear before redirecting!
+      authService.logout().then(
+        () => {
+          window.location.href = `/login`;
+        }
+      )
     }
     return false;
   }

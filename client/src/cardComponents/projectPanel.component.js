@@ -3,7 +3,6 @@ import { Grid, Container, IconButton } from "@material-ui/core";
 import {Add} from '@material-ui/icons';
 
 import ProjectPanelCard from "./projectPanelCard.component";
-import authHeader from "../services/auth-header";
 import axios from "axios";
 const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
@@ -15,7 +14,6 @@ function ProjectPanel(props){
     useEffect( () => {
         axios.get(API_URL + `/${profileHandle}/getprojects`)
             .then( res => {
-                console.log(res.data);
                 setProjects(res.data.projects);
             })
             .catch( err => {
@@ -32,7 +30,7 @@ function ProjectPanel(props){
 
     return(
         
-        <Container>
+        <Grid container spacing={2}>
             { projects.map((project, i) => (
                 <Grid item xs={12} lg={6}>
                     <ProjectPanelCard
@@ -43,7 +41,7 @@ function ProjectPanel(props){
             { authorised ?
                 <IconButton> <Add onClick={handleAdd} /> </IconButton>
             : <></>}
-        </Container>
+        </Grid>
     )
 }
 

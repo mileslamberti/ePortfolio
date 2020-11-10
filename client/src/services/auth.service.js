@@ -1,47 +1,67 @@
 import axios from "axios";
-//import userService from "./user.service";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
-const register = (email, password, confirmPassword, handle) => {
-  return axios.post(API_URL + "/signup", {
+async function register(email, password, confirmPassword, handle) {
+
+  let response = await axios.post(API_URL + "/signup", {
     email,
     password,
     confirmPassword,
     handle,
   })
-  .then((response) => {
-    if (response.data) {
-      localStorage.setItem("user", JSON.stringify(response.data));
-      console.log(localStorage.getItem("user"));
+
+  if (response.data) {
+    try { 
+      await AsyncStorage.setItem("user", response.data.token);
     }
-    return response;
-  });
+    catch (e){
+      console.log(e);
+    }
+  }
+  
+  return response;
 };
 
 async function login(email, password) {
-  
+
   let response = await axios.post(API_URL + "/login", {
-      email,
-      password,
-    })
+    email,
+    password,
+  })
 
   if (response.data) {
-    //user token is stored in local storage
-    localStorage.setItem("user", JSON.stringify(response.data));
-    
+    // User token is stored in local storage, NOTE: this has been upgraded to async storage
+    // async storage handles redirecting after clearing properly (for logout and redirect...
+    // ...after expiry)
+    try {
+      await AsyncStorage.setItem('user', response.data.token);
+    }
+    catch (e){
+      console.log(e);
+    }
   }
       
   return response.data;
     
 };
 
-const logout = () => {
-  localStorage.removeItem("user");
+async function logout() {
+  try {
+    await AsyncStorage.clear()
+  } catch(e) {
+    console.log(e);
+  }
 };
 
-const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem("user"));
+async function getCurrentUser() {
+  try {
+   return await AsyncStorage.getItem("user");
+  }
+  catch(e){
+    console.log(e);
+  }
 };
 
 export default {

@@ -35,7 +35,7 @@ const Login = (props) => {
     setPassword(password);
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     setMessage("");
@@ -44,36 +44,32 @@ const Login = (props) => {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
-      AuthService.login(email, password).then(
-        () => {
-          UserService.getMe().then(
-            (me) => {
-              window.location = "/" + me.handle;
-            }
-          )
-        },
-        (error) => {
-          setLoading(false);
-          const err = error.response;
-          if (err.status === 403 && err.statusText === "Forbidden"){
-            setMessage("Incorrect password, please try again");
-          }
-          else if (err.status === 500 && err.data.error === "auth/user-not-found"){
-            setMessage("Incorrect email address, please try again");
-          }
-          else if (err.status === 500 && err.data.error === "auth/invalid-email"){
-            setMessage("Invalid email address, please try again");
-          }
-          else if (err.status === 500 && err.data.error === "auth/too-many-requests"){
-            setMessage("Too many login attempts, please try again later");
-          }
-          else{
-            setMessage("Internal error.");
-          }  
-          
-          //setMessage(resMessage);
+      try {
+        await AuthService.login(email, password);
+        let me = await UserService.getMe();
+        console.log(me);
+        window.location = "/" + me.handle;
+      }
+      catch (error) {
+        setLoading(false);
+        const err = error.response;
+
+        if (err.status === 403 && err.statusText === "Forbidden"){
+          setMessage("Incorrect password, please try again");
         }
-      );
+        else if (err.status === 500 && err.data.error === "auth/user-not-found"){
+          setMessage("Sorry, this user does not exist.");
+        }
+        else if (err.status === 500 && err.data.error === "auth/invalid-email"){
+          setMessage("Invalid email address, please try again");
+        }
+        else if (err.status === 500 && err.data.error === "auth/too-many-requests"){
+          setMessage("Too many login attempts, please try again later");
+        }
+        else{
+          setMessage("Internal error.");
+        }
+      }
     } else {
       setLoading(false);
     }
