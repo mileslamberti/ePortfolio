@@ -5,7 +5,7 @@ const {signup, login, uploadImage, addUserDetails, getAuthorisedUser} = require(
 const { getAboutMe, createAboutMe, createUserInfo, getUserInfo, updateProfilePic, getProfilePic, getUserTags, createUserTags, togglePrivacy, getPrivacy, setExperience, getExperience, getEducation, setEducation } = require("./routes/aboutMe");
 const { viewUser } = require("./routes/viewUser");
 
-const { saveProject, getProjects, getProjectInfo, getAllProjectCards, addProjectCard, deleteProjectCard, editFileCardAssociation, addFile, getProjectFiles } = require("./routes/projects");
+const { saveProject, deleteProject, getProjects, getProjectInfo, getAllProjectCards, addProjectCard, deleteProjectCard, editFileCardAssociation, addFile, getProjectFiles } = require("./routes/projects");
 const { getAllUsers } = require("./routes/profiles");
 
 
@@ -44,6 +44,8 @@ app.get("/:handle/education", getEducation);
 app.post("/saveproject", userAuth, saveProject);
 app.get("/:handle/getprojects", getProjects);
 app.get("/:handle/getprojects/:projectID", getProjectInfo);
+app.post("/deleteproject/:projectID", userAuth, deleteProject);
+
 
 app.post("/files/:projectID", userAuth, addFile)
 app.get("/:handle/files/:projectID", getProjectFiles)
