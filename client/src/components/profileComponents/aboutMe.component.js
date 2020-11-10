@@ -80,7 +80,6 @@ const AboutMe = (props) => {
         axios.post(API_URL+'/aboutme', updatedAboutMe, { headers: authHeader() })
             .then( res => {
                 setAboutMe(updatedAboutMe);
-                console.log(res.data);
                 handleClose();
             });
     }

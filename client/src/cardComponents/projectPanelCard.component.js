@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 // pass in project object in projectPanel component
 function ProjectPanelCard(props){
     const classes = useStyles();
+    const [raised, setRaised] = useState(false);
 
 
     // Whether the media element is showing (can be minimised)
@@ -43,8 +44,13 @@ function ProjectPanelCard(props){
       window.location=`/${profileHandle}/${project.projectID}`;
     }
 
+    const toggleRaised = () => {
+      setRaised(!raised);
+    }
+
     return(
-        <Card className={classes.root}  onClick={handleCardClick}>
+        <Card className={classes.root}  onClick={handleCardClick} 
+          onMouseOver={toggleRaised} onMouseOut={toggleRaised} raised={raised}>
             <CardHeader
                 title={project.title}
             />

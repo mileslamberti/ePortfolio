@@ -45,7 +45,6 @@ const Education = (props) => {
         
         axios.get(API_URL +`/${props.profileHandle}/education`)
             .then( res => {
-                console.log(res);
                 setEducations(res.data.educations);
                 setLoading(false);
             })
@@ -68,7 +67,6 @@ const Education = (props) => {
         axios.post(API_URL+'/education', {education: updatedEducations}, { headers: authHeader() })
             .then( res => {
                 setEducations(updatedEducations);
-                console.log(res.data);
             });
     };
     
@@ -121,7 +119,6 @@ const Education = (props) => {
         axios.post(API_URL+'/education', {education: updatedEducations}, { headers: authHeader() })
             .then( res => {
                 setEducations(updatedEducations);
-                console.log(res.data);
                 handleClose();
             });
     }
@@ -153,13 +150,13 @@ const Education = (props) => {
                 <>
                     <IconButton> <Add onClick={handleAddEducation} /> </IconButton>
                     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                        <DialogTitle id="form-dialog-title">Edit details</DialogTitle>
+                        <DialogTitle id="form-dialog-title">Edit education history</DialogTitle>
                         <DialogContent className={classes.marginAutoItem}>
                             <FormControl className={classes.alignItemsAndJustifyContent}>
-                                <InputLabel htmlFor="component-helper">Date of completion</InputLabel>
+                                <InputLabel htmlFor="component-helper">Year of completion</InputLabel>
                                 <Input onChange={onChangeWhen} defaultValue={getDefaultVals().when}/></FormControl>
                             <FormControl className={classes.alignItemsAndJustifyContent}>
-                                <InputLabel htmlFor="component-helper">Name of Institution</InputLabel>
+                                <InputLabel htmlFor="component-helper">Name of institution</InputLabel>
                                 <Input onChange={onChangeWhere} defaultValue={getDefaultVals().where}/></FormControl>
                             <FormControl className={classes.alignItemsAndJustifyContent}>
                                 <InputLabel htmlFor="component-helper">Degree</InputLabel>

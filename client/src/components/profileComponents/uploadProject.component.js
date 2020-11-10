@@ -11,7 +11,7 @@ import userService from "../../services/user.service";
 import axios from 'axios'
 
 import {IconButton} from '@material-ui/core';
-import { Delete, Folder, PictureAsPdfOutlined, Image} from '@material-ui/icons';
+import { Delete, Folder, PictureAsPdfOutlined, Image, ArrowBack} from '@material-ui/icons';
 import {List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar} from '@material-ui/core';
 
 const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
@@ -141,7 +141,14 @@ function UploadPortfolio (props){
                 return <Folder />;
         }
     }
+
+    const backClick = () => {
+        window.history.back();
+    };
+
     return(
+        <div>
+        <IconButton color="secondary"> <ArrowBack onClick={backClick}/> </IconButton>
         <div style={{ maxWidth: '700px', margin: '2rem auto' }}>
             <Form id="uploadForm" onSubmit={onSubmit}>
                 <Form.Group controlId="ProjectTitle">
@@ -203,7 +210,7 @@ function UploadPortfolio (props){
 
             </Form>
         </div>
-
+        </div>
     )
 }
 

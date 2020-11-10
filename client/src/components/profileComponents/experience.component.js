@@ -44,9 +44,7 @@ const Experience = (props) => {
         setLoading(true);
         axios.get(API_URL + `/${props.profileHandle}/experience`)
             .then( res => {
-                console.log(res);
                 setExperiences(res.data.experiences);
-                console.log(res.data.experiences);
                 setLoading(false);
             })
             .catch( err => {
@@ -68,7 +66,6 @@ const Experience = (props) => {
         axios.post(API_URL+'/experience', {experiences: updatedExperiences}, { headers: authHeader() })
             .then( res => {
                 setExperiences(updatedExperiences);
-                console.log(res.data);
             });
     };
     const handleClose = () => {
@@ -126,7 +123,6 @@ const Experience = (props) => {
         axios.post(API_URL+'/experience', {experiences: updatedExperiences}, { headers: authHeader() })
             .then( res => {
                 setExperiences(updatedExperiences);
-                console.log(res.data);
                 handleClose();
             });
     }
@@ -159,19 +155,19 @@ const Experience = (props) => {
                 <>
                     <IconButton> <Add onClick={handleAddExperience} /> </IconButton>
                     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                            <DialogTitle id="form-dialog-title">Edit details</DialogTitle>
+                            <DialogTitle id="form-dialog-title">Edit work experience</DialogTitle>
                             <DialogContent className={classes.marginAutoItem}>
                                 <FormControl className={classes.alignItemsAndJustifyContent}>
-                                    <InputLabel htmlFor="component-helper">date</InputLabel>
+                                    <InputLabel htmlFor="component-helper">Date</InputLabel>
                                     <Input onChange={onChangeDate} defaultValue={getDefaultVals().date}/></FormControl>
                                 <FormControl className={classes.alignItemsAndJustifyContent}>
-                                    <InputLabel htmlFor="component-helper">Comapany Name</InputLabel>
+                                    <InputLabel htmlFor="component-helper">Comapany name</InputLabel>
                                     <Input onChange={onChangeCompanyName} defaultValue={getDefaultVals().companyName}/></FormControl>
                                 <FormControl className={classes.alignItemsAndJustifyContent}>
-                                    <InputLabel htmlFor="component-helper">Job Title</InputLabel>
+                                    <InputLabel htmlFor="component-helper">Job title</InputLabel>
                                     <Input onChange={onChangeJobTitle} defaultValue={getDefaultVals().jobTitle}/></FormControl>
                                 <FormControl className={classes.alignItemsAndJustifyContent}>
-                                    <InputLabel htmlFor="component-helper">Job Description</InputLabel>
+                                    <InputLabel htmlFor="component-helper">Job description</InputLabel>
                                     <Input onChange={onChangeJobDescription} defaultValue={getDefaultVals().jobDescription}/></FormControl>    
                             </DialogContent>
                             <DialogActions>

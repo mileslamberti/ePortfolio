@@ -37,7 +37,7 @@ async function login(email, password) {
 };
 
 const logout = () => {
-  localStorage.removeItem("user");
+  window.localStorage.clear();
 };
 
 const getCurrentUser = () => {

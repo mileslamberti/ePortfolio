@@ -1,5 +1,6 @@
 import axios from "axios";
 import authHeader from "./auth-header";
+import authService from "./auth.service";
 
 const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
@@ -11,7 +12,6 @@ async function getMe() {
   try{
     response = await axios.get(API_URL + "/user", { headers: authHeader() })
     if (response.data.userData) {
-      console.log(response.data.userData.credentials);
       return response.data.userData.credentials;
     }
   }
@@ -23,11 +23,27 @@ async function getMe() {
 async function isUser(checkHandle) {
   try{
     let response = await axios.get(API_URL + "/user", { headers: authHeader() })
-    console.log(response.data.userData.credentials.handle === checkHandle);
     return (response.data.userData.credentials.handle === checkHandle);
   }
   catch (err) {
-    return false;
+    try {
+      if (err.response.status === 410){
+        authService.logout();
+  
+        // This isn't an ideal solution - better alternative is to...
+        // ...switch to async local storage, but that requires many changes.
+        setTimeout(function() {
+          window.location.href = "/login";
+          window.location.reload();
+        }, 1000);
+      }
+      else{
+        return false;
+      }
+    }
+    catch (e){
+      console.log(e);
+    }
   }
   
 }
