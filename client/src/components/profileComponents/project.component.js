@@ -80,6 +80,7 @@ function Project(props) {
     const { deleteCard } = useContext(PortfolioCardContext);
     const { reorderCards } = useContext(PortfolioCardContext);
     const { associateFileWithCard } = useContext(PortfolioCardContext);
+    const { projectInfo } = useContext(PortfolioCardContext);
 
 
     // Files that will be uploaded to the database on submit
@@ -90,6 +91,10 @@ function Project(props) {
     const [uploadOpen, setUploadOpen] = useState(false);
 
     const [helpOpen, setHelpOpen] = useState(false);
+
+    // Whether delete warning dialog is open
+    const [warningOpen, setWarningOpen] = useState(false);
+
     const profileHandle = props.match.params.handle;
     const classes = useStyles();
     // check user handle
@@ -248,7 +253,7 @@ function Project(props) {
           Help
         </Button>
       : <></>}
-      <div className={classes.root}>
+      <div >
       <Grid container spacing={1} direction="row">
         <Grid item xs={12}>
           <PortfolioTitleCard authorised={authorised}/>
@@ -279,7 +284,7 @@ function Project(props) {
                 <Button
                   variant="contained"
                   color= "secondary"
-                  onClick={ () => handleDeleteProject()}
+                  onClick={ () => setWarningOpen(true) }
                 >
                   Delete Project
                 </Button>
@@ -287,6 +292,37 @@ function Project(props) {
             </Grid>
           : <></>}
         </Grid>
+        {/*  */}
+        {authorised && 
+          <Dialog open={warningOpen} onClose={() => setWarningOpen(false)}>
+              <DialogTitle id="form-dialog-title"> Are you sure you want to delete?</DialogTitle>
+              <DialogContentText>
+                  <Typography gutterBottom>
+                    You are about to <b>delete</b> this project, titled: {projectInfo.title}. This cannot be undone. 
+                  </Typography>
+                  <Typography>
+                    Press confirm to delete.
+                  </Typography>
+                  
+              </DialogContentText>
+
+              <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => setWarningOpen(false)}
+              >
+                    Cancel
+              </Button>
+              <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleDeleteProject}
+                  startIcon={<Delete />}
+              >
+                  Confirm Delete
+              </Button>
+          </Dialog>
+        }
         
         <Grid item>
           <Dialog open={helpOpen} onClose={() => setHelpOpen(false)}>
