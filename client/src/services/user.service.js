@@ -26,24 +26,27 @@ async function isUser(checkHandle) {
     return (response.data.userData.credentials.handle === checkHandle);
   }
   catch (err) {
-    try {
-      if (err.response.status === 410){
-        authService.logout();
+    return false;
+
+    // For token expiry handling, removed temporarily
+    //try {
+      //if (err.response.status === 410){
+        //authService.logout();
   
         // This isn't an ideal solution - better alternative is to...
         // ...switch to async local storage, but that requires many changes.
-        setTimeout(function() {
-          window.location.href = "/login";
-          window.location.reload();
-        }, 1000);
-      }
-      else{
-        return false;
-      }
-    }
-    catch (e){
-      console.log(e);
-    }
+        //setTimeout(function() {
+          //window.location.href = "/login";
+          //window.location.reload();
+        //}, 1000);
+      //}
+      //else{
+        //return false;
+      //}
+    //}
+    //catch (e){
+      //console.log(e);
+    //}
   }
   
 }
