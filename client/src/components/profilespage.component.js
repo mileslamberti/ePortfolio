@@ -174,7 +174,7 @@ function ProfilesPage(){
                     <Card.Text>{profile.description}</Card.Text>
                     <Card.Text>username: {profile.handle}</Card.Text>
                     <Card>{renderTags(profile.tags)}</Card>
-                    <Button href={`/${profile.handle}`} variant="primary">View user</Button>
+                    <Button href={`/${profile.handle}`} size="large" variant="contained">View user</Button>
                 </Card.Body>
                 </Card>
             </div>
