@@ -85,7 +85,7 @@ const AboutMe = (props) => {
     e.preventDefault(); // allows us override the default html stuff
 
     axios
-      .post(API_URL + "/aboutme", updatedAboutMe, { headers: authHeader() })
+      .post("/aboutme", updatedAboutMe, { headers: authHeader() })
       .then((res) => {
         setAboutMe(updatedAboutMe);
         handleClose();

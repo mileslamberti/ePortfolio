@@ -1,6 +1,5 @@
 import React, { useState, useEffect, createContext, useReducer } from "react";
 import axios from "../api";
-
 import authHeader from "../services/auth-header";
 
 import {
@@ -15,9 +14,9 @@ const initialCards = {
 };
 
 const options = {
-    deleteCardWarning: true,
-    deleteFileAssociationWarning: true
-}
+  deleteCardWarning: true,
+  deleteFileAssociationWarning: true,
+};
 
 const initialProjectInfo = {
   title: "",
@@ -61,7 +60,6 @@ const stockPictures = {
 
 export const PortfolioCardContext = createContext();
 
-<<<<<<< HEAD
 export const PortfolioCardProvider = (props) => {
   const projectID = props.location.pathname.split("/")[2];
   const profileHandle = props.location.pathname.split("/")[1];
@@ -73,16 +71,6 @@ export const PortfolioCardProvider = (props) => {
   const [filesState, dispatchFiles] = useReducer(fileReducer, initialFiles);
   const [stockPicturesState, setStockPicturesState] = useState(stockPictures);
   /** Functions that manage cardsState */
-=======
-export const PortfolioCardProvider = props => {
-    const projectID = props.location.pathname.split("/")[2];
-    const profileHandle = props.location.pathname.split("/")[1];
-    const [projectInfoState, dispatchProjectInfo] = useReducer(projectInfoReducer, initialProjectInfo);
-    const [cardsState, dispatchCards] = useReducer(cardReducer, initialCards);
-    const [filesState, dispatchFiles] = useReducer(fileReducer, initialFiles);
-    const [stockPicturesState, setStockPicturesState] = useState(stockPictures);
-    /** Functions that manage cardsState */
->>>>>>> master
 
   function addCard(cardInfo) {
     dispatchCards({
@@ -276,7 +264,6 @@ export const PortfolioCardProvider = props => {
     }
   }
 
-<<<<<<< HEAD
   useEffect(() => {
     //fetch project
     axios
@@ -308,8 +295,12 @@ export const PortfolioCardProvider = props => {
         headers: authHeader(),
       })
       .then((cardRes) => {
-        cardRes.data.cards.forEach((card) => {
+        const sortedCards = cardRes.data.cards.sort((a, b) =>
+          a.card.position > b.card.position ? 1 : -1
+        );
+        sortedCards.forEach((card) => {
           // Remove later.
+          console.log(card);
           if (card.card.img === "implementImgLink.com") {
             card.card.img =
               "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ficdn2.digitaltrends.com%2Fimage%2Fschool-coding-1200x0.jpg%3Fver%3D1&f=1&nofb=1";
@@ -329,58 +320,7 @@ export const PortfolioCardProvider = props => {
         projectInfo: projectInfoState,
         cards: cardsState.cards,
         files: filesState.files,
-=======
-    useEffect( () => {
-        //fetch project
-         axios.get(API_URL + `/${profileHandle}/getprojects/${projectID}`)
-             .then( res => {
-                const project = res.data.project;
-                loadProjectInfo(project);
-             })
-             .catch( err => {
-                 console.log("Error", err);
-             })
-        // fetch project files
-        axios.get(API_URL + `/${profileHandle}/files/${projectID}`,{ headers: authHeader() })
-            .then( res => {
-                const files = res.data.files;
-                files.forEach(file => {
-                    loadFile(file);
-                })
-            })
-            .catch( err => {
-                console.log("Error", err);
-            })
-        // fetch project cards
-        axios.get(`${API_URL}/${profileHandle}/getprojectcards/${projectID}`,{ headers: authHeader() })
-            .then( cardRes => {
-                const sortedCards = cardRes.data.cards.sort((a, b) => (a.card.position > b.card.position) ? 1 : -1);
-                sortedCards.forEach(card => {
-
-                    // Remove later.
-                    console.log(card);
-                    if(card.card.img === "implementImgLink.com"){
-                        card.card.img = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ficdn2.digitaltrends.com%2Fimage%2Fschool-coding-1200x0.jpg%3Fver%3D1&f=1&nofb=1"
-                    }
-                    loadCard(card.card);
-                })
-             }).catch( err => {
-                console.log("Error", err);
-            })
-    }, []);
-
-
-
-
-
-    return(
-        <PortfolioCardContext.Provider value={{
-            // variables that can be accessed within the context
-            projectInfo: projectInfoState,
-            cards: cardsState.cards,
-            files: filesState.files,
-            options: options,
->>>>>>> master
+        options: options,
 
         // functions that can be accessed within the context
         editProjectInfo,
