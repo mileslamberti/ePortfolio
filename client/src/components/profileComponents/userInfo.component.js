@@ -37,6 +37,7 @@ const UserInfo = (props) => {
     const [open, setOpen] = useState(false);
     const [userInfo, setUserInfo] = useState("");
     const [updatedUserInfo, setUpdatedUserInfo] = useState("");
+    const [message, setMessage] = useState("");
 
     useEffect( () => {
         setAuthorised(props.authorised);
@@ -60,15 +61,18 @@ const UserInfo = (props) => {
     
     const handleClickOpen = () => {
         setOpen(true);
+        setMessage('');
     };
     
     const handleClose = () => {
         setOpen(false);
+        setMessage('');
     };
 
     const handleCancel = () => {
         setUpdatedUserInfo(userInfo);
         setOpen(false);
+        setMessage('');
     };
 
     const onChangeOccupation = (e) => {
@@ -97,16 +101,33 @@ const UserInfo = (props) => {
 
         return defaultVals;
     }
-
+    const inCorrectFormat = (form) => {
+        const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const phoneRegex = /^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$/
+        const number = form.number.replace(/\s/g,'');
+        const isEmail = emailRegex.test(form.email);
+        const isPhoneNumber = phoneRegex.test(number);
+        if (! isPhoneNumber) {
+            setMessage("Phone number must be a valid phone number");
+            return false;
+        }else if ( !isEmail ) {
+            setMessage("Email field must be a valid email address");
+            return false;
+        }
+        setMessage('');
+        return true;
+    }
     const onSubmit = (e) => {
         e.preventDefault(); // allows us override the default html stuff
+        if (inCorrectFormat(updatedUserInfo)){
+            axios.post(API_URL + '/userinfo', updatedUserInfo, { headers: authHeader() })
+                .then( res => {
+                    setUserInfo(updatedUserInfo);
+                    console.log(res.data);
+                    handleClose();
+                });
+        }
 
-        axios.post(API_URL + '/userinfo', updatedUserInfo, { headers: authHeader() })
-            .then( res => {
-                setUserInfo(updatedUserInfo);
-                console.log(res.data);
-                handleClose();
-            });
     }
     
     return (
@@ -146,7 +167,14 @@ const UserInfo = (props) => {
                             <Button onClick={onSubmit} color="primary">
                                 Confirm
                             </Button>
-                        </DialogActions>       
+                        </DialogActions>
+                        {message && (
+                            <div className="form-group">
+                                <div className="alert alert-danger" role="alert">
+                                    {message}
+                                </div>
+                            </div>
+                        )}    
                     </Dialog>
                 </>) : (<></>)}
             </>
