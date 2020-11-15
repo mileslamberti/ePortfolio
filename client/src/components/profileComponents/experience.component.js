@@ -41,6 +41,7 @@ const Experience = (props) => {
     const [selectedExperience, setSelectedExperience] = useState('');
     const [addingNew, setAddingNew] = useState(false);
     const [authorised, setAuthorised] = useState(props.authorised);
+    const [message, setMessage] = useState("");
 
     // Whether delete warning dialog is open
     const [warningOpen, setWarningOpen] = useState(false);
@@ -66,6 +67,7 @@ const Experience = (props) => {
         setSelectedExperience(index);
         setUpdatedExperience(experiences[index])
         setOpen(true);
+        setMessage('');
     };
     const handleClickDelete = (index) => {
         var updatedExperiences = [ ...experiences ];
@@ -79,12 +81,16 @@ const Experience = (props) => {
         setSelectedExperience('')
         setUpdatedExperience('')
         setOpen(false);
+        setMessage('');
+
     };
 
     const handleCancel = () => {
         setSelectedExperience('')
         setUpdatedExperience('')
         setOpen(false);
+        setMessage('');
+
     };
     const handleAddExperience = () => {
         setAddingNew(true);
@@ -118,20 +124,42 @@ const Experience = (props) => {
         }
         return defaultVals;
     }
-
+    const inCorrectFormat = (form) => {
+        console.log(form);
+        const isNum = /^\d+$/.test(form.date);
+        if ( !isNum ) {
+            setMessage("Date field must be a year");
+            return false;
+        } else {
+            const num = parseInt(form.date, 10);
+            const date = new Date()
+            if (num < 1900 ) {
+                setMessage("Date field must be within recent years");
+                return false;
+            } else if ( num > date.getFullYear()+1) {
+                setMessage("Date field cannot be more than 2 years in the future");
+                return false;
+            }
+        }
+        setMessage('');
+        return true;
+    }
     const onSubmit = (e) => {
         e.preventDefault(); // allows us override the default html stuff
-        var updatedExperiences = experiences;
-        if (addingNew){
-            updatedExperiences.push(updatedExperience)
-        } else {
-            updatedExperiences[selectedExperience] = updatedExperience;
+        if (inCorrectFormat(updatedExperience)){
+            var updatedExperiences = experiences;
+            if (addingNew){
+                updatedExperiences.push(updatedExperience)
+            } else {
+                updatedExperiences[selectedExperience] = updatedExperience;
+            }
+            axios.post(API_URL+'/experience', {experiences: updatedExperiences}, { headers: authHeader() })
+                .then( res => {
+                    setExperiences(updatedExperiences);
+                    handleClose();
+                });
         }
-        axios.post(API_URL+'/experience', {experiences: updatedExperiences}, { headers: authHeader() })
-            .then( res => {
-                setExperiences(updatedExperiences);
-                handleClose();
-            });
+        
     }
     const renderExperience = (experience, index) => {
         return (
@@ -232,6 +260,13 @@ const Experience = (props) => {
                                     Confirm
                                 </Button>
                             </DialogActions>
+                            {message && (
+                                <div className="form-group">
+                                    <div className="alert alert-danger" role="alert">
+                                        {message}
+                                    </div>
+                                </div>
+                            )}
                         </Dialog>
                 </> : <></>}
             </>

@@ -41,6 +41,7 @@ const Education = (props) => {
     const [selectedEducation, setSelectedEducation] = useState('');
     const [addingNew, setAddingNew] = useState(false);
     const [authorised, setAuthorised] = useState(props.authorised);
+    const [message, setMessage] = useState("");
 
     // Whether delete warning dialog is open
     const [warningOpen, setWarningOpen] = useState(false);
@@ -67,6 +68,7 @@ const Education = (props) => {
         setSelectedEducation(index);
         setUpdatedEducation(educations[index])
         setOpen(true);
+        setMessage('');
     };
     const handleClickDelete = (index) => {
         var updatedEducations = [ ...educations ];
@@ -81,12 +83,16 @@ const Education = (props) => {
         setSelectedEducation('');
         setUpdatedEducation('')
         setOpen(false);
+        setMessage('');
+
     };
 
     const handleCancel = () => {
         setSelectedEducation('');
         setUpdatedEducation('')
         setOpen(false);
+        setMessage('');
+
     };
     const handleAddEducation = () => {
         setAddingNew(true);
@@ -115,19 +121,42 @@ const Education = (props) => {
         }
         return defaultVals;
     }
+    const inCorrectFormat = (form) => {
+        const isNum = /^\d+$/.test(form.when);
+        if ( !isNum ) {
+            setMessage("Date field must be a year");
+            return false;
+        } else {
+            const num = parseInt(form.when, 10);
+            const date = new Date()
+            if (num < 1900 ) {
+                setMessage("Date field must be within recent years");
+                return false;
+            } else if ( num > date.getFullYear()+1) {
+                setMessage("Date field cannot be more than 2 years in the future");
+                return false;
+            }
+        }
+        setMessage('');
+        return true;
+    }
+
     const onSubmit = (e) => {
         e.preventDefault(); // allows us override the default html stuff
-        var updatedEducations = educations;
-        if ( addingNew) {
-            updatedEducations.push(updatedEducation)
-        } else {
-            updatedEducations[selectedEducation] = updatedEducation;
+        if (inCorrectFormat(updatedEducation)) {
+            var updatedEducations = educations;
+            if ( addingNew) {
+                updatedEducations.push(updatedEducation)
+            } else {
+                updatedEducations[selectedEducation] = updatedEducation;
+            }
+            axios.post(API_URL+'/education', {education: updatedEducations}, { headers: authHeader() })
+                .then( res => {
+                    setEducations(updatedEducations);
+                    handleClose();
+                });
         }
-        axios.post(API_URL+'/education', {education: updatedEducations}, { headers: authHeader() })
-            .then( res => {
-                setEducations(updatedEducations);
-                handleClose();
-            });
+        
     }
     const renderEducation = (education, index) => {
         return (
@@ -189,6 +218,7 @@ const Education = (props) => {
                         >
                             Confirm Delete
                         </Button>
+                        
                     </Dialog>
                 </>: <></>}
             </>
@@ -224,7 +254,14 @@ const Education = (props) => {
                                 Confirm
                             </Button>
                         </DialogActions>
-                    </Dialog>  
+                        {message && (
+                            <div className="form-group">
+                            <div className="alert alert-danger" role="alert">
+                                {message}
+                            </div>
+                            </div>
+                        )}
+                    </Dialog>
                 </>: <></>}
                  
             </>}
