@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../api";
-
 import {
   CardContent,
   Typography,
@@ -33,9 +32,8 @@ const AboutMe = (props) => {
       setLoading(true);
 
       axios
-        .get(props.profileHandle + "/aboutme")
+        .get("/" + props.profileHandle + "/aboutme")
         .then((res) => {
-          console.log(res);
           setAboutMe(res.data.aboutMe);
           setUpdatedAboutMe(res.data.aboutMe);
           setLoading(false);
@@ -87,10 +85,9 @@ const AboutMe = (props) => {
     e.preventDefault(); // allows us override the default html stuff
 
     axios
-      .post("/aboutme", updatedAboutMe, { headers: authHeader() })
+      .post(API_URL + "/aboutme", updatedAboutMe, { headers: authHeader() })
       .then((res) => {
         setAboutMe(updatedAboutMe);
-        console.log(res.data);
         handleClose();
       });
   };

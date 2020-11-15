@@ -16,6 +16,7 @@ import {
   Folder,
   PictureAsPdfOutlined,
   Image,
+  ArrowBack,
 } from "@material-ui/icons";
 import {
   List,
@@ -26,7 +27,7 @@ import {
   Avatar,
 } from "@material-ui/core";
 
-function UploadPortfolio() {
+function UploadPortfolio(props) {
   const [ProjectTitle, setProjectTitle] = useState("");
   const [Description, setDescription] = useState("");
   const [userHandle, setUserHandle] = useState("");
@@ -36,7 +37,7 @@ function UploadPortfolio() {
 
   // Files that will be uploaded to the database on submit
   const [AcceptedFiles, setAcceptedFiles] = useState([]);
-
+  const profileHandle = props.profileHandle;
   useEffect(() => {
     function getHandle() {
       if (userHandle === "") {
@@ -136,9 +137,12 @@ function UploadPortfolio() {
               associatedWithCard: "",
             };
             axios
-              .post(`/files/${projectID}`, newFile, { headers: authHeader() })
+              .post(`/files/${projectID}`, newFile, {
+                headers: authHeader(),
+              })
               .then((res) => {
                 console.log(res.data);
+                window.location = `/${userHandle}/${projectID}`;
               });
           });
         })
@@ -158,65 +162,76 @@ function UploadPortfolio() {
         return <Folder />;
     }
   }
+
+  const backClick = () => {
+    window.history.back();
+  };
+
   return (
-    <div style={{ maxWidth: "700px", margin: "2rem auto" }}>
-      <Form id="uploadForm" onSubmit={onSubmit}>
-        <Form.Group controlId="ProjectTitle">
-          <Form.Label>Project Title</Form.Label>
-          <Form.Control
-            type="text"
-            name={ProjectTitle}
-            onChange={onChangeProjectTitle}
-            placeholder="Enter the name of your portfolio"
-          />
-        </Form.Group>
+    <div>
+      <IconButton color="secondary">
+        {" "}
+        <ArrowBack onClick={backClick} />{" "}
+      </IconButton>
+      <div style={{ maxWidth: "700px", margin: "2rem auto" }}>
+        <Form id="uploadForm" onSubmit={onSubmit}>
+          <Form.Group controlId="ProjectTitle">
+            <Form.Label>Project Title</Form.Label>
+            <Form.Control
+              type="text"
+              name={ProjectTitle}
+              onChange={onChangeProjectTitle}
+              placeholder="Enter the name of your portfolio"
+            />
+          </Form.Group>
 
-        <Form.Group controlId="Description">
-          <Form.Label>Description</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows="6"
-            placeholder="Give a brief description of your portfolio"
-            name={Description}
-            onChange={onChangeDescription}
-          />
-        </Form.Group>
+          <Form.Group controlId="Description">
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows="6"
+              placeholder="Give a brief description of your portfolio"
+              name={Description}
+              onChange={onChangeDescription}
+            />
+          </Form.Group>
 
-        <div className="file-upload-container">
-          <FileUpload
-            updateAccepted={updateAccepted}
-            updateRejected={updateRejected}
-          />
-        </div>
-        <br />
-        <Button variant="primary" type="submit" size="lg" onSubmit={onSubmit}>
-          Submit
-        </Button>
+          <div className="file-upload-container">
+            <FileUpload
+              updateAccepted={updateAccepted}
+              updateRejected={updateRejected}
+            />
+          </div>
+          <br />
+          <Button variant="primary" type="submit" size="lg" onSubmit={onSubmit}>
+            Submit
+          </Button>
 
-        <List>
-          {AcceptedFiles.map((file, index) => (
-            <ListItem key={index}>
-              <ListItemAvatar>
-                <Avatar>{getListItemIcon(file.type)}</Avatar>
-              </ListItemAvatar>
-              <ListItemText primary={file.name} />
-              <ListItemSecondaryAction>
-                <IconButton
-                  edge="end"
-                  aria-label="delete"
-                  onClick={() => {
-                    const newFiles = [...AcceptedFiles];
-                    newFiles.splice(index, 1);
-                    setAcceptedFiles(newFiles);
-                  }}
-                >
-                  <Delete />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          ))}
-        </List>
-      </Form>
+          <List>
+            {AcceptedFiles.map((file, index) => (
+              <ListItem key={index}>
+                <ListItemAvatar>
+                  <Avatar>{getListItemIcon(file.type)}</Avatar>
+                </ListItemAvatar>
+                <ListItemText primary={file.name} />
+                <ListItemSecondaryAction>
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => {
+                      const newFiles = [...AcceptedFiles];
+                      newFiles.splice(index, 1);
+                      setAcceptedFiles(newFiles);
+                    }}
+                  >
+                    <Delete />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            ))}
+          </List>
+        </Form>
+      </div>
     </div>
   );
 }

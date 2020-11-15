@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../api";
-
 import { makeStyles, ButtonBase, Tooltip } from "@material-ui/core";
 
 import authHeader from "../../services/auth-header";
@@ -34,9 +33,8 @@ const DP = (props) => {
       setLoading(true);
 
       axios
-        .get(props.profileHandle + "/dp")
+        .get("/" + props.profileHandle + "/dp")
         .then((res) => {
-          console.log(res);
           setDP(res.data.profilePic);
           setLoading(false);
         })
@@ -49,7 +47,6 @@ const DP = (props) => {
 
   const onChange = (e) => {
     e.preventDefault();
-    console.log(e.target.files);
     const image = e.target.files[0];
     const formData = new FormData();
     formData.append("file", image, image.name);

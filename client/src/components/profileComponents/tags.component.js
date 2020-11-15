@@ -20,7 +20,7 @@ const Tags = (props) => {
       setLoading(true);
 
       axios
-        .get(props.profileHandle + "/tags")
+        .get("/" + props.profileHandle + "/tags")
         .then((res) => {
           setTags((tags) => tags.concat(res.data.tags));
           setLoading(false);

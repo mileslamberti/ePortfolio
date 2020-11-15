@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 // pass in project object in projectPanel component
 function ProjectPanelCard(props){
     const classes = useStyles();
+    const [raised, setRaised] = useState(false);
 
 
     // Whether the media element is showing (can be minimised)
@@ -39,34 +40,21 @@ function ProjectPanelCard(props){
     const project = props.project;
     const profileHandle = props.profileHandle;
 
-    // TODO IMPLEMENTE IMAGES
-    const [Img, setImg] = useState(require("./images/programming.png"));
-
-    const handleMinimizeClick = () =>{
-        setMedia(showMedia === false)
-    }
-
     const handleCardClick = () => {
       window.location=`/${profileHandle}/${project.projectID}`;
     }
 
+    const toggleRaised = () => {
+      setRaised(!raised);
+    }
+
     return(
-        <Card className={classes.root} >
+        <Card className={classes.root}  onClick={handleCardClick} 
+          onMouseOver={toggleRaised} onMouseOut={toggleRaised} raised={raised}>
             <CardHeader
-                action={
-                    <IconButton areia-label="settings" onClick={handleMinimizeClick}>
-                        {showMedia ? <Remove /> : <ZoomOutMap />}
-                    </IconButton>
-                }
                 title={project.title}
             />
 
-            {showMedia && <CardMedia
-                className={classes.media}
-                image={Img}
-                title={Img}
-                onClick={handleCardClick}
-            />}
 
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">

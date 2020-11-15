@@ -51,9 +51,8 @@ const UserInfo = (props) => {
       setLoading(true);
 
       axios
-        .get(props.profileHandle + "/userinfo")
+        .get("/" + props.profileHandle + "/userinfo")
         .then((res) => {
-          console.log(res);
           setUserInfo(res.data.userInfo);
           setUpdatedUserInfo(res.data.userInfo);
           setLoading(false);
