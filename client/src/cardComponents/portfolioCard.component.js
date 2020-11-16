@@ -168,8 +168,7 @@ function PortfolioCard(props) {
               <DialogTitle id="form-dialog-title"> Are you sure you want to delete?</DialogTitle>
               <DialogContentText>
                   <Typography>
-                    Deleting this card, will remove it from your portfolio, as well as removing all the files you have
-                    associated with this card. This option cannot be undone, although you can manually re-create the card.
+                    Deleting this card, will remove it from your portfolio. This option cannot be undone and all data entered in this card will be lost.
                     Press confirm to delete.
                   </Typography>
                   
