@@ -1,7 +1,7 @@
 import React, { useState, useEffect }from 'react';
-import axios from 'axios';
+import axios from "../../api";
 
-import {makeStyles, Card, CardContent, Typography, IconButton, Input, FormControl, InputLabel} from '@material-ui/core';
+import {makeStyles, Card, CardContent, Typography, IconButton, Input, FormControl, InputLabel, FormGroup, FormControlLabel, Checkbox, Grid} from '@material-ui/core';
 import {Edit, Add, Delete} from '@material-ui/icons';
 
 import Button from '@material-ui/core/Button';
@@ -9,10 +9,10 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContentText from  '@material-ui/core/DialogContentText';
+
 
 import authHeader from "../../services/auth-header";
-
-const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
 const useStyles = makeStyles({
       marginAutoItem: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles({
         display: 'flex',
       },
       typography: {
-          fontSize: "1rem"
+          fontSize: "0.7rem"
       }
 });
 
@@ -39,13 +39,18 @@ const Education = (props) => {
     const [selectedEducation, setSelectedEducation] = useState('');
     const [addingNew, setAddingNew] = useState(false);
     const [authorised, setAuthorised] = useState(props.authorised);
+    const [message, setMessage] = useState("");
+
+    // Whether delete warning dialog is open
+    const [warningOpen, setWarningOpen] = useState(false);
+    const [checkbox, setCheckbox] = useState(false);
+    const [warningOn, setWarningOn] = useState(true);
 
     useEffect( () => {
         setLoading(true);
         
-        axios.get(API_URL +`/${props.profileHandle}/education`)
+        axios.get(`/${props.profileHandle}/education`)
             .then( res => {
-                console.log(res);
                 setEducations(res.data.educations);
                 setLoading(false);
             })
@@ -61,14 +66,14 @@ const Education = (props) => {
         setSelectedEducation(index);
         setUpdatedEducation(educations[index])
         setOpen(true);
+        setMessage('');
     };
     const handleClickDelete = (index) => {
         var updatedEducations = [ ...educations ];
         updatedEducations.splice(index, 1);
-        axios.post(API_URL+'/education', {education: updatedEducations}, { headers: authHeader() })
+        axios.post('/education', {education: updatedEducations}, { headers: authHeader() })
             .then( res => {
                 setEducations(updatedEducations);
-                console.log(res.data);
             });
     };
     
@@ -76,12 +81,16 @@ const Education = (props) => {
         setSelectedEducation('');
         setUpdatedEducation('')
         setOpen(false);
+        setMessage('');
+
     };
 
     const handleCancel = () => {
         setSelectedEducation('');
         setUpdatedEducation('')
         setOpen(false);
+        setMessage('');
+
     };
     const handleAddEducation = () => {
         setAddingNew(true);
@@ -110,56 +119,131 @@ const Education = (props) => {
         }
         return defaultVals;
     }
+    const inCorrectFormat = (form) => {
+        const isNum = /^\d+$/.test(form.when);
+        if ( !isNum ) {
+            setMessage("Date field must be a year");
+            return false;
+        } else {
+            const num = parseInt(form.when, 10);
+            const date = new Date()
+            if (num < 1900 ) {
+                setMessage("Date field must be within recent years");
+                return false;
+            } else if ( num > date.getFullYear()+1) {
+                setMessage("Date field cannot be more than 2 years in the future");
+                return false;
+            }
+        }
+        setMessage('');
+        return true;
+    }
+
     const onSubmit = (e) => {
         e.preventDefault(); // allows us override the default html stuff
-        var updatedEducations = educations;
-        if ( addingNew) {
-            updatedEducations.push(updatedEducation)
-        } else {
-            updatedEducations[selectedEducation] = updatedEducation;
+        if (inCorrectFormat(updatedEducation)) {
+            var updatedEducations = educations;
+            if ( addingNew) {
+                updatedEducations.push(updatedEducation)
+            } else {
+                updatedEducations[selectedEducation] = updatedEducation;
+            }
+            axios.post('/education', {education: updatedEducations}, { headers: authHeader() })
+                .then( res => {
+                    setEducations(updatedEducations);
+                    handleClose();
+                });
         }
-        axios.post(API_URL+'/education', {education: updatedEducations}, { headers: authHeader() })
-            .then( res => {
-                setEducations(updatedEducations);
-                console.log(res.data);
-                handleClose();
-            });
+        
     }
     const renderEducation = (education, index) => {
         return (
-            <>
-                <Card>
+            <Grid item>
+                <Card variant="outlined">
                     <CardContent>
                         <Typography className={classes.typography} color="textSecondary" component="p">{education.when}</Typography>
                         <Typography className={classes.typography} color="textSecondary" component="p">{education.where}</Typography>
                         <Typography className={classes.typography} color="textSecondary" component="p">{education.what}</Typography>
                     </CardContent>
+                    <div>
+                      { authorised ? 
+                        <>
+                        <IconButton onClick={() => handleClickOpen(index)}> <Edit /> </IconButton>
+                        <IconButton onClick={() => {
+                            if(warningOn === false){
+                                handleClickDelete(index);
+                            }
+                            else{
+                                setWarningOpen(true)
+                            }
+                        }}> <Delete  /> </IconButton>
+                        <Dialog open={warningOpen} onClose={() => setWarningOpen(false)}>
+                            <DialogTitle id="form-dialog-title"> Are you sure you want to delete?</DialogTitle>
+                            <DialogContentText>
+                                <Typography gutterBottom>
+                                    Deleting this will delete a portion of your education history. Are you sure you wish to proceed?
+                                </Typography>
+                                <Typography>
+                                    Press confirm to delete.
+                                </Typography>
+                                
+                            </DialogContentText>
+                            <FormGroup row>
+                                <FormControlLabel 
+                                control={<Checkbox checked={checkbox} onClick={() => setCheckbox(!checkbox)}
+                                    />}
+                                label="Do not show again"
+                                />
+                            </FormGroup>
+                            <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() => setWarningOpen(false)}
+                            >
+                                    Cancel
+                            </Button>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => {
+                                    if(checkbox === true){
+                                        setWarningOn(false);
+                                    }
+                                    handleClickDelete(index);
+                                    setWarningOpen(false);
+                                }}
+                                startIcon={<Delete />}
+                            >
+                                Confirm Delete
+                            </Button>
+                            
+                        </Dialog>
+                        </>: <></>
+                      }
+                    </div>
                 </Card>
-                { authorised ? 
-                <>
-                    <IconButton> <Edit onClick={() => handleClickOpen(index)} /> </IconButton>
-                    <IconButton> <Delete onClick={() => handleClickDelete(index)} /> </IconButton>
-                </>: <></>}
-            </>
+            </Grid>
         )
     }
     return (
             <div>
             {loading ? <span className="spinner-border spinner-border-sm"></span> :
-            <> 
-            {educations.map(renderEducation)}
+            <>
+            <Grid container direction="column" spacing = {2}>
+                {educations.map(renderEducation)}
+            </Grid>
             <br/>
             { authorised ? 
                 <>
                     <IconButton> <Add onClick={handleAddEducation} /> </IconButton>
                     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                        <DialogTitle id="form-dialog-title">Edit details</DialogTitle>
+                        <DialogTitle id="form-dialog-title">Edit education history</DialogTitle>
                         <DialogContent className={classes.marginAutoItem}>
                             <FormControl className={classes.alignItemsAndJustifyContent}>
-                                <InputLabel htmlFor="component-helper">Date of completion</InputLabel>
+                                <InputLabel htmlFor="component-helper">Year of completion</InputLabel>
                                 <Input onChange={onChangeWhen} defaultValue={getDefaultVals().when}/></FormControl>
                             <FormControl className={classes.alignItemsAndJustifyContent}>
-                                <InputLabel htmlFor="component-helper">Name of Institution</InputLabel>
+                                <InputLabel htmlFor="component-helper">Name of institution</InputLabel>
                                 <Input onChange={onChangeWhere} defaultValue={getDefaultVals().where}/></FormControl>
                             <FormControl className={classes.alignItemsAndJustifyContent}>
                                 <InputLabel htmlFor="component-helper">Degree</InputLabel>
@@ -173,7 +257,14 @@ const Education = (props) => {
                                 Confirm
                             </Button>
                         </DialogActions>
-                    </Dialog>  
+                        {message && (
+                            <div className="form-group">
+                            <div className="alert alert-danger" role="alert">
+                                {message}
+                            </div>
+                            </div>
+                        )}
+                    </Dialog>
                 </>: <></>}
                  
             </>}

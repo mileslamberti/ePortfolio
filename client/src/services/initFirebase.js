@@ -1,14 +1,14 @@
 const firebase = require('firebase/app');
  
 const config = {
-    apiKey: "AIzaSyB6d557V-lUNBHcGoNTYFQwSOQ095Ua3CE",
-    authDomain: "eportfolio-4760f.firebaseapp.com",
-    databaseURL: "https://eportfolio-4760f.firebaseio.com",
-    projectId: "eportfolio-4760f",
-    storageBucket: "eportfolio-4760f.appspot.com",
-    messagingSenderId: "358270939228",
-    appId: "1:358270939228:web:63ce0b3ae213c8adc5f699",
-    measurementId: "G-PHNTXS2HKP"
+    apiKey: "AIzaSyAMd8gkIHRmQk5b7HKgONyfPQkq_kG9EOs",
+    authDomain: "tech-pirates-portfolio-web-app.firebaseapp.com",
+    databaseURL: "https://tech-pirates-portfolio-web-app.firebaseio.com",
+    projectId: "tech-pirates-portfolio-web-app",
+    storageBucket: "tech-pirates-portfolio-web-app.appspot.com",
+    messagingSenderId: "757059604167",
+    appId: "1:757059604167:web:3d85472269b7104b4cf8e2",
+    measurementId: "G-QG4ZZ4M0H4",
 };
 
 

@@ -16,7 +16,7 @@ module.exports = (req,res,next) => {
         req.user.handle = data.docs[0].data().handle;
         return next();
     }).catch(err => {
-        console.error('Error while authenticating token', err)
+        console.error('Error while authenticating token - likely expired', err)
         return res.status(403).json(err);
     })
 }
