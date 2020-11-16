@@ -102,6 +102,9 @@ function UploadPortfolio (props){
         axios.post(`${API_URL}/saveproject`, project, { headers: authHeader() })
             .then (res => {
                 console.log(res.data);
+                if (AcceptedFiles.length === 0)  {
+                    window.location=`/${userHandle}/${projectID}`;
+                }
             })
         AcceptedFiles.forEach((file) => {
             // upload file to storage
@@ -127,7 +130,8 @@ function UploadPortfolio (props){
                 .catch(err => {
                     console.log(err);
                 })
-        });   
+        }); 
+
         
     }
 
