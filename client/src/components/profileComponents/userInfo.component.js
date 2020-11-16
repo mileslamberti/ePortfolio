@@ -1,5 +1,5 @@
 import React, { useState, useEffect }from 'react';
-import axios from 'axios';
+import axios from "../../api";
 
 import {makeStyles, Card, CardContent, Typography, IconButton, Input, FormControl, InputLabel} from '@material-ui/core';
 import {Edit} from '@material-ui/icons';
@@ -45,7 +45,7 @@ const UserInfo = (props) => {
         if(!userInfo){
             setLoading(true);
 
-            axios.get(API_URL + "/" + props.profileHandle + "/userinfo")
+            axios.get("/" + props.profileHandle + "/userinfo")
                 .then( res => {
                     setUserInfo(res.data.userInfo);
                     setUpdatedUserInfo(res.data.userInfo);
@@ -120,7 +120,7 @@ const UserInfo = (props) => {
     const onSubmit = (e) => {
         e.preventDefault(); // allows us override the default html stuff
         if (inCorrectFormat(updatedUserInfo)){
-            axios.post(API_URL + '/userinfo', updatedUserInfo, { headers: authHeader() })
+            axios.post('/userinfo', updatedUserInfo, { headers: authHeader() })
                 .then( res => {
                     setUserInfo(updatedUserInfo);
                     console.log(res.data);

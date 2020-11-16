@@ -1,5 +1,5 @@
-import React, { useState, useEffect }from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "../../api";
 
 import {makeStyles, Card, CardContent, Typography, IconButton, Input, FormControl, InputLabel, FormGroup, FormControlLabel, Checkbox} from '@material-ui/core';
 import {Edit, Add, Delete} from '@material-ui/icons';
@@ -50,7 +50,7 @@ const Experience = (props) => {
 
     useEffect( () => {
         setLoading(true);
-        axios.get(API_URL + `/${props.profileHandle}/experience`)
+        axios.get(`/${props.profileHandle}/experience`)
             .then( res => {
                 setExperiences(res.data.experiences);
                 setLoading(false);
@@ -72,7 +72,7 @@ const Experience = (props) => {
     const handleClickDelete = (index) => {
         var updatedExperiences = [ ...experiences ];
         updatedExperiences.splice(index, 1);
-        axios.post(API_URL+'/experience', {experiences: updatedExperiences}, { headers: authHeader() })
+        axios.post('/experience', {experiences: updatedExperiences}, { headers: authHeader() })
             .then( res => {
                 setExperiences(updatedExperiences);
             });
@@ -153,7 +153,7 @@ const Experience = (props) => {
             } else {
                 updatedExperiences[selectedExperience] = updatedExperience;
             }
-            axios.post(API_URL+'/experience', {experiences: updatedExperiences}, { headers: authHeader() })
+            axios.post('/experience', {experiences: updatedExperiences}, { headers: authHeader() })
                 .then( res => {
                     setExperiences(updatedExperiences);
                     handleClose();

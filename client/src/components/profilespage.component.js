@@ -1,15 +1,28 @@
-import React from 'react';
-import axios from 'axios';
+import React from "react";
+import axios from "../api";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useState } from "react";
 
 import { Card } from "react-bootstrap" ;
 import Button from '@material-ui/core/Button';
 
-const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
+function ProfilesPage() {
+  const [search, setSearch] = useState("");
+  const [profiles, setProfiles] = useState([]);
 
-function ProfilesPage(){
+  useEffect(() => {
+    axios
+      .get("/profiles")
+      .then((res) => {
+        res.data.users.forEach((user) => {
+          getProfileInfo(user);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
     const [search, setSearch] = useState('');
     const [profiles, setProfiles] = useState([]);
@@ -17,7 +30,7 @@ function ProfilesPage(){
     const [Dp, setDp] = useState([]);
 
     useEffect( () => {
-        axios.get(API_URL + "/profiles")
+        axios.get("/profiles")
             .then( res => {
                 var loadedProfiles=[]
                 setProfiles(res.data.users);
@@ -68,7 +81,7 @@ function ProfilesPage(){
 
     const getProfileInfo = (loadedProfiles, index) => {
         const userHandle = loadedProfiles[index].handle;
-        axios.get(API_URL+`/${userHandle}/aboutme`).then( res => {
+        axios.get(`/${userHandle}/aboutme`).then( res => {
             switch (res.status){
                 case 200:
                     // return res.data.aboutMe;
@@ -84,7 +97,7 @@ function ProfilesPage(){
     const getTagsInfo = (loadedProfiles, index) => {
         const userHandle = loadedProfiles[index].handle;
 
-        axios.get(API_URL+`/${userHandle}/tags`).then( res => {
+        axios.get(`/${userHandle}/tags`).then( res => {
             switch (res.status){
                 case 200:
                     saveTagsCard(loadedProfiles, index, res.data.tags);
@@ -99,7 +112,7 @@ function ProfilesPage(){
 
     const getDpInfo = (loadedProfiles, index) => {
         const userHandle = loadedProfiles[index].handle;
-        axios.get(API_URL+`/${userHandle}/dp`).then( res => {
+        axios.get(`/${userHandle}/dp`).then( res => {
             switch (res.status){
                 case 200:
                     saveDpCard(loadedProfiles, index, res.data.profilePic);
@@ -182,6 +195,7 @@ function ProfilesPage(){
         );
     }
 
+  const renderCard = (card, index) => {
     return (
         <div >
             <input type="text" placeholder= "Search by Name or Skill" onChange= { e => setSearch(e.target.value) }/>
@@ -190,5 +204,17 @@ function ProfilesPage(){
             </div>
         </div>
     );
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        placeholder="Search"
+        onChange={(e) => setSearch(e.target.value)}
+      />
+      <div className="row">{filteredProfiles.map(renderCard)}</div>
+    </div>
+  );
 }
 export default ProfilesPage;

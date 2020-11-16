@@ -1,5 +1,5 @@
 import React, { useState, useEffect }from 'react';
-import axios from 'axios';
+import axios from "../../api";
 
 import {makeStyles, Card, CardContent, Typography, IconButton, Input, FormControl, InputLabel, FormGroup, FormControlLabel, Checkbox} from '@material-ui/core';
 import {Edit, Add, Delete} from '@material-ui/icons';
@@ -51,7 +51,7 @@ const Education = (props) => {
     useEffect( () => {
         setLoading(true);
         
-        axios.get(API_URL +`/${props.profileHandle}/education`)
+        axios.get(`/${props.profileHandle}/education`)
             .then( res => {
                 setEducations(res.data.educations);
                 setLoading(false);
@@ -73,7 +73,7 @@ const Education = (props) => {
     const handleClickDelete = (index) => {
         var updatedEducations = [ ...educations ];
         updatedEducations.splice(index, 1);
-        axios.post(API_URL+'/education', {education: updatedEducations}, { headers: authHeader() })
+        axios.post('/education', {education: updatedEducations}, { headers: authHeader() })
             .then( res => {
                 setEducations(updatedEducations);
             });
@@ -150,7 +150,7 @@ const Education = (props) => {
             } else {
                 updatedEducations[selectedEducation] = updatedEducation;
             }
-            axios.post(API_URL+'/education', {education: updatedEducations}, { headers: authHeader() })
+            axios.post('/education', {education: updatedEducations}, { headers: authHeader() })
                 .then( res => {
                     setEducations(updatedEducations);
                     handleClose();
