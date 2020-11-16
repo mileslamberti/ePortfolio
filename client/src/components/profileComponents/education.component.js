@@ -1,7 +1,7 @@
 import React, { useState, useEffect }from 'react';
-import axios from 'axios';
+import axios from "../../api";
 
-import {makeStyles, Card, CardContent, Typography, IconButton, Input, FormControl, InputLabel, FormGroup, FormControlLabel, Checkbox} from '@material-ui/core';
+import {makeStyles, Card, CardContent, Typography, IconButton, Input, FormControl, InputLabel, FormGroup, FormControlLabel, Checkbox, Grid} from '@material-ui/core';
 import {Edit, Add, Delete} from '@material-ui/icons';
 
 import Button from '@material-ui/core/Button';
@@ -14,8 +14,6 @@ import DialogContentText from  '@material-ui/core/DialogContentText';
 
 import authHeader from "../../services/auth-header";
 
-const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
-
 const useStyles = makeStyles({
       marginAutoItem: {
         margin: 'auto'
@@ -26,7 +24,7 @@ const useStyles = makeStyles({
         display: 'flex',
       },
       typography: {
-          fontSize: "1rem"
+          fontSize: "0.7rem"
       }
 });
 
@@ -51,7 +49,7 @@ const Education = (props) => {
     useEffect( () => {
         setLoading(true);
         
-        axios.get(API_URL +`/${props.profileHandle}/education`)
+        axios.get(`/${props.profileHandle}/education`)
             .then( res => {
                 setEducations(res.data.educations);
                 setLoading(false);
@@ -73,7 +71,7 @@ const Education = (props) => {
     const handleClickDelete = (index) => {
         var updatedEducations = [ ...educations ];
         updatedEducations.splice(index, 1);
-        axios.post(API_URL+'/education', {education: updatedEducations}, { headers: authHeader() })
+        axios.post('/education', {education: updatedEducations}, { headers: authHeader() })
             .then( res => {
                 setEducations(updatedEducations);
             });
@@ -150,7 +148,7 @@ const Education = (props) => {
             } else {
                 updatedEducations[selectedEducation] = updatedEducation;
             }
-            axios.post(API_URL+'/education', {education: updatedEducations}, { headers: authHeader() })
+            axios.post('/education', {education: updatedEducations}, { headers: authHeader() })
                 .then( res => {
                     setEducations(updatedEducations);
                     handleClose();
@@ -160,75 +158,80 @@ const Education = (props) => {
     }
     const renderEducation = (education, index) => {
         return (
-            <>
-                <Card>
+            <Grid item>
+                <Card variant="outlined">
                     <CardContent>
                         <Typography className={classes.typography} color="textSecondary" component="p">{education.when}</Typography>
                         <Typography className={classes.typography} color="textSecondary" component="p">{education.where}</Typography>
                         <Typography className={classes.typography} color="textSecondary" component="p">{education.what}</Typography>
                     </CardContent>
-                </Card>
-                { authorised ? 
-                <>
-                    <IconButton onClick={() => handleClickOpen(index)}> <Edit  /> </IconButton>
-                    <IconButton onClick={() => {
-                        if(warningOn === false){
-                            handleClickDelete(index);
-                        }
-                        else{
-                            setWarningOpen(true)
-                        }
-                    }}> <Delete  /> </IconButton>
-                    <Dialog open={warningOpen} onClose={() => setWarningOpen(false)}>
-                        <DialogTitle id="form-dialog-title"> Are you sure you want to delete?</DialogTitle>
-                        <DialogContentText>
-                            <Typography gutterBottom>
-                                Deleting this will delete a portion of your education history. Are you sure you wish to proceed?
-                            </Typography>
-                            <Typography>
-                                Press confirm to delete.
-                            </Typography>
-                            
-                        </DialogContentText>
-                        <FormGroup row>
-                            <FormControlLabel 
-                            control={<Checkbox checked={checkbox} onClick={() => setCheckbox(!checkbox)}
-                                />}
-                            label="Do not show again"
-                            />
-                        </FormGroup>
-                        <Button
+                    <div>
+                      { authorised ? 
+                        <>
+                        <IconButton onClick={() => handleClickOpen(index)}> <Edit /> </IconButton>
+                        <IconButton onClick={() => {
+                            if(warningOn === false){
+                                handleClickDelete(index);
+                            }
+                            else{
+                                setWarningOpen(true)
+                            }
+                        }}> <Delete  /> </IconButton>
+                        <Dialog open={warningOpen} onClose={() => setWarningOpen(false)}>
+                            <DialogTitle id="form-dialog-title"> Are you sure you want to delete?</DialogTitle>
+                            <DialogContentText>
+                                <Typography gutterBottom>
+                                    Deleting this will delete a portion of your education history. Are you sure you wish to proceed?
+                                </Typography>
+                                <Typography>
+                                    Press confirm to delete.
+                                </Typography>
+                                
+                            </DialogContentText>
+                            <FormGroup row>
+                                <FormControlLabel 
+                                control={<Checkbox checked={checkbox} onClick={() => setCheckbox(!checkbox)}
+                                    />}
+                                label="Do not show again"
+                                />
+                            </FormGroup>
+                            <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() => setWarningOpen(false)}
+                            >
+                                    Cancel
+                            </Button>
+                            <Button
                                 variant="contained"
                                 color="primary"
-                                onClick={() => setWarningOpen(false)}
-                        >
-                                Cancel
-                        </Button>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => {
-                                if(checkbox === true){
-                                    setWarningOn(false);
-                                }
-                                handleClickDelete(index);
-                                setWarningOpen(false);
-                            }}
-                            startIcon={<Delete />}
-                        >
-                            Confirm Delete
-                        </Button>
-                        
-                    </Dialog>
-                </>: <></>}
-            </>
+                                onClick={() => {
+                                    if(checkbox === true){
+                                        setWarningOn(false);
+                                    }
+                                    handleClickDelete(index);
+                                    setWarningOpen(false);
+                                }}
+                                startIcon={<Delete />}
+                            >
+                                Confirm Delete
+                            </Button>
+                            
+                        </Dialog>
+                        </>: <></>
+                      }
+                    </div>
+                </Card>
+            </Grid>
         )
     }
     return (
             <div>
             {loading ? <span className="spinner-border spinner-border-sm"></span> :
-            <> 
-            {educations.map(renderEducation)}
+            <>
+            <Grid container direction="column" spacing = {2}>
+                {educations.map(renderEducation)}
+            </Grid>
             <br/>
             { authorised ? 
                 <>

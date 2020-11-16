@@ -1,5 +1,5 @@
-import React from 'react';
-import axios from 'axios';
+import React from "react";
+import axios from "../api";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from "react";
@@ -17,7 +17,7 @@ function ProfilesPage(){
     const [Dp, setDp] = useState([]);
 
     useEffect( () => {
-        axios.get(API_URL + "/profiles")
+        axios.get("/profiles")
             .then( res => {
                 var loadedProfiles=[]
                 setProfiles(res.data.users);
@@ -68,7 +68,7 @@ function ProfilesPage(){
 
     const getProfileInfo = (loadedProfiles, index) => {
         const userHandle = loadedProfiles[index].handle;
-        axios.get(API_URL+`/${userHandle}/aboutme`).then( res => {
+        axios.get(`/${userHandle}/aboutme`).then( res => {
             switch (res.status){
                 case 200:
                     // return res.data.aboutMe;
@@ -84,7 +84,7 @@ function ProfilesPage(){
     const getTagsInfo = (loadedProfiles, index) => {
         const userHandle = loadedProfiles[index].handle;
 
-        axios.get(API_URL+`/${userHandle}/tags`).then( res => {
+        axios.get(`/${userHandle}/tags`).then( res => {
             switch (res.status){
                 case 200:
                     saveTagsCard(loadedProfiles, index, res.data.tags);
@@ -99,7 +99,7 @@ function ProfilesPage(){
 
     const getDpInfo = (loadedProfiles, index) => {
         const userHandle = loadedProfiles[index].handle;
-        axios.get(API_URL+`/${userHandle}/dp`).then( res => {
+        axios.get(`/${userHandle}/dp`).then( res => {
             switch (res.status){
                 case 200:
                     saveDpCard(loadedProfiles, index, res.data.profilePic);
