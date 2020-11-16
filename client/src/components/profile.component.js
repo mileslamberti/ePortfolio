@@ -3,6 +3,17 @@ import React, { useState, useEffect } from "react";
 import "./profile.component.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "../api";
+import { Button, Grid, Icon } from "@material-ui/core/";
+
+import { IconButton } from "@material-ui/core";
+import {Edit, Add, Delete, Help} from '@material-ui/icons';
+import {
+  Dialog,
+  Typography,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@material-ui/core";
 
 import DP from "./profileComponents/dp.component";
 import AboutMe from "./profileComponents/aboutMe.component";
@@ -14,11 +25,16 @@ import UserService from "../services/user.service";
 
 import ProjectPanel from "../cardComponents/projectPanel.component";
 
+const divStyle = {
+  marginLeft: '1400px',
+};
+
 export default function MyProfile(props) {
   const profileHandle = props.match.params.handle;
   const [authorised, setAuthorised] = useState(false);
   const [priv, setPriv] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [helpOpen, setHelpOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,6 +49,47 @@ export default function MyProfile(props) {
   }, []);
 
   return (
+
+    <div >
+    {authorised ? (
+      <IconButton style = {divStyle}
+        variant="contained"
+        onClick={() => setHelpOpen(true)}
+      >
+        <Help/>
+      </IconButton>
+    ) : (
+      <></>
+    )}
+    <Grid item xs={6}>
+      <Dialog open={helpOpen} onClose={() => setHelpOpen(false)}>
+        <DialogContent>
+          <DialogTitle id="form-dialog-title">
+            How start off your profile
+          </DialogTitle>
+          <DialogContentText>
+            <Typography gutterBottom>
+              To Edit press
+            </Typography>
+            <Typography gutterBottom>
+               <Edit/>
+            </Typography>
+            <Typography gutterBottom>
+              To Delete press
+            </Typography>
+            <Typography gutterBottom>
+              <Delete/>
+            </Typography>
+            <Typography gutterBottom>
+              To Add press
+            </Typography>
+            <Typography gutterBottom>
+              <Add/>
+            </Typography>
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>  
+    </Grid>
     <div>
       {loading ? (
         <span className="spinner-border spinner-border-sm"></span>
@@ -110,6 +167,7 @@ export default function MyProfile(props) {
           )}
         </>
       )}
+    </div>
     </div>
   );
 }

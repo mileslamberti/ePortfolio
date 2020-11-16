@@ -8,6 +8,7 @@ exports.createAboutMe = (req, res) => {
     const aboutMe = {
         displayName : req.body.displayName,
         description : req.body.description,
+        bio : req.body.bio,
     };
     //db.collection(`/users/${req.user.handle}/data/`).doc("aboutme").set({aboutMe}).then(doc => {
     db.doc(`/users/${req.user.handle}/data/aboutme`).set({aboutMe}).then(doc => {
@@ -25,7 +26,7 @@ exports.getAboutMe = (req,res) => {
             aboutMe = doc.data().aboutMe;
             return res.status(200).json({aboutMe});
         } else {
-            aboutMe = { displayName : "Display name", description : "Profile description"};
+            aboutMe = { displayName : "Display name", description : "Profile description", bio : "Profile bio"};
             db.doc(`/users/${req.params.handle}/data/aboutme`).set({aboutMe})
             return res.status(200).json({aboutMe});
         }

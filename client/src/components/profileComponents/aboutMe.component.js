@@ -65,6 +65,9 @@ const AboutMe = (props) => {
   const onChangeDescription = (e) => {
     setUpdatedAboutMe({ ...updatedAboutMe, description: e.target.value });
   };
+  const onChangebio = (e) => {
+    setUpdatedAboutMe({ ...updatedAboutMe, bio: e.target.value });
+  };
 
   // This function handles the case for freshly registered users, whose content is set to the default...
   // which acts as a placeholder on the page. This default placeholder is clunky to act as a defaultValue...
@@ -77,6 +80,9 @@ const AboutMe = (props) => {
     }
     if (defaultVals.description === "Profile description") {
       defaultVals.description = "";
+    }
+    if (defaultVals.bio === "Profile bio") {
+      defaultVals.bio = "";
     }
 
     return defaultVals;
@@ -107,6 +113,11 @@ const AboutMe = (props) => {
               <Typography variant="h4" color="textSecondary" component="p">
                 {aboutMe.description}
               </Typography>
+              <br/>
+              <Typography variant="h4" color="textSecondary" component="p">
+                {aboutMe.bio}
+              </Typography>
+              
             </Grid>
             <Grid item>
               <div>
@@ -139,6 +150,15 @@ const AboutMe = (props) => {
                         <Input
                           onChange={onChangeDescription}
                           defaultValue={getDefaultVals(aboutMe).description}
+                        />
+                      </FormControl>
+                      <FormControl>
+                        <InputLabel htmlFor="component-helper">
+                          Profile bio
+                        </InputLabel>
+                        <Input
+                          onChange={onChangebio}
+                          defaultValue={getDefaultVals(aboutMe).bio}
                         />
                       </FormControl>
                     </DialogContent>
