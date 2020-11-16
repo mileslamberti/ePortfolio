@@ -270,12 +270,12 @@ function Project(props) {
         <></>
       )}
       <div>
-        <Grid container spacing={1} direction="row">
+        <Grid container spacing={1} direction="column">
           <Grid item xs={12}>
             <PortfolioTitleCard authorised={authorised} />
           </Grid>
 
-          <Grid item direction="row" xs={6}>
+          <Grid item xs={6}>
             {authorised ? (
               <Grid
                 container
@@ -319,7 +319,9 @@ function Project(props) {
               <></>
             )}
           </Grid>
+
           {/*  */}
+          
           {authorised && (
             <Dialog open={warningOpen} onClose={() => setWarningOpen(false)}>
               <DialogTitle id="form-dialog-title">
@@ -352,7 +354,7 @@ function Project(props) {
             </Dialog>
           )}
 
-          <Grid item>
+          <Grid item xs={6}>
             <Dialog open={helpOpen} onClose={() => setHelpOpen(false)}>
               <DialogContent>
                 <DialogTitle id="form-dialog-title">

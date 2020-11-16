@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../api";
+
 import {
-  CardContent,
+  Grid,
   Typography,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   IconButton,
   Input,
   FormControl,
   InputLabel,
 } from "@material-ui/core";
-import { Edit } from "@material-ui/icons";
 
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import { Edit } from "@material-ui/icons";
 
 import authHeader from "../../services/auth-header";
 
@@ -98,59 +99,63 @@ const AboutMe = (props) => {
         <span className="spinner-border spinner-border-sm"></span>
       ) : (
         <>
-          <CardContent>
-            <Typography variant="h3" component="p">
-              {aboutMe.displayName}
-            </Typography>
-            <Typography variant="h4" color="textSecondary" component="p">
-              {aboutMe.description}
-            </Typography>
-          </CardContent>
-          {authorised ? (
-            <>
-              <IconButton>
-                {" "}
-                <Edit onClick={handleClickOpen} />{" "}
-              </IconButton>
-              <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="form-dialog-title"
-              >
-                <DialogTitle id="form-dialog-title">Edit about me</DialogTitle>
-                <DialogContent>
-                  <FormControl>
-                    <InputLabel htmlFor="component-helper">
-                      Display name
-                    </InputLabel>
-                    <Input
-                      onChange={onChangeDisplayName}
-                      defaultValue={getDefaultVals(aboutMe).displayName}
-                    />
-                  </FormControl>
-                  <FormControl>
-                    <InputLabel htmlFor="component-helper">
-                      Profile description
-                    </InputLabel>
-                    <Input
-                      onChange={onChangeDescription}
-                      defaultValue={getDefaultVals(aboutMe).description}
-                    />
-                  </FormControl>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleCancel} color="primary">
-                    Cancel
-                  </Button>
-                  <Button onClick={onSubmit} color="primary">
-                    Confirm
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </>
-          ) : (
-            <></>
-          )}
+          <Grid container direction="row" spacing={2}>
+            <Grid item>
+              <Typography variant="h3" component="p">
+                {aboutMe.displayName}
+              </Typography>
+              <Typography variant="h4" color="textSecondary" component="p">
+                {aboutMe.description}
+              </Typography>
+            </Grid>
+            <Grid item>
+              <div>
+                {authorised ? (
+                <>
+                  <IconButton>
+                    {" "}
+                    <Edit onClick={handleClickOpen} />{" "}
+                  </IconButton>
+                  <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="form-dialog-title"
+                  >
+                    <DialogTitle id="form-dialog-title">Edit about me</DialogTitle>
+                    <DialogContent>
+                      <FormControl>
+                        <InputLabel htmlFor="component-helper">
+                          Display name
+                        </InputLabel>
+                        <Input
+                          onChange={onChangeDisplayName}
+                          defaultValue={getDefaultVals(aboutMe).displayName}
+                        />
+                      </FormControl>
+                      <FormControl>
+                        <InputLabel htmlFor="component-helper">
+                          Profile description
+                        </InputLabel>
+                        <Input
+                          onChange={onChangeDescription}
+                          defaultValue={getDefaultVals(aboutMe).description}
+                        />
+                      </FormControl>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleCancel} color="primary">
+                        Cancel
+                      </Button>
+                      <Button onClick={onSubmit} color="primary">
+                        Confirm
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                </>) : (<></>)
+                }
+              </div>
+            </Grid>
+          </Grid>
         </>
       )}
     </div>

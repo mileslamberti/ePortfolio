@@ -134,49 +134,52 @@ const UserInfo = (props) => {
         <div>
             {loading ? <span className="spinner-border spinner-border-sm"></span> : 
             <>
-                <Card>
-                <CardContent>
-                        <Typography className={classes.typography} color="textSecondary" component="p">{userInfo.occupation}</Typography>
-                        <Typography className={classes.typography} color="textSecondary" component="p">{userInfo.location}</Typography>
-                        <Typography className={classes.typography} color="textSecondary" component="p">{userInfo.number}</Typography>
-                        <Typography className={classes.typography} color="textSecondary" component="p">{userInfo.email}</Typography>
-                </CardContent>
-                </Card>
-                {authorised ? (<>
-                    <IconButton> <Edit onClick={handleClickOpen} /> </IconButton>
-                    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                <Card spacing={2}>
+                  <CardContent>
+                          <Typography className={classes.typography} color="textSecondary" component="p">{userInfo.occupation}</Typography>
+                          <Typography className={classes.typography} color="textSecondary" component="p">{userInfo.location}</Typography>
+                          <Typography className={classes.typography} color="textSecondary" component="p">{userInfo.number}</Typography>
+                          <Typography className={classes.typography} color="textSecondary" component="p">{userInfo.email}</Typography>
+                  </CardContent>
+                  <div>
+                    {authorised ? (<>
+                      <IconButton> <Edit onClick={handleClickOpen} /> </IconButton>
+                      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                         <DialogTitle id="form-dialog-title">Edit details</DialogTitle>
-                        <DialogContent className={classes.marginAutoItem}>
-                            <FormControl className={classes.alignItemsAndJustifyContent}>
-                                <InputLabel htmlFor="component-helper">Occupation</InputLabel>
-                                <Input onChange={onChangeOccupation} defaultValue={getDefaultVals(userInfo).occupation}/></FormControl>
-                            <FormControl className={classes.alignItemsAndJustifyContent}>
-                                <InputLabel htmlFor="component-helper">Location</InputLabel>
-                                <Input onChange={onChangeLocation} defaultValue={getDefaultVals(userInfo).location}/></FormControl>
-                            <FormControl className={classes.alignItemsAndJustifyContent}>
-                                <InputLabel htmlFor="component-helper">Contact number</InputLabel>
-                                <Input onChange={onChangeNumber} defaultValue={getDefaultVals(userInfo).number}/></FormControl>
-                            <FormControl className={classes.alignItemsAndJustifyContent}>
-                                <InputLabel htmlFor="component-helper">Contact email address</InputLabel>
-                                <Input onChange={onChangeEmail} defaultValue={getDefaultVals(userInfo).email}/></FormControl>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={handleCancel} color="primary">
-                                Cancel
-                            </Button>
-                            <Button onClick={onSubmit} color="primary">
-                                Confirm
-                            </Button>
-                        </DialogActions>
-                        {message && (
-                            <div className="form-group">
-                                <div className="alert alert-danger" role="alert">
-                                    {message}
-                                </div>
-                            </div>
-                        )}    
-                    </Dialog>
-                </>) : (<></>)}
+                          <DialogContent className={classes.marginAutoItem}>
+                              <FormControl className={classes.alignItemsAndJustifyContent}>
+                                  <InputLabel htmlFor="component-helper">Occupation</InputLabel>
+                                  <Input onChange={onChangeOccupation} defaultValue={getDefaultVals(userInfo).occupation}/></FormControl>
+                              <FormControl className={classes.alignItemsAndJustifyContent}>
+                                  <InputLabel htmlFor="component-helper">Location</InputLabel>
+                                  <Input onChange={onChangeLocation} defaultValue={getDefaultVals(userInfo).location}/></FormControl>
+                              <FormControl className={classes.alignItemsAndJustifyContent}>
+                                  <InputLabel htmlFor="component-helper">Contact number</InputLabel>
+                                  <Input onChange={onChangeNumber} defaultValue={getDefaultVals(userInfo).number}/></FormControl>
+                              <FormControl className={classes.alignItemsAndJustifyContent}>
+                                  <InputLabel htmlFor="component-helper">Contact email address</InputLabel>
+                                  <Input onChange={onChangeEmail} defaultValue={getDefaultVals(userInfo).email}/></FormControl>
+                          </DialogContent>
+                          <DialogActions>
+                              <Button onClick={handleCancel} color="primary">
+                                  Cancel
+                              </Button>
+                              <Button onClick={onSubmit} color="primary">
+                                  Confirm
+                              </Button>
+                          </DialogActions>
+                          {message && (
+                              <div className="form-group">
+                                  <div className="alert alert-danger" role="alert">
+                                      {message}
+                                  </div>
+                              </div>
+                          )}  
+                      </Dialog>
+                      </>) : (<></>)
+                    }
+                  </div>
+                </Card>
             </>
             }
         </div>

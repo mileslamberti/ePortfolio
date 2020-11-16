@@ -58,6 +58,15 @@ export default function MyProfile(props) {
                         profileHandle={profileHandle}
                       />
                     </div>
+                    <div class="profile_item profile_education">
+                      <div class="title">
+                        <p class="bold">Education</p>
+                      </div>
+                          <Education
+                            authorised={authorised}
+                            profileHandle={profileHandle}
+                          />
+                    </div>
                     <div class="profile_item profile_skills">
                       <div class="title">
                         <p class="bold">skills</p>
@@ -82,27 +91,10 @@ export default function MyProfile(props) {
                     <div class="title">
                       <p class="bold">Work Experience</p>
                     </div>
-                    <ul>
-                      <li>
                         <Experience
                           authorised={authorised}
                           profileHandle={profileHandle}
                         />
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="profile_item profile_education">
-                    <div class="title">
-                      <p class="bold">Education</p>
-                    </div>
-                    <ul>
-                      <li>
-                        <Education
-                          authorised={authorised}
-                          profileHandle={profileHandle}
-                        />
-                      </li>
-                    </ul>
                   </div>
                   <div class="profile_item profile_education">
                     <div class="title">

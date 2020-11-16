@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../api";
 
-import {makeStyles, Card, CardContent, Typography, IconButton, Input, FormControl, InputLabel, FormGroup, FormControlLabel, Checkbox} from '@material-ui/core';
+import {makeStyles, Grid, Card, CardContent, Typography, IconButton, Input, FormControl, InputLabel, FormGroup, FormControlLabel, Checkbox} from '@material-ui/core';
 import {Edit, Add, Delete} from '@material-ui/icons';
 
 import Button from '@material-ui/core/Button';
@@ -13,8 +13,6 @@ import DialogContentText from  '@material-ui/core/DialogContentText';
 
 
 import authHeader from "../../services/auth-header";
-
-const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
 const useStyles = makeStyles({
       marginAutoItem: {
@@ -163,75 +161,80 @@ const Experience = (props) => {
     }
     const renderExperience = (experience, index) => {
         return (
-            <>
-                <Card>
+            <Grid item>
+                <Card variant="outlined">
                     <CardContent>
                         <Typography className={classes.typography} color="textSecondary" component="p">{experience.date}</Typography>
                         <Typography className={classes.typography} color="textSecondary" component="p">{experience.companyName}</Typography>
                         <Typography className={classes.typography} color="textSecondary" component="p">{experience.jobTitle}</Typography>
                         <Typography className={classes.typography} color="textSecondary" component="p">{experience.jobDescription}</Typography>
                     </CardContent>
-                </Card>
-                { authorised ? 
-                <>
-                    <IconButton onClick={() => handleClickOpen(index)}> <Edit  /> </IconButton>
-                    <IconButton onClick={() => {
-                        if(warningOn === false){
-                            handleClickDelete(index);
-                        }
-                        else{
-                            setWarningOpen(true)
-                        }
-                    }}> <Delete  /> </IconButton>
-                    <Dialog open={warningOpen} onClose={() => setWarningOpen(false)}>
-                        <DialogTitle id="form-dialog-title"> Are you sure you want to delete?</DialogTitle>
-                        <DialogContentText>
-                            <Typography gutterBottom>
-                                Deleting this will delete a portion of your work history. Are you sure you wish to proceed?
-                            </Typography>
-                            <Typography>
-                                Press confirm to delete.
-                            </Typography>
-                            
-                        </DialogContentText>
-                        <FormGroup row>
-                            <FormControlLabel 
-                            control={<Checkbox checked={checkbox} onClick={() => setCheckbox(!checkbox)}
-                                />}
-                            label="Do not show again"
-                            />
-                        </FormGroup>
-                        <Button
+                    <div>
+                      { authorised ? 
+                        <>
+                        <IconButton onClick={() => handleClickOpen(index)}> <Edit  /> </IconButton>
+                        <IconButton onClick={() => {
+                            if(warningOn === false){
+                                handleClickDelete(index);
+                            }
+                            else{
+                                setWarningOpen(true)
+                            }
+                        }}> <Delete  /> </IconButton>
+                        <Dialog open={warningOpen} onClose={() => setWarningOpen(false)}>
+                            <DialogTitle id="form-dialog-title"> Are you sure you want to delete?</DialogTitle>
+                            <DialogContentText>
+                                <Typography gutterBottom>
+                                    Deleting this will delete a portion of your work history. Are you sure you wish to proceed?
+                                </Typography>
+                                <Typography>
+                                    Press confirm to delete.
+                                </Typography>
+                                
+                            </DialogContentText>
+                            <FormGroup row>
+                                <FormControlLabel 
+                                control={<Checkbox checked={checkbox} onClick={() => setCheckbox(!checkbox)}
+                                    />}
+                                label="Do not show again"
+                                />
+                            </FormGroup>
+                            <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() => setWarningOpen(false)}
+                            >
+                                    Cancel
+                            </Button>
+                            <Button
                                 variant="contained"
                                 color="primary"
-                                onClick={() => setWarningOpen(false)}
-                        >
-                                Cancel
-                        </Button>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => {
-                                if(checkbox === true){
-                                    setWarningOn(false);
-                                }
-                                handleClickDelete(index);
-                                setWarningOpen(false);
-                            }}
-                            startIcon={<Delete />}
-                        >
-                            Confirm Delete
-                        </Button>
-                    </Dialog>
-                </> : <></>}
-            </>
+                                onClick={() => {
+                                    if(checkbox === true){
+                                        setWarningOn(false);
+                                    }
+                                    handleClickDelete(index);
+                                    setWarningOpen(false);
+                                }}
+                                startIcon={<Delete />}
+                            >
+                                Confirm Delete
+                            </Button>
+                        </Dialog>
+                        </> : <></>
+                      }
+                    </div>
+                </Card>
+            </Grid>
         )
     }
     return (
             <div>
             {loading ? <span className="spinner-border spinner-border-sm"></span> : 
             <>
-            {experiences.map(renderExperience)}
+            <Grid container direction="column" spacing = {2}>
+              {experiences.map(renderExperience)}
+            </Grid>
             <br/>
             { authorised ? 
                 <>
