@@ -70,6 +70,7 @@ function PortfolioCard(props) {
 
   const [checkbox, setCheckbox] = useState(false);
 
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
