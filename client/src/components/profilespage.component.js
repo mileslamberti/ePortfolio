@@ -184,7 +184,7 @@ function ProfilesPage(){
 
     return (
         <div >
-            <input type="text" placeholder= "Search by Name or Skill" onChange= { e => setSearch(e.target.value) }/>
+            <input type="text" placeholder= "Search by Name or Skill or Tag" onChange= { e => setSearch(e.target.value) }/>
             <div className="row">
             {filteredProfiles.map(renderCard)}
             </div>
