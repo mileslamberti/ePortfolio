@@ -102,15 +102,19 @@ const UserInfo = (props) => {
         return defaultVals;
     }
     const inCorrectFormat = (form) => {
+        const hasNumber = (form.number !== '');
+        const hasEmail = (form.email !== '');
+        console.log("hasnumber", hasNumber);
+        console.log("hasEmail", hasEmail);
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         const phoneRegex = /^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$|[0-9]{6,12}/
         const number = form.number.replace(/\s/g,'');
         const isEmail = emailRegex.test(form.email);
         const isPhoneNumber = phoneRegex.test(number);
-        if (! isPhoneNumber) {
+        if (hasNumber && ! isPhoneNumber) {
             setMessage("Phone number must be a valid phone number");
             return false;
-        }else if ( !isEmail ) {
+        }else if ( hasEmail && !isEmail ) {
             setMessage("Email field must be a valid email address");
             return false;
         }
