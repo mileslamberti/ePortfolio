@@ -32,10 +32,10 @@ const initialFiles = {
 const stockPictures = {
   tiles: [
     {
-      fileLink: "https://material-ui.com/static/images/grid-list/hats.jpg",
+      fileLink: "https://www.flaticon.com/svg/static/icons/svg/3721/3721643.svg",
     },
     {
-      fileLink: "https://material-ui.com/static/images/grid-list/bike.jpg",
+      fileLink: "https://www.flaticon.com/svg/static/icons/svg/2645/2645943.svg",
     },
     {
       fileLink: "https://material-ui.com/static/images/grid-list/mushroom.jpg",
