@@ -104,9 +104,6 @@ function DialogPortfolioCard(props){
           </Button>
           <Button onClick={() => {
               handleDialogConfirm(formTitle, formSubtitle, formDescription, filesToAssociate, currentDisplayPicture);
-              setFormTitle("");
-              setFormSubtitle("");
-              setFormDescription("");
             }} 
             color="primary">
             Confirm
