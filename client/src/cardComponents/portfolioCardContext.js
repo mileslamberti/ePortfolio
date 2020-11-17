@@ -41,7 +41,7 @@ const stockPictures = {
       fileLink: "https://www.flaticon.com/svg/static/icons/svg/1160/1160044.svg",
     },
     {
-      fileLink: "https://www.flaticon.com/svg/static/icons/svg/2541/2541979.svg",
+      fileLink: "https://www.flaticon.com/svg/static/icons/svg/35/35920.svg",
     },
     {
       fileLink: "https://material-ui.com/static/images/grid-list/star.jpg",
@@ -73,6 +73,11 @@ export const PortfolioCardProvider = (props) => {
   /** Functions that manage cardsState */
 
   function addCard(cardInfo) {
+    // Default image
+    if(cardInfo.img === undefined){
+      cardInfo.img = "https://www.flaticon.com/svg/static/icons/svg/35/35920.svg"
+    }
+    console.log(cardInfo)
     dispatchCards({
       type: ACTIONS.ADD_CARD,
       payload: {
@@ -82,7 +87,7 @@ export const PortfolioCardProvider = (props) => {
         description: cardInfo.description,
         projectID: projectID,
         position: cardsState.cards.length,
-        img: cardInfo.img,
+        img: cardInfo.img
       },
     });
     const card = {
@@ -92,8 +97,7 @@ export const PortfolioCardProvider = (props) => {
       description: cardInfo.description,
       projectID: projectID,
       position: cardsState.cards.length,
-      img:
-        "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ficdn2.digitaltrends.com%2Fimage%2Fschool-coding-1200x0.jpg%3Fver%3D1&f=1&nofb=1",
+      img: cardInfo.img
     };
     console.log(card);
     axios
