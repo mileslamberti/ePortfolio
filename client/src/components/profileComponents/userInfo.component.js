@@ -107,8 +107,9 @@ const UserInfo = (props) => {
         console.log("hasnumber", hasNumber);
         console.log("hasEmail", hasEmail);
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        const phoneRegex = /^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$|[0-9]{6,12}/
+        const phoneRegex = /^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{0,4})(( x| ext)\d{1,5}){0,1}$/
         const number = form.number.replace(/\s/g,'');
+        console.log(number);
         const isEmail = emailRegex.test(form.email);
         const isPhoneNumber = phoneRegex.test(number);
         if (hasNumber && ! isPhoneNumber) {
