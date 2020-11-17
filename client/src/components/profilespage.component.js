@@ -15,7 +15,7 @@ function ProfilesPage(){
     const [profiles, setProfiles] = useState([]);
     const [Tags, setTags] = useState([]);
     const [Dp, setDp] = useState([]);
-
+    const [searchingByTags, setSearchingByTags] = useState(false);
     useEffect( () => {
         axios.get("/profiles")
             .then( res => {
@@ -123,16 +123,35 @@ function ProfilesPage(){
         })
         return found;
     }
+    const hasTag = (tags, searchedTag) => {
+        var found = false;
+        
+        tags.forEach(tag => {
+            if ( tag.toLowerCase() == (searchedTag.toLowerCase())){
+                found = true;
+            }
+
+        })
+        return found;
+    }
     const filteredProfiles = profiles.filter( profile => {
         // only show profiles that have a displayName
         if (profile.hasOwnProperty("displayName")){
-            var found = (
-                profile.displayName.toLowerCase().includes( search.toLowerCase() )
-                    || profile.description && profile.description.toLowerCase().includes( search.toLowerCase() )
-                    || profile.handle && profile.handle.toLowerCase().includes( search.toLowerCase() )
-                    || profile.tags && containsTag(profile.tags, search)
-            );
-            return found
+            if (!searchingByTags){
+                var found = (
+                    profile.displayName.toLowerCase().includes( search.toLowerCase() )
+                        || profile.description && profile.description.toLowerCase().includes( search.toLowerCase() )
+                        || profile.handle && profile.handle.toLowerCase().includes( search.toLowerCase() )
+                        || profile.tags && containsTag(profile.tags, search)
+                );
+                return found
+            } else {
+                var found = (
+                    profile.tags && hasTag(profile.tags, search)
+                );
+                return found
+            }
+            
         }
     })
     const renderTags = (tags) => {
@@ -161,6 +180,7 @@ function ProfilesPage(){
           );
     }
     const handleTagClick = (tag) => {
+        setSearchingByTags(true);
         setSearch(tag)
     }
     const renderCard = (profile, index) => {
@@ -184,7 +204,7 @@ function ProfilesPage(){
 
     return (
         <div >
-            <input type="text" placeholder= "Search by Name or Skill" onChange= { e => setSearch(e.target.value) }/>
+            <input type="text" placeholder= "Search by Name or Skill or Tag" onChange= { e => setSearch(e.target.value) }/>
             <div className="row">
             {filteredProfiles.map(renderCard)}
             </div>
