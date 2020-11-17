@@ -128,7 +128,8 @@ function UploadPortfolio(props) {
             window.location=`/${userHandle}/${projectID}`;
         }
       });
-    AcceptedFiles.forEach((file, index) => {
+    var numSumbittedFiles = 0;
+    AcceptedFiles.forEach((file) => {
       // upload file to storage
       firebase
         .storage()
@@ -149,7 +150,8 @@ function UploadPortfolio(props) {
               })
               .then((res) => {
                 console.log(res.data);
-                if (index === AcceptedFiles.length-1)  {
+                numSumbittedFiles++;
+                if (numSumbittedFiles === AcceptedFiles.length)  {
                     window.location=`/${userHandle}/${projectID}`;
                 }
               });
