@@ -32,16 +32,16 @@ const initialFiles = {
 const stockPictures = {
   tiles: [
     {
-      fileLink: "https://material-ui.com/static/images/grid-list/hats.jpg",
+      fileLink: "https://www.flaticon.com/svg/static/icons/svg/3721/3721643.svg",
     },
     {
-      fileLink: "https://material-ui.com/static/images/grid-list/bike.jpg",
+      fileLink: "https://www.flaticon.com/svg/static/icons/svg/2645/2645943.svg",
     },
     {
-      fileLink: "https://material-ui.com/static/images/grid-list/mushroom.jpg",
+      fileLink: "https://www.flaticon.com/svg/static/icons/svg/1160/1160044.svg",
     },
     {
-      fileLink: "https://material-ui.com/static/images/grid-list/morning.jpg",
+      fileLink: "https://www.flaticon.com/svg/static/icons/svg/35/35920.svg",
     },
     {
       fileLink: "https://material-ui.com/static/images/grid-list/star.jpg",
@@ -82,7 +82,7 @@ export const PortfolioCardProvider = (props) => {
         description: cardInfo.description,
         projectID: projectID,
         position: cardsState.cards.length,
-        img: cardInfo.img,
+        img:"https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ficdn2.digitaltrends.com%2Fimage%2Fschool-coding-1200x0.jpg%3Fver%3D1&f=1&nofb=1",
       },
     });
     const card = {

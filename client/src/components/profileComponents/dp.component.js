@@ -75,7 +75,7 @@ const DP = (props) => {
             <>
               <input
                 className={classes.input}
-                ccept="image/*"
+                accept="image/*"
                 id="icon-button-file"
                 type="file"
                 onChange={onChange}

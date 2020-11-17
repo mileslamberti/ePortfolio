@@ -431,6 +431,7 @@ function Project(props) {
               handleDialogConfirm={handleDialogConfirm}
               handleDialogCancel={handleDialogCancel}
               open={open}
+              addingNew = {true}
               dialogInformation={getDialogDescription()}
               authorised={authorised}
             />

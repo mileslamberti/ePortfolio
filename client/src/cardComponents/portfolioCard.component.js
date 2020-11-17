@@ -220,6 +220,7 @@ function PortfolioCard(props) {
             handleDialogConfirm={handleDialogConfirm}
             handleDialogCancel={handleDialogCancel}
             open={open}
+            addingNew = {false}
             title={card.title}
             subtitle={card.subtitle}
             description={card.description}

@@ -1,5 +1,4 @@
 import React, {useState, useContext} from 'react';
-import axios from "../api";
 import { makeStyles } from '@material-ui/core/styles';
 
 import { Button, Grid, GridList, GridListTile, GridListTileBar, IconButton, Tooltip } from '@material-ui/core';
@@ -24,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
   }));
 
-function SelectPicture(props){
+function OLDSelectPicture(props){
     //const imageDB = ["https://material-ui.com/static/images/grid-list/hats.jpg", "https://material-ui.com/static/images/grid-list/bike.jpg", "https://material-ui.com/static/images/grid-list/mushroom.jpg", "https://material-ui.com/static/images/grid-list/morning.jpg", "https://material-ui.com/static/images/grid-list/star.jpg", "https://material-ui.com/static/images/grid-list/olive.jpg", "https://material-ui.com/static/images/grid-list/honey.jpg", "https://material-ui.com/static/images/grid-list/plant.jpg"]
     
     const [originalPic, setOriginalPic] = useState(props.currentDisplayPicture)
@@ -32,24 +31,8 @@ function SelectPicture(props){
     const { getStockPictures } = useContext(PortfolioCardContext);
     
     const imageDB = getStockPictures().tiles
-    const [loading, setLoading] = useState(false);
+    
     const classes = useStyles();
-    const onChangeChoosenImage = (e) => {
-        e.preventDefault();
-        const image = e.target.files[0];
-        const formData = new FormData();
-        formData.append("file", image, image.name);
-        setLoading(true);
-        axios
-            .post("/user/image", formData)
-            .then((res) => {
-                setCurrentPic(res.data.image);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-    }
     return (
         
         <Grid
@@ -84,24 +67,7 @@ function SelectPicture(props){
                         
                     )}
                 </GridList>
-                <input
-                    className={classes.input}
-                    accept="image/*"
-                    id="icon-button-file"
-                    type="file"
-                    onChange={onChangeChoosenImage}
-                    style={{ display: 'none' }}
-                />
-                <Button
-                    htmlFor="icon-button-file"
-                    className={classes.image}
-                    color="primary"
-                    variant="contained"
-                    onClick={ () => document.getElementById('icon-button-file').click()}
-                    >
-                    Upload image
-                </Button>
-                {loading ? <span className="spinner-border spinner-border-sm"></span> :
+                
                 <Button
                     variant="contained"
                     color="primary"
@@ -111,13 +77,11 @@ function SelectPicture(props){
                     }}>
                     Confirm
                 </Button>
-                }
                 <Button
                     variant="contained"
                     color="primary"
                     onClick={() => {
-                        setCurrentPic(originalPic);
-                        setLoading(false);
+                        setCurrentPic(originalPic)
                         props.setEditDPOpen(false);
                     }}>
                     Cancel
@@ -128,4 +92,4 @@ function SelectPicture(props){
         
     )
 }
-export default SelectPicture;
+export default OLDSelectPicture;
