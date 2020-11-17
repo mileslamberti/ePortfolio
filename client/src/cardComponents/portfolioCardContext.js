@@ -38,10 +38,10 @@ const stockPictures = {
       fileLink: "https://www.flaticon.com/svg/static/icons/svg/2645/2645943.svg",
     },
     {
-      fileLink: "https://material-ui.com/static/images/grid-list/mushroom.jpg",
+      fileLink: "https://www.flaticon.com/svg/static/icons/svg/1160/1160044.svg",
     },
     {
-      fileLink: "https://material-ui.com/static/images/grid-list/morning.jpg",
+      fileLink: "https://www.flaticon.com/svg/static/icons/svg/2541/2541979.svg",
     },
     {
       fileLink: "https://material-ui.com/static/images/grid-list/star.jpg",
