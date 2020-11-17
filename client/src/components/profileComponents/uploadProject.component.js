@@ -37,6 +37,9 @@ function UploadPortfolio(props) {
 
   // Files that will be uploaded to the database on submit
   const [AcceptedFiles, setAcceptedFiles] = useState([]);
+
+  // wether set to true while files are being uploaded
+  const [uploading, setUploading] = useState(false);
   const profileHandle = props.profileHandle;
   useEffect(() => {
     function getHandle() {
@@ -106,8 +109,9 @@ function UploadPortfolio(props) {
   };
 
   const onSubmit = (event) => {
-    const projectID = `project${Math.round(Math.random() * 100000000)}`;
     event.preventDefault();
+    setUploading(true);
+    const projectID = `project${new Date().getTime()}`;
 
     console.log("Number of Files on submission: ", AcceptedFiles.length);
     const project = {
@@ -120,7 +124,11 @@ function UploadPortfolio(props) {
       .post(`/saveproject`, project, { headers: authHeader() })
       .then((res) => {
         console.log(res.data);
+        if (AcceptedFiles.length === 0)  {
+            window.location=`/${userHandle}/${projectID}`;
+        }
       });
+    var numSumbittedFiles = 0;
     AcceptedFiles.forEach((file) => {
       // upload file to storage
       firebase
@@ -142,7 +150,10 @@ function UploadPortfolio(props) {
               })
               .then((res) => {
                 console.log(res.data);
-                window.location = `/${userHandle}/${projectID}`;
+                numSumbittedFiles++;
+                if (numSumbittedFiles === AcceptedFiles.length)  {
+                    window.location=`/${userHandle}/${projectID}`;
+                }
               });
           });
         })
@@ -203,10 +214,11 @@ function UploadPortfolio(props) {
             />
           </div>
           <br />
-          <Button variant="primary" type="submit" size="lg" onSubmit={onSubmit}>
-            Submit
-          </Button>
-
+          {uploading ? <span className="spinner-border spinner-border-sm"></span> :
+            <Button variant="primary" type="submit" size="lg" onSubmit={onSubmit}>
+                Submit
+            </Button>
+            }
           <List>
             {AcceptedFiles.map((file, index) => (
               <ListItem key={index}>
