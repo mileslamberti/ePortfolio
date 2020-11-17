@@ -110,11 +110,11 @@ const AboutMe = (props) => {
               <Typography variant="h3" component="p">
                 {aboutMe.displayName}
               </Typography>
-              <Typography variant="h4" color="textSecondary" component="p">
+              <Typography variant="h6" color="textSecondary" component="p">
                 {aboutMe.description}
               </Typography>
               <br/>
-              <Typography variant="h4" color="textSecondary" component="p">
+              <Typography variant="h8" color="textSecondary" component="p">
                 {aboutMe.bio}
               </Typography>
               
