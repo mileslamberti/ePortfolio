@@ -120,8 +120,11 @@ function UploadPortfolio(props) {
       .post(`/saveproject`, project, { headers: authHeader() })
       .then((res) => {
         console.log(res.data);
+        if (AcceptedFiles.length === 0)  {
+            window.location=`/${userHandle}/${projectID}`;
+        }
       });
-    AcceptedFiles.forEach((file) => {
+    AcceptedFiles.forEach((file, index) => {
       // upload file to storage
       firebase
         .storage()
@@ -142,7 +145,9 @@ function UploadPortfolio(props) {
               })
               .then((res) => {
                 console.log(res.data);
-                window.location = `/${userHandle}/${projectID}`;
+                if (index === AcceptedFiles.length-1)  {
+                    window.location=`/${userHandle}/${projectID}`;
+                }
               });
           });
         })
