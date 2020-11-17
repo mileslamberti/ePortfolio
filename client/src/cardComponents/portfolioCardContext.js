@@ -82,7 +82,7 @@ export const PortfolioCardProvider = (props) => {
         description: cardInfo.description,
         projectID: projectID,
         position: cardsState.cards.length,
-        img: cardInfo.img,
+        img:"https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ficdn2.digitaltrends.com%2Fimage%2Fschool-coding-1200x0.jpg%3Fver%3D1&f=1&nofb=1",
       },
     });
     const card = {
