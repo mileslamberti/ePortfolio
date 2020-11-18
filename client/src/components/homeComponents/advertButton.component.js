@@ -6,11 +6,17 @@ import AuthService from "../../services/auth.service";
 
 const overlay = {
   style: {
-    background: 'rgba(600, 600, 600, 0.25)',
+    color: 'white',
+    textShadow: 'white 0px 0px 10px',
     borderRadius: '50px',
     padding: '40px 40px 40px 40px',
     position: 'absolute', 
-    marginTop: '-550px', marginLeft: '33%',
+    display:'flex',
+    flexDirection: 'column',
+    top: '33%',
+    left: '18%',
+    marginRight: '150px',
+    width:'70%',
     alignItems: "center",
     textAlign: "center"
   }
@@ -33,10 +39,10 @@ export default function AdvertButton() {
     <Router>
       {currentUser ? ( // if logged in display sharing profile
         <div style = {overlay.style}>
-          <h3>Take Your ePortfolio to the next level</h3><br/>
-          <h5> Get sahring today</h5>
-
-          <Button variant ="dark" size="lg" href="/sharing">
+          <h3 style={{fontSize: '50px',fontFamily: 'Georgia'}}>Take Your ePortfolio to the next level</h3><br/>
+          <h5 style={{fontSize: '40px',fontFamily: 'Georgia'}}> Get sharing today</h5>
+          <br/>
+          <Button variant ="dark" size="lg" href="/profilespage">
               Share your ePortfolio today!
           </Button>
         </div>
@@ -45,7 +51,7 @@ export default function AdvertButton() {
           <h3>Take Your Portfolio to the next level</h3><br/>
           <h5> Why us? </h5>
           <h5> Because we are the best</h5>
-
+          <br/>
           <Button variant ="dark" size="lg" href="/register">
               Get your profile started today!
           </Button>
