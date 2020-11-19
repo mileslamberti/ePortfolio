@@ -10,7 +10,8 @@ const Home = () => {
   return (
       <div>
           <Carousel/> 
-          <div className="container">
+          {/* <div className="container"> */}
+          <div>
             <AdvertButton/>
           </div>
       </div>
