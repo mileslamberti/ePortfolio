@@ -25,9 +25,6 @@ import UserService from "../services/user.service";
 
 import ProjectPanel from "../cardComponents/projectPanel.component";
 
-const divStyle = {
-  marginLeft: '1400px',
-};
 
 export default function MyProfile(props) {
   const profileHandle = props.match.params.handle;
@@ -52,7 +49,7 @@ export default function MyProfile(props) {
 
     <div >
     {authorised ? (
-      <IconButton style = {divStyle}
+      <IconButton
         variant="contained"
         onClick={() => setHelpOpen(true)}
       >
