@@ -7,6 +7,10 @@ import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap" ;
 import Button from '@material-ui/core/Button';
 
+const divStyle = {
+    marginTop: '20px',
+  };
+
 const API_URL = "http://localhost:5000/eportfolio-4760f/us-central1/api";
 
 function ProfilesPage(){
@@ -203,7 +207,7 @@ function ProfilesPage(){
     }
 
     return (
-        <div >
+        <div style = {divStyle}>
             <input type="text" placeholder= "Search by Name or Skill or Tag" onChange= { e => setSearch(e.target.value) }/>
             <div className="row">
             {filteredProfiles.map(renderCard)}
