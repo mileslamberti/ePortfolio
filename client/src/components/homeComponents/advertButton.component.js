@@ -43,7 +43,7 @@ export default function AdvertButton() {
           <h5 style={{fontSize: '40px',fontFamily: 'Georgia'}}> Get sharing today</h5>
           <br/>
           <Button variant ="dark" size="lg" href="/profilespage">
-              Share your ePortfolio today!
+              Check out other users profiles!
           </Button>
         </div>
       ) : ( //if not logged in show advert to create profile
